@@ -1,0 +1,14 @@
+@import '../../assets/sass/common';
+
+@font-face {
+    font-family: 'Consolas';
+    src: url("../../assets/fonts/Consolas.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.react-editor {
+    font-family: Consolas;
+    background: #2b2b2b;
+    cursor: text;
+}
