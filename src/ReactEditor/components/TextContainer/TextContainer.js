@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import TextLine from '../TextLine';
 
-import './TextLayer.scss';
+import './TextContainer.scss';
 
-export default class TextLayer extends Component {
+export default class TextContainer extends Component {
 
     constructor(props) {
         super(props);
@@ -19,7 +19,7 @@ export default class TextLayer extends Component {
             });
 
         return (
-            <div className={`react-editor-text-layer ${className}`}
+            <div className={`react-editor-text-container ${className}`}
                  style={style}>
 
                 {
@@ -38,7 +38,7 @@ export default class TextLayer extends Component {
     }
 };
 
-TextLayer.propTypes = {
+TextContainer.propTypes = {
 
     className: PropTypes.string,
     style: PropTypes.object,
@@ -49,7 +49,7 @@ TextLayer.propTypes = {
 
 };
 
-TextLayer.defaultProps = {
+TextContainer.defaultProps = {
 
     className: '',
     style: null,

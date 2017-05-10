@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import TextScroller from '../TextScroller/index';
+import TextScroller from '../TextScroller';
+import ScrollBars from '../ScrollBars';
 
 import './Editor.scss';
 
@@ -79,6 +80,9 @@ export default class Editor extends Component {
                 <TextScroller {...this.props}
                               {...this.state}
                               onChange={this.dataChangedHandle}/>
+
+                <ScrollBars {...this.props}
+                            {...this.state}/>
 
             </div>
         );

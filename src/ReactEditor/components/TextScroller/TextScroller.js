@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import TextLayer from '../TextLayer';
+import TextLayer from '../TextContainer';
 
 import './TextScroller.scss';
 
