@@ -21,8 +21,8 @@ export default class Editor extends Component {
             height: 500,
             lineHeight: 20,
             lineCache: 5,
-            // horizontalPadding: 6,
-            // scrollBarWidth: 12,
+            horizontalPadding: 6,
+            scrollBarWidth: 12,
             scrollBarMinLength: 100,
             forbiddenScrollRebound: false
         };

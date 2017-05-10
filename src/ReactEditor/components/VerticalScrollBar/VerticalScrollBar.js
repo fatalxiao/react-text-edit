@@ -17,17 +17,23 @@ export default class VerticalScrollBar extends Component {
     }
 
     calculateScrollBarHeight() {
+
         const {editorDataArray, editorOptions} = this.props;
+
         return Valid.range(
             editorOptions.height ** 2 / (editorDataArray.length * editorOptions.lineHeight),
             editorOptions.scrollBarMinLength
         );
+
     }
 
     calculateScrollTop(scrollHeight) {
+
         const {editorDataArray, editorOptions, scrollTop} = this.props;
+
         return (editorOptions.height - scrollHeight) * scrollTop
             / ((editorDataArray.length - 1) * editorOptions.lineHeight);
+
     }
 
     render() {
@@ -38,7 +44,6 @@ export default class VerticalScrollBar extends Component {
                 height: scrollHeight,
                 transform: `translate3d(0, ${this.calculateScrollTop(scrollHeight)}px, 0)`
             };
-
 
         return (
             <div className={`react-editor-vertical-scroll-bar-wrapper ${className}`}
