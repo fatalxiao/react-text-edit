@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import TextContainer from '../TextContainer';
+import EditorCursor from '../EditorCursor';
 
 import './TextScroller.scss';
 
@@ -55,6 +56,8 @@ export default class TextScroller extends Component {
 
                 <TextContainer {...this.props}
                                displayIndex={displayIndex}/>
+
+                <EditorCursor {...this.props}/>
 
             </div>
         );

@@ -1,0 +1,27 @@
+@import '../../assets/sass/common';
+
+.react-editor-cursor-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    pointer-events: none;
+
+    .react-editor-cursor {
+        width: 2px;
+        height: 20px;
+        animation: twinkle 1s ease infinite;
+        background: $theme-text;
+    }
+}
+
+@keyframes twinkle {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
