@@ -5,6 +5,9 @@ import _ from 'lodash';
 import TextScroller from '../TextScroller';
 import ScrollBars from '../ScrollBars';
 
+import Valid from '../../utils/Valid';
+import CharSize from '../../utils/CharSize';
+
 import './Editor.scss';
 
 export default class Editor extends Component {
@@ -22,22 +25,28 @@ export default class Editor extends Component {
 
         this.state = {
 
-            editorEl: null,
-
             editorDataArray: props.data.split('\n'),
             editorOptions: {...this.defaultOptions, ...props.options},
+
+            contentWidth: 0,
 
             scrollTop: 0,
             scrollLeft: 0
 
-
         };
 
+        this.calculateContentWidth = this::this.calculateContentWidth;
         this.dataChangedHandle = this::this.dataChangedHandle;
         this.wheelHandle = this::this.wheelHandle;
-        this.scrollX = this::this.scrollX;
-        this.scrollY = this::this.scrollY;
 
+    }
+
+    calculateContentWidth() {
+        const contentWidth = CharSize.calculateMaxLineWidth(this.state.editorDataArray, this.refs.editor);
+        console.log(contentWidth);
+        this.setState({
+            contentWidth
+        });
     }
 
     dataChangedHandle(editorDataArray) {
@@ -45,7 +54,8 @@ export default class Editor extends Component {
         const {onChange} = this.props;
 
         this.setState({
-            editorDataArray
+            editorDataArray,
+            contentWidth: CharSize.calculateMaxLineWidth(editorDataArray)
         }, () => {
             onChange && onChange(editorDataArray.join('\n'));
         });
@@ -54,32 +64,23 @@ export default class Editor extends Component {
 
     wheelHandle(e) {
 
-        const {editorDataArray, editorOptions} = this.state,
+        const {editorDataArray, editorOptions, scrollTop, scrollLeft, contentWidth} = this.state,
             maxScrollHeight = (editorDataArray.length - 1) * editorOptions.lineHeight;
 
-        let top = this.state.scrollTop + e.deltaY;
-        top = top > maxScrollHeight ? maxScrollHeight : top;
-        top = top < 0 ? 0 : top;
-        this.scrollY(top);
+        let top = Valid.range(scrollTop + e.deltaY, 0, maxScrollHeight),
+            left = Valid.range(scrollLeft + e.deltaX, 0, contentWidth - editorOptions.width);
 
-    }
-
-    scrollX(scrollLeft) {
         this.setState({
-            scrollLeft
+            scrollTop: top,
+            scrollLeft: left
         });
-    }
 
-    scrollY(scrollTop) {
-        this.setState({
-            scrollTop
-        });
     }
 
     componentDidMount() {
-        this.setState({
-            editorEl: this.refs.editor
-        });
+        // setTimeout(() => {
+        this.calculateContentWidth();
+        // });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -119,8 +120,11 @@ export default class Editor extends Component {
                               onChange={this.dataChangedHandle}/>
 
                 <ScrollBars {...this.props}
-                            {...this.state}
-                            {...this}/>
+                            {...this.state}/>
+
+                <div className="react-editor-test-char-count"></div>
+
+                <div className="react-editor-test-container"></div>
 
             </div>
         );

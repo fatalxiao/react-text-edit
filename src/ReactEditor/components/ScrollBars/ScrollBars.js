@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import DomLib from '../../vendors/DomLib';
+import DomLib from '../../utils/DomLib';
 
 import './ScrollBars.scss';
 
@@ -44,12 +44,8 @@ ScrollBars.propTypes = {
 
     editorDataArray: PropTypes.array,
     editorOptions: PropTypes.object,
-    editorEl: PropTypes.object,
     scrollTop: PropTypes.number,
-    scrollLeft: PropTypes.number,
-
-    scrollX: PropTypes.func,
-    scrollY: PropTypes.func
+    scrollLeft: PropTypes.number
 
 };
 
@@ -60,7 +56,6 @@ ScrollBars.defaultProps = {
 
     editorDataArray: [],
     editorOptions: null,
-    editorEl: null,
     scrollTop: 0,
     scrollLeft: 0
 

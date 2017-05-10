@@ -1,7 +1,7 @@
 @import '../../assets/sass/common';
 
 @font-face {
-    font-family: 'Consolas';
+    font-family: Consolas;
     src: url("../../assets/fonts/Consolas.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
@@ -16,4 +16,32 @@
     cursor: text;
     overflow: hidden;
     position: relative;
+
+    .react-editor-test-char-count {
+        width: 0.2px;
+        left: 0px;
+        visibility: hidden;
+        position: absolute;
+        whiteSpace: pre;
+        font: inherit;
+        overflow: visible;
+    }
+
+    .react-editor-test-container {
+        height: auto;
+        width: auto;
+        top: 0px;
+        left: 0px;
+        visibility: hidden;
+        position: absolute;
+        white-space: pre;
+        font-style: inherit;
+        font-variant: inherit;
+        font-weight: inherit;
+        font-stretch: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        font-family: inherit;
+        overflow: visible;
+    }
 }
