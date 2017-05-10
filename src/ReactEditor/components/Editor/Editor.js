@@ -23,7 +23,8 @@ export default class Editor extends Component {
             lineCache: 5,
             // horizontalPadding: 6,
             // scrollBarWidth: 12,
-            scrollBarMinLength: 100
+            scrollBarMinLength: 100,
+            forbiddenScrollRebound: false
         };
 
         this.state = {
@@ -70,8 +71,18 @@ export default class Editor extends Component {
         const {editorDataArray, editorOptions, scrollTop, scrollLeft, contentWidth} = this.state,
             maxScrollHeight = (editorDataArray.length - 1) * editorOptions.lineHeight;
 
-        let top = Valid.range(scrollTop + e.deltaY, 0, maxScrollHeight),
-            left = Valid.range(scrollLeft + e.deltaX, 0, contentWidth - editorOptions.width);
+        let top = scrollTop + e.deltaY,
+            left = scrollLeft + e.deltaX;
+
+        if (top < 0 || top > maxScrollHeight) {
+            top = Valid.range(top, 0, maxScrollHeight);
+            editorOptions.forbiddenScrollRebound && e.preventDefault();
+        }
+
+        if (left < 0 || left > contentWidth - editorOptions.width) {
+            left = Valid.range(left, 0, contentWidth - editorOptions.width);
+            editorOptions.forbiddenScrollRebound && e.preventDefault();
+        }
 
         this.setState({
             scrollTop: top,
