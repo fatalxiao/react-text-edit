@@ -63,9 +63,9 @@ export default class App extends Component {
             <div className="app">
 
                 <ReactEditor data={data}
-                             width={windowWidth}
-                             height={windowHeight}
                              options={{
+                                 width: windowWidth,
+                                 height: windowHeight,
                                  gutterPosition: 'right'
                              }}/>
 

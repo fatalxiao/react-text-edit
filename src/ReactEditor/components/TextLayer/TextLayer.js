@@ -13,14 +13,17 @@ export default class TextLayer extends Component {
 
     render() {
 
-        const {className, style, dataArray} = this.props;
+        const {className, style, editorDataArray, displayIndex} = this.props,
+            finalDataArray = editorDataArray.filter((line, index) => {
+                return index >= displayIndex.start && index <= displayIndex.stop;
+            });
 
         return (
             <div className={`react-editor-text-layer ${className}`}
                  style={style}>
 
                 {
-                    dataArray.map((line, index) => {
+                    finalDataArray.map((line, index) => {
                         return (
                             <TextLine {...this.props}
                                       key={index}
@@ -40,8 +43,9 @@ TextLayer.propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
 
-    dataArray: PropTypes.array,
-    options: PropTypes.object
+    editorDataArray: PropTypes.array,
+    options: PropTypes.object,
+    displayIndex: PropTypes.object
 
 };
 
@@ -50,7 +54,11 @@ TextLayer.defaultProps = {
     className: '',
     style: null,
 
-    dataArray: [],
-    options: null
+    editorDataArray: [],
+    options: null,
+    displayIndex: {
+        start: 0,
+        stop: 0
+    }
 
 };

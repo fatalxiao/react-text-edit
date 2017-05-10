@@ -13,12 +13,21 @@ export default class Editor extends Component {
         super(props);
 
         this.defaultOptions = {
-            lineHeight: 20
+            width: 500,
+            height: 500,
+            lineHeight: 20,
+            lineCache: 5
         };
 
         this.state = {
-            dataArray: props.data.split('\n'),
-            options: {...this.defaultOptions, ...props.options}
+
+            editorDataArray: props.data.split('\n'),
+            editorOptions: {...this.defaultOptions, ...props.options},
+
+            scrollTop: 0,
+            scrollLeft: 0
+
+
         };
 
         this.dataChangedHandle = this::this.dataChangedHandle;
@@ -30,36 +39,37 @@ export default class Editor extends Component {
         let state = {};
 
         if (nextProps.data !== this.state.data) {
-            state.dataArray = nextProps.data.split('\n');
+            state.editorDataArray = nextProps.data.split('\n');
         }
 
-        if (!(_.isEqual(nextProps.options, this.state.options))) {
-            state.options = {...this.defaultOptions, ...nextProps.options};
+        if (!(_.isEqual(nextProps.options, this.props.options))) {
+            state.editorOptions = {...this.defaultOptions, ...nextProps.options};
         }
 
         this.setState(state);
 
     }
 
-    dataChangedHandle(dataArray) {
+    dataChangedHandle(editorDataArray) {
 
         const {onChange} = this.props;
 
         this.setState({
-            dataArray
+            editorDataArray
         }, () => {
-            onChange && onChange(dataArray.join('\n'));
+            onChange && onChange(editorDataArray.join('\n'));
         });
 
     }
 
     render() {
 
-        const {className, style, width, height} = this.props;
+        const {className, style} = this.props;
+        const {editorOptions} = this.state;
 
         const editorSize = {
-            width,
-            height
+            width: editorOptions.width,
+            height: editorOptions.height
         };
 
         return (
@@ -82,9 +92,9 @@ Editor.propTypes = {
     style: PropTypes.object,
 
     data: PropTypes.string,
-    width: PropTypes.number,
-    height: PropTypes.number,
     options: PropTypes.shape({
+        width: PropTypes.number,
+        height: PropTypes.number,
         lineHeight: PropTypes.number
     }),
 
@@ -98,8 +108,6 @@ Editor.defaultProps = {
     style: null,
 
     data: '',
-    width: 500,
-    height: 500,
     options: null
 
 };

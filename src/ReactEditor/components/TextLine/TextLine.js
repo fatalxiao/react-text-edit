@@ -11,10 +11,10 @@ export default class TextLine extends Component {
 
     render() {
 
-        const {className, style, data, options} = this.props,
+        const {className, style, data, editorOptions} = this.props,
             lineStyle = {
-                height: options.lineHeight,
-                lineHeight: `${options.lineHeight}px`
+                height: editorOptions.lineHeight,
+                lineHeight: `${editorOptions.lineHeight}px`
             };
 
         return (
@@ -33,7 +33,7 @@ TextLine.propTypes = {
     style: PropTypes.object,
 
     data: PropTypes.string,
-    options: PropTypes.object
+    editorOptions: PropTypes.object
 
 };
 
@@ -43,6 +43,6 @@ TextLine.defaultProps = {
     style: null,
 
     data: '',
-    options: null
+    editorOptions: null
 
 };
