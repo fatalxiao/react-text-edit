@@ -33,7 +33,7 @@ module.exports = {
 
     demo: {
 
-        port: 3001
+        port: 3002
 
     }
 
