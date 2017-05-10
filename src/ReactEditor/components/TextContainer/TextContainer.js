@@ -13,22 +13,23 @@ export default class TextContainer extends Component {
 
     render() {
 
-        const {className, style, editorDataArray, displayIndex} = this.props,
-            finalDataArray = editorDataArray.filter((line, index) => {
-                return index >= displayIndex.start && index <= displayIndex.stop;
-            });
+        const {className, style, editorDataArray, editorOptions, displayIndex} = this.props;
 
         return (
             <div className={`react-editor-text-container ${className}`}
                  style={style}>
 
                 {
-                    finalDataArray.map((line, index) => {
-                        return (
-                            <TextLine {...this.props}
-                                      key={index}
-                                      data={line}/>
-                        );
+                    editorDataArray.map((line, index) => {
+                        return index >= displayIndex.start && index <= displayIndex.stop ?
+                            (
+                                <TextLine {...this.props}
+                                          key={index}
+                                          data={line}
+                                          style={{top: editorOptions.lineHeight * index}}/>
+                            )
+                            :
+                            null;
                     })
                 }
 
@@ -44,7 +45,7 @@ TextContainer.propTypes = {
     style: PropTypes.object,
 
     editorDataArray: PropTypes.array,
-    options: PropTypes.object,
+    editorOptions: PropTypes.object,
     displayIndex: PropTypes.object
 
 };
@@ -55,7 +56,7 @@ TextContainer.defaultProps = {
     style: null,
 
     editorDataArray: [],
-    options: null,
+    editorOptions: null,
     displayIndex: {
         start: 0,
         stop: 0

@@ -18,6 +18,22 @@ function getOffset(el) {
 
 }
 
+function isTriggerOnEl(e, el) {
+
+    let target = e.target;
+
+    while (target) {
+        if (target == el) {
+            return true;
+        }
+        target = target.parentNode;
+    }
+
+    return false;
+
+}
+
 export default {
-    getOffset
+    getOffset,
+    isTriggerOnEl
 };

@@ -22,6 +22,8 @@ export default class Editor extends Component {
 
         this.state = {
 
+            editorEl: null,
+
             editorDataArray: props.data.split('\n'),
             editorOptions: {...this.defaultOptions, ...props.options},
 
@@ -32,7 +34,52 @@ export default class Editor extends Component {
         };
 
         this.dataChangedHandle = this::this.dataChangedHandle;
+        this.wheelHandle = this::this.wheelHandle;
+        this.scrollX = this::this.scrollX;
+        this.scrollY = this::this.scrollY;
 
+    }
+
+    dataChangedHandle(editorDataArray) {
+
+        const {onChange} = this.props;
+
+        this.setState({
+            editorDataArray
+        }, () => {
+            onChange && onChange(editorDataArray.join('\n'));
+        });
+
+    }
+
+    wheelHandle(e) {
+
+        const {editorDataArray, editorOptions} = this.state,
+            maxScrollHeight = (editorDataArray.length - 1) * editorOptions.lineHeight;
+
+        let top = this.state.scrollTop + e.deltaY;
+        top = top > maxScrollHeight ? maxScrollHeight : top;
+        top = top < 0 ? 0 : top;
+        this.scrollY(top);
+
+    }
+
+    scrollX(scrollLeft) {
+        this.setState({
+            scrollLeft
+        });
+    }
+
+    scrollY(scrollTop) {
+        this.setState({
+            scrollTop
+        });
+    }
+
+    componentDidMount() {
+        this.setState({
+            editorEl: this.refs.editor
+        });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -51,18 +98,6 @@ export default class Editor extends Component {
 
     }
 
-    dataChangedHandle(editorDataArray) {
-
-        const {onChange} = this.props;
-
-        this.setState({
-            editorDataArray
-        }, () => {
-            onChange && onChange(editorDataArray.join('\n'));
-        });
-
-    }
-
     render() {
 
         const {className, style} = this.props;
@@ -74,15 +109,18 @@ export default class Editor extends Component {
         };
 
         return (
-            <div className={`react-editor ${className}`}
-                 style={{...editorSize, ...style}}>
+            <div ref="editor"
+                 className={`react-editor ${className}`}
+                 style={{...editorSize, ...style}}
+                 onWheel={this.wheelHandle}>
 
                 <TextScroller {...this.props}
                               {...this.state}
                               onChange={this.dataChangedHandle}/>
 
                 <ScrollBars {...this.props}
-                            {...this.state}/>
+                            {...this.state}
+                            {...this}/>
 
             </div>
         );

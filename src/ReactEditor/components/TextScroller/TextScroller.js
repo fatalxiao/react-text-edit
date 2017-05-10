@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import TextLayer from '../TextContainer';
+import TextContainer from '../TextContainer';
 
 import './TextScroller.scss';
 
@@ -27,6 +27,9 @@ export default class TextScroller extends Component {
         stop += editorOptions.lineCache;
 
         start = start < 0 ? 0 : start;
+        start = start > len ? len : start;
+
+        stop = stop < 0 ? 0 : stop;
         stop = stop > len ? len : stop;
 
         return {
@@ -38,15 +41,19 @@ export default class TextScroller extends Component {
 
     render() {
 
-        const {className, style} = this.props,
+        const {className, style, editorDataArray, editorOptions, scrollTop, scrollLeft} = this.props,
+            scrollerStyle = {
+                height: editorDataArray.length * editorOptions.lineHeight,
+                transform: `translate3d(${-scrollLeft}px, ${-scrollTop}px, 0)`
+            },
             displayIndex = this.calDisplayIndex();
 
         return (
             <div className={`react-editor-text-scroller ${className}`}
-                 style={style}>
+                 style={{...style, ...scrollerStyle}}>
 
-                <TextLayer {...this.props}
-                           displayIndex={displayIndex}/>
+                <TextContainer {...this.props}
+                               displayIndex={displayIndex}/>
 
             </div>
         );
@@ -62,6 +69,7 @@ TextScroller.propTypes = {
     editorDataArray: PropTypes.array,
     editorOptions: PropTypes.object,
     scrollTop: PropTypes.number,
+    scrollLeft: PropTypes.number,
 
     onChange: PropTypes.func
 
@@ -74,6 +82,7 @@ TextScroller.defaultProps = {
 
     editorDataArray: [],
     editorOptions: null,
-    scrollTop: 0
+    scrollTop: 0,
+    scrollLeft: 0
 
 };
