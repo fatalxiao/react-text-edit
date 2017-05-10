@@ -1,5 +1,17 @@
 @import '../../assets/sass/common';
 
 .react-editor-vertical-scroll-bar-wrapper {
+    position: absolute;
+    width: 12px;
+    height: 100%;
+    top: 0;
+    right: 0;
 
+    .react-editor-vertical-scroll-bar {
+        width: 10px;
+        border-radius: 5px;
+        border: 1px solid $theme-bg;
+        box-sizing: border-box;
+        background: $theme-scroll-bar;
+    }
 }

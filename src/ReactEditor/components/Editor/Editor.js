@@ -20,7 +20,10 @@ export default class Editor extends Component {
             width: 500,
             height: 500,
             lineHeight: 20,
-            lineCache: 5
+            lineCache: 5,
+            // horizontalPadding: 6,
+            // scrollBarWidth: 12,
+            scrollBarMinLength: 100
         };
 
         this.state = {
