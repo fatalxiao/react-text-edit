@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import TextScroller from '../TextScroller/index';
 
@@ -11,8 +12,13 @@ export default class Editor extends Component {
 
         super(props);
 
+        this.defaultOptions = {
+            lineHeight: 20
+        };
+
         this.state = {
-            data: props.data
+            dataArray: props.data.split('\n'),
+            options: {...this.defaultOptions, ...props.options}
         };
 
         this.dataChangedHandle = this::this.dataChangedHandle;
@@ -20,28 +26,36 @@ export default class Editor extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+
+        let state = {};
+
         if (nextProps.data !== this.state.data) {
-            this.setState({
-                data: nextProps.data
-            });
+            state.dataArray = nextProps.data.split('\n');
         }
+
+        if (!(_.isEqual(nextProps.options, this.state.options))) {
+            state.options = {...this.defaultOptions, ...nextProps.options};
+        }
+
+        this.setState(state);
+
     }
 
-    dataChangedHandle(data) {
+    dataChangedHandle(dataArray) {
 
         const {onChange} = this.props;
 
         this.setState({
-            data
+            dataArray
         }, () => {
-            onChange && onChange();
+            onChange && onChange(dataArray.join('\n'));
         });
 
     }
 
     render() {
 
-        const {className, style, data, width, height, options} = this.props;
+        const {className, style, width, height} = this.props;
 
         const editorSize = {
             width,
@@ -52,7 +66,8 @@ export default class Editor extends Component {
             <div className={`react-editor ${className}`}
                  style={{...editorSize, ...style}}>
 
-                <TextScroller data={data}
+                <TextScroller {...this.props}
+                              {...this.state}
                               onChange={this.dataChangedHandle}/>
 
             </div>
@@ -69,7 +84,9 @@ Editor.propTypes = {
     data: PropTypes.string,
     width: PropTypes.number,
     height: PropTypes.number,
-    options: PropTypes.object,
+    options: PropTypes.shape({
+        lineHeight: PropTypes.number
+    }),
 
     onChange: PropTypes.func
 
@@ -80,7 +97,7 @@ Editor.defaultProps = {
     className: '',
     style: null,
 
-    value: '',
+    data: '',
     width: 500,
     height: 500,
     options: null

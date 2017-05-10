@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import TextLayer from '../TextLayer';
 
+import './TextScroller.scss';
+
 export default class TextScroller extends Component {
 
     constructor(props) {
@@ -11,13 +13,14 @@ export default class TextScroller extends Component {
 
     render() {
 
-        const {className, style, data} = this.props;
+        const {className, style, dataArray} = this.props;
 
         return (
             <div className={`react-editor-text-scroller ${className}`}
                  style={style}>
 
-                <TextLayer data={data}/>
+                <TextLayer {...this.props}
+                           dataArray={dataArray}/>
 
             </div>
         );
@@ -30,7 +33,8 @@ TextScroller.propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
 
-    data: PropTypes.string,
+    dataArray: PropTypes.array,
+    options: PropTypes.object,
 
     onChange: PropTypes.func
 
@@ -41,6 +45,7 @@ TextScroller.defaultProps = {
     className: '',
     style: null,
 
-    data: ''
+    dataArray: [],
+    options: null
 
 };

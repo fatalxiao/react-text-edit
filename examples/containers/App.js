@@ -6,6 +6,8 @@ import 'assets/font-awesome/css/font-awesome.min.css';
 import 'sass/global.scss';
 import 'sass/App.scss';
 
+import MacDownHelpText from 'assets/files/MacDownHelp.txt';
+
 export default class App extends Component {
 
     constructor(props) {
@@ -17,7 +19,7 @@ export default class App extends Component {
         this.state = {
             windowWidth: window.innerWidth,
             windowHeight: window.innerHeight,
-            data: ''
+            data: MacDownHelpText
         };
 
         this.resizeHandle = this::this.resizeHandle;
