@@ -47,7 +47,7 @@ export default class Editor extends Component {
 
     calculateContentWidth() {
         const contentWidth = CharSize.calculateMaxLineWidth(this.state.editorDataArray, this.refs.editor);
-        console.log(contentWidth);
+        // console.log(contentWidth);
         this.setState({
             contentWidth
         });
