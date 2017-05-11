@@ -37,8 +37,14 @@ function triggerPopupEventHandle(el, triggerEl, popupEl, currentVisible) {
 
 }
 
+function preventEvent(e) {
+    e.stopPropagation();
+    e.preventDefault();
+}
+
 export default {
     addEvent,
     removeEvent,
-    triggerPopupEventHandle
+    triggerPopupEventHandle,
+    preventEvent
 };

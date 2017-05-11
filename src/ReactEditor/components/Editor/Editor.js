@@ -7,6 +7,7 @@ import ScrollBars from '../ScrollBars';
 
 import Valid from '../../utils/Valid';
 import CharSize from '../../utils/CharSize';
+import Event from '../../utils/Event';
 
 import './Editor.scss';
 
@@ -106,7 +107,11 @@ export default class Editor extends Component {
     }
 
     componentDidMount() {
+
+        Event.addEvent(document, 'dragstart', Event.preventEvent);
+
         this.calculateContentWidth();
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -123,6 +128,10 @@ export default class Editor extends Component {
 
         this.setState(state);
 
+    }
+
+    componentWillUnmount() {
+        Event.removeEvent(document, 'dragstart', Event.preventEvent);
     }
 
     render() {
