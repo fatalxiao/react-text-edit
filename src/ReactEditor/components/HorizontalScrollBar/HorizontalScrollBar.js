@@ -41,7 +41,7 @@ export default class HorizontalScrollBar extends Component {
         return Valid.range(
             // width of horizontal scroll bar wrapper should minus width of vertical scroll bar wrapper
             (editorOptions.width - editorOptions.scrollBarWidth) * this.wrapperWidth / contentWidth,
-            editorOptions.scrollBarMinLength, this.wrapperWidth
+            editorOptions.scrollBarMinLength
         );
 
     }
@@ -55,8 +55,12 @@ export default class HorizontalScrollBar extends Component {
 
         const {editorOptions, scrollLeft, contentWidth} = this.props;
 
-        return (editorOptions.width - scrollBarWidth - editorOptions.scrollBarWidth) * scrollLeft
+        const left = (editorOptions.width - scrollBarWidth - editorOptions.scrollBarWidth) * scrollLeft
             / (contentWidth - this.wrapperWidth);
+
+        console.log(left);
+
+        return left;
 
     }
 

@@ -50,8 +50,8 @@ export default class Editor extends Component {
     }
 
     calculateContentWidth() {
-        const contentWidth = CharSize.calculateMaxLineWidth(this.state.editorDataArray, this.refs.editor);
-        // console.log(contentWidth);
+        const contentWidth = Math.ceil(CharSize.calculateMaxLineWidth(this.state.editorDataArray, this.refs.editor));
+        console.log(contentWidth);
         this.setState({
             contentWidth
         });
@@ -85,18 +85,20 @@ export default class Editor extends Component {
     wheelHandle(e) {
 
         const {editorDataArray, editorOptions, scrollTop, scrollLeft, contentWidth} = this.state,
-            maxScrollHeight = (editorDataArray.length - 1) * editorOptions.lineHeight;
+            maxScrollLeft = contentWidth
+                - (editorOptions.width - editorOptions.horizontalPadding * 2 - editorOptions.scrollBarWidth),
+            maxScrollTop = (editorDataArray.length - 1) * editorOptions.lineHeight;
 
         let top = scrollTop + e.deltaY,
             left = scrollLeft + e.deltaX;
 
-        if (top < 0 || top > maxScrollHeight) {
-            top = Valid.range(top, 0, maxScrollHeight);
+        if (top < 0 || top > maxScrollTop) {
+            top = Valid.range(top, 0, maxScrollTop);
             editorOptions.forbiddenScrollRebound && e.preventDefault();
         }
 
-        if (left < 0 || left > contentWidth - editorOptions.width) {
-            left = Valid.range(left, 0, contentWidth - editorOptions.width);
+        if (left < 0 || left > maxScrollLeft) {
+            left = Valid.range(left, 0, maxScrollLeft);
             editorOptions.forbiddenScrollRebound && e.preventDefault();
         }
 
@@ -111,7 +113,9 @@ export default class Editor extends Component {
 
         Event.addEvent(document, 'dragstart', Event.preventEvent);
 
-        this.calculateContentWidth();
+        setTimeout(() => {
+            this.calculateContentWidth();
+        }, 0);
 
     }
 
