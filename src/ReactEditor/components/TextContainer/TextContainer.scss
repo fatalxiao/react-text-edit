@@ -1,7 +1,11 @@
 @import '../../assets/sass/common';
 
 .react-editor-text-container {
+
     font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+
     position: relative;
     overflow: hidden;
     word-wrap: normal;

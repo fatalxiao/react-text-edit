@@ -1,7 +1,11 @@
 @import '../../assets/sass/common';
 
 .react-editor-text-scroller {
+
     font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+
     position: absolute;
     top: 0;
     left: 0;
@@ -11,4 +15,5 @@
     cursor: text;
     padding: 0 18px 0 6px;
     box-sizing: border-box;
+
 }

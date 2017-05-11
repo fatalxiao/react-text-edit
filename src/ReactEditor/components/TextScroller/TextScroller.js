@@ -58,7 +58,7 @@ export default class TextScroller extends Component {
 
         const {className, style, editorDataArray, editorOptions, scrollTop, scrollLeft, contentWidth} = this.props,
             scrollerStyle = {
-                width: contentWidth,
+                width: contentWidth + editorOptions.scrollBarWidth + editorOptions.horizontalPadding * 2,
                 height: editorDataArray.length * editorOptions.lineHeight,
                 transform: `translate3d(${-scrollLeft}px, ${-scrollTop}px, 0)`
             },

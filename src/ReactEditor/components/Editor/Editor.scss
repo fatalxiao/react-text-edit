@@ -8,9 +8,11 @@
 }
 
 .react-editor {
-    font-family: Consolas;
+
+    font-family: Consolas, sans-serif;
     font-size: 14px;
     font-weight: 400;
+
     color: $theme-text;
     background: $theme-bg;
     cursor: text;
