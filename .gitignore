@@ -10,9 +10,8 @@ npm-debug.log*
 Thumbs.db
 
 # Dependency directories
-/node_modules
+node_modules
 
 # Distribution
-/dist
-/docs
-/examples/assets/propTypes
+dist
+docs
