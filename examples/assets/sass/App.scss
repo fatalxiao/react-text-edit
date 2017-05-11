@@ -1,5 +1,8 @@
-.qpp {
+@import './common.scss';
+
+.app {
     position: absolute;
     width: 100%;
     height: 100%;
+    background: #3c3f41;
 }

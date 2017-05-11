@@ -18,13 +18,14 @@ export default class Editor extends Component {
         super(props);
 
         this.defaultOptions = {
+            isFullScreen: false,
             width: 500,
             height: 500,
             lineHeight: 20,
             lineCache: 5,
             horizontalPadding: 6,
             scrollBarWidth: 12,
-            scrollBarMinLength: 100,
+            scrollBarMinLength: 60,
             forbiddenScrollRebound: false
         };
 
@@ -146,7 +147,7 @@ export default class Editor extends Component {
 
         return (
             <div ref="editor"
-                 className={`react-editor ${className}`}
+                 className={`react-editor ${editorOptions.isFullScreen ? 'react-editor-full-screen' : ''} ${className}`}
                  style={{...editorSize, ...style}}
                  onWheel={this.wheelHandle}>
 
@@ -175,9 +176,15 @@ Editor.propTypes = {
 
     data: PropTypes.string,
     options: PropTypes.shape({
+        isFullScreen: PropTypes.bool,
         width: PropTypes.number,
         height: PropTypes.number,
-        lineHeight: PropTypes.number
+        lineHeight: PropTypes.number,
+        lineCache: PropTypes.number,
+        horizontalPadding: PropTypes.number,
+        scrollBarWidth: PropTypes.number,
+        scrollBarMinLength: PropTypes.number,
+        forbiddenScrollRebound: PropTypes.bool
     }),
 
     onChange: PropTypes.func

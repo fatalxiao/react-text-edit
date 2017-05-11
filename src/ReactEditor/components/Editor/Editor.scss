@@ -1,4 +1,4 @@
-@import '../../assets/sass/common';
+@import '../../assets/sass/common.scss';
 
 @font-face {
     font-family: Consolas;
@@ -18,6 +18,11 @@
     cursor: text;
     overflow: hidden;
     position: relative;
+    border-radius: $border-radius;
+
+    &.react-editor-full-screen {
+        border-radius: 0;
+    }
 
     .react-editor-test-char-count {
         width: 0.2px;
