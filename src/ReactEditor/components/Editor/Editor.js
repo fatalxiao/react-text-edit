@@ -40,6 +40,8 @@ export default class Editor extends Component {
         };
 
         this.calculateContentWidth = this::this.calculateContentWidth;
+        this.scrollX = this::this.scrollX;
+        this.scrollY = this::this.scrollY;
         this.dataChangedHandle = this::this.dataChangedHandle;
         this.wheelHandle = this::this.wheelHandle;
 
@@ -50,6 +52,18 @@ export default class Editor extends Component {
         // console.log(contentWidth);
         this.setState({
             contentWidth
+        });
+    }
+
+    scrollX(scrollLeft) {
+        this.setState({
+            scrollLeft
+        });
+    }
+
+    scrollY(scrollTop) {
+        this.setState({
+            scrollTop
         });
     }
 
@@ -92,9 +106,7 @@ export default class Editor extends Component {
     }
 
     componentDidMount() {
-        // setTimeout(() => {
         this.calculateContentWidth();
-        // });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -134,7 +146,8 @@ export default class Editor extends Component {
                               onChange={this.dataChangedHandle}/>
 
                 <ScrollBars {...this.props}
-                            {...this.state}/>
+                            {...this.state}
+                            {...this}/>
 
                 <div className="react-editor-test-char-count"></div>
 

@@ -6,6 +6,9 @@
     height: 12px;
     left: 0;
     bottom: 0;
+    cursor: pointer;
+    pointer-events: all;
+    z-index: $scroll-bar-z-index;
 
     .react-editor-horizontal-scroll-bar {
         height: 12px;
@@ -13,5 +16,6 @@
         border: 2px solid $theme-bg;
         box-sizing: border-box;
         background: $theme-scroll-bar;
+        cursor: pointer;
     }
 }
