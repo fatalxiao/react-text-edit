@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import TextContainer from '../TextContainer';
 import EditorCursor from '../EditorCursor';
 
+import Valid from '../../utils/Valid';
+
 import './TextScroller.scss';
 
 export default class TextScroller extends Component {
@@ -12,7 +14,12 @@ export default class TextScroller extends Component {
 
         super(props);
 
+        this.state = {
+            mouseDownPosition: null
+        };
+
         this.calDisplayIndex = this::this.calDisplayIndex;
+        this.mouseDownHandle = this::this.mouseDownHandle;
 
     }
 
@@ -27,16 +34,23 @@ export default class TextScroller extends Component {
         start -= editorOptions.lineCache;
         stop += editorOptions.lineCache;
 
-        start = start < 0 ? 0 : start;
-        start = start > len ? len : start;
-
-        stop = stop < 0 ? 0 : stop;
-        stop = stop > len ? len : stop;
-
         return {
-            start,
-            stop
+            start: Valid.range(start, 0, len),
+            stop: Valid.range(stop, 0, len)
         };
+
+    }
+
+    mouseDownHandle(e) {
+
+        console.log(e.clientX, e.clientY);
+
+        this.setState({
+            mouseDownPosition: {
+                left: e.clientX,
+                top: e.clientY
+            }
+        });
 
     }
 
@@ -52,12 +66,14 @@ export default class TextScroller extends Component {
 
         return (
             <div className={`react-editor-text-scroller ${className}`}
-                 style={{...style, ...scrollerStyle}}>
+                 style={{...style, ...scrollerStyle}}
+                 onMouseDown={this.mouseDownHandle}>
 
                 <TextContainer {...this.props}
                                displayIndex={displayIndex}/>
 
-                <EditorCursor {...this.props}/>
+                <EditorCursor {...this.props}
+                              {...this.state}/>
 
             </div>
         );

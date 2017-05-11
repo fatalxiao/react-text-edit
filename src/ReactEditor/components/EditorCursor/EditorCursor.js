@@ -27,11 +27,23 @@ export default class EditorCursor extends Component {
 };
 
 EditorCursor.propTypes = {
+
     className: PropTypes.string,
-    style: PropTypes.object
+    style: PropTypes.object,
+
+    scrollLeft: PropTypes.number,
+    scrollTop: PropTypes.number,
+    mouseDownPosition: PropTypes.object
+
 };
 
 EditorCursor.defaultProps = {
+
     className: '',
-    style: null
+    style: null,
+
+    scrollLeft: 0,
+    scrollTop: 0,
+    mouseDownPosition: null
+
 };
