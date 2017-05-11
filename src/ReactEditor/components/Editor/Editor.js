@@ -121,7 +121,8 @@ export default class Editor extends Component {
             editorOptions.forbiddenScrollRebound && e.preventDefault();
         }
 
-        this._setNextState({
+        // this._setNextState({
+        this.setState({
             scrollTop: top,
             scrollLeft: left
         });
