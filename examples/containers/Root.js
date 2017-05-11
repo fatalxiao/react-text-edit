@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 
 import 'assets/font-awesome/css/font-awesome.min.css';
 import 'sass/global.scss';
-import 'sass/App.scss';
+import 'sass/Root.scss';
 import 'sass/example.scss';
 
-export default class App extends Component {
+export default class Root extends Component {
 
     constructor(props) {
         super(props);
@@ -17,7 +17,7 @@ export default class App extends Component {
 
     render() {
         return (
-            <div className="app">
+            <div className="root">
                 {this.props.children}
             </div>
         );
