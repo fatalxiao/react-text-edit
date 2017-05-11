@@ -18,10 +18,8 @@ export default class SpecifiedSizeEditor extends Component {
                 <h1>Specified Size</h1>
                 <ReactEditor className="specified-size-editor"
                              data={MacDownHelpText}
-                             options={{
-                                 width: 500,
-                                 height: 200
-                             }}/>
+                             width={500}
+                             heigh={200}/>
             </div>
         );
     }
