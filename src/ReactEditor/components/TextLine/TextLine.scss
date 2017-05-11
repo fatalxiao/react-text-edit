@@ -1,11 +1,8 @@
 @import '../../assets/sass/common.scss';
 
 .react-editor-text-line {
-
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-
-    white-space: nowrap;
+    font: inherit;
+    //white-space: pre;
+    //overflow: visible;
     position: absolute;
 }

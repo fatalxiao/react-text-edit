@@ -1,11 +1,7 @@
 @import '../../assets/sass/common.scss';
 
 .react-editor-text-scroller {
-
-    font-family: inherit;
-    font-size: inherit;
-    font-weight: inherit;
-
+    font: inherit;
     position: absolute;
     top: 0;
     left: 0;
