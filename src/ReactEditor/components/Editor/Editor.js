@@ -17,6 +17,8 @@ export default class Editor extends Component {
 
         super(props);
 
+        this._nextStateAnimationFrameId = null;
+
         this.defaultOptions = {
             isFullScreen: false,
             width: 500,
@@ -41,12 +43,23 @@ export default class Editor extends Component {
 
         };
 
+        this._setNextState = this::this._setNextState;
         this.calculateContentWidth = this::this.calculateContentWidth;
         this.scrollX = this::this.scrollX;
         this.scrollY = this::this.scrollY;
         this.dataChangedHandle = this::this.dataChangedHandle;
         this.wheelHandle = this::this.wheelHandle;
 
+    }
+
+    _setNextState(state) {
+        if (this._nextStateAnimationFrameId) {
+            cancelAnimationFrame(this._nextStateAnimationFrameId);
+        }
+        this._nextStateAnimationFrameId = requestAnimationFrame(() => {
+            this._nextStateAnimationFrameId = null;
+            this.setState(state);
+        });
     }
 
     calculateContentWidth() {
@@ -102,7 +115,7 @@ export default class Editor extends Component {
             editorOptions.forbiddenScrollRebound && e.preventDefault();
         }
 
-        this.setState({
+        this._setNextState({
             scrollTop: top,
             scrollLeft: left
         });
