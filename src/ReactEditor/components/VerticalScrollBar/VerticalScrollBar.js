@@ -12,7 +12,7 @@ export default class VerticalScrollBar extends Component {
 
         super(props);
 
-        this.wrapperHeight = props.editorOptions.height;
+        this.wrapperHeight = props.editorHeight;
         this.scrollBarHeight = props.editorOptions.scrollBarMinLength;
         this.scrollBarTop = 0;
 
@@ -141,6 +141,7 @@ VerticalScrollBar.propTypes = {
     style: PropTypes.object,
 
     editorDataArray: PropTypes.array,
+    editorHeight: PropTypes.number,
     editorOptions: PropTypes.object,
     scrollTop: PropTypes.number,
     contentHeight: PropTypes.number,
@@ -155,6 +156,7 @@ VerticalScrollBar.defaultProps = {
     style: null,
 
     editorDataArray: [],
+    editorHeight: 200,
     editorOptions: null,
     scrollTop: 0
 

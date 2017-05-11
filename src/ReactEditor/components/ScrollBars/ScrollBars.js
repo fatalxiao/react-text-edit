@@ -14,7 +14,7 @@ export default class ScrollBars extends Component {
 
     render() {
 
-        const {className, style, editorDataArray, editorOptions, contentWidth} = this.props;
+        const {className, style, editorWidth, editorHeight, contentWidth, contentHeight} = this.props;
 
         return (
             <div ref="scrollBars"
@@ -22,14 +22,14 @@ export default class ScrollBars extends Component {
                  style={style}>
 
                 {
-                    editorDataArray.length * editorOptions.lineHeight > editorOptions.height ?
+                    contentHeight > editorHeight ?
                         <VerticalScrollBar {...this.props}/>
                         :
                         null
                 }
 
                 {
-                    contentWidth > editorOptions.width ?
+                    contentWidth > editorWidth ?
                         <HorizontalScrollBar {...this.props}/>
                         :
                         null
@@ -46,11 +46,12 @@ ScrollBars.propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
 
-    editorDataArray: PropTypes.array,
-    editorOptions: PropTypes.object,
+    editorWidth: PropTypes.number,
+    editorHeight: PropTypes.number,
     scrollTop: PropTypes.number,
     scrollLeft: PropTypes.number,
-    contentWidth: PropTypes.number
+    contentWidth: PropTypes.number,
+    contentHeight: PropTypes.number
 
 };
 
@@ -59,10 +60,11 @@ ScrollBars.defaultProps = {
     className: '',
     style: null,
 
-    editorDataArray: [],
-    editorOptions: null,
+    editorWidth: 500,
+    editorHeight: 200,
     scrollTop: 0,
     scrollLeft: 0,
-    contentWidth: 0
+    contentWidth: 0,
+    contentHeight: 0
 
 };

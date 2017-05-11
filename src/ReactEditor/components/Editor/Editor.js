@@ -21,8 +21,6 @@ export default class Editor extends Component {
 
         this.defaultOptions = {
             isFullScreen: false,
-            width: 500,
-            height: 500,
             lineHeight: 20,
             lineCache: 5,
             horizontalPadding: 6,
@@ -31,13 +29,23 @@ export default class Editor extends Component {
             forbiddenScrollRebound: false
         };
 
-        const editorDataArray = props.data.split('\n'),
+        let editorDataArray = props.data.split('\n'),
             editorOptions = {...this.defaultOptions, ...props.options};
+
+        let editorWidth = props.width,
+            editorHeight = props.height;
+        if (editorOptions.isFullScreen) {
+            editorWidth = window.innerWidth;
+            editorHeight = window.innerHeight;
+        }
 
         this.state = {
 
             editorDataArray,
             editorOptions,
+
+            editorWidth,
+            editorHeight,
 
             contentWidth: 0,
             contentHeight: this.calculateContentHeight(editorDataArray, editorOptions.lineHeight),
@@ -54,6 +62,7 @@ export default class Editor extends Component {
         this.scrollY = this::this.scrollY;
         this.dataChangedHandle = this::this.dataChangedHandle;
         this.wheelHandle = this::this.wheelHandle;
+        this.resizeHandle = this::this.resizeHandle;
 
     }
 
@@ -103,9 +112,9 @@ export default class Editor extends Component {
 
     wheelHandle(e) {
 
-        const {editorDataArray, editorOptions, scrollTop, scrollLeft, contentWidth} = this.state,
+        const {editorDataArray, editorWidth, editorOptions, scrollTop, scrollLeft, contentWidth} = this.state,
             maxScrollLeft = contentWidth
-                - (editorOptions.width - editorOptions.horizontalPadding * 2 - editorOptions.scrollBarWidth),
+                - (editorWidth - editorOptions.horizontalPadding * 2 - editorOptions.scrollBarWidth),
             maxScrollTop = (editorDataArray.length - 1) * editorOptions.lineHeight;
 
         let top = scrollTop + e.deltaY,
@@ -129,9 +138,15 @@ export default class Editor extends Component {
 
     }
 
+    resizeHandle() {
+
+    }
+
     componentDidMount() {
 
         Event.addEvent(document, 'dragstart', Event.preventEvent);
+
+        this.state.editorOptions.isFullScreen && Event.addEvent(window, 'resize', this.resizeHandle);
 
         setTimeout(() => {
             this.setState({
@@ -147,6 +162,14 @@ export default class Editor extends Component {
 
         if (nextProps.data !== this.state.data) {
             state.editorDataArray = nextProps.data.split('\n');
+        }
+
+        if (nextProps.width !== this.state.editorWidth) {
+            state.editorWidth = nextProps.width;
+        }
+
+        if (nextProps.height !== this.state.editorHeight) {
+            state.editorHeight = nextProps.height;
         }
 
         if (!(_.isEqual(nextProps.options, this.props.options))) {
@@ -167,11 +190,11 @@ export default class Editor extends Component {
     render() {
 
         const {className, style} = this.props;
-        const {editorOptions} = this.state;
+        const {editorWidth, editorHeight, editorOptions} = this.state;
 
         const editorSize = {
-            width: editorOptions.width,
-            height: editorOptions.height
+            width: editorWidth,
+            height: editorHeight
         };
 
         return (
@@ -204,6 +227,10 @@ Editor.propTypes = {
     style: PropTypes.object,
 
     data: PropTypes.string,
+
+    width: PropTypes.number,
+    height: PropTypes.number,
+
     options: PropTypes.shape({
         isFullScreen: PropTypes.bool,
         width: PropTypes.number,
@@ -226,6 +253,10 @@ Editor.defaultProps = {
     style: null,
 
     data: '',
+
+    width: 500,
+    height: 200,
+
     options: null
 
 };

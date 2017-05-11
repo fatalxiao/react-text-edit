@@ -25,11 +25,11 @@ export default class TextScroller extends Component {
 
     calDisplayIndex() {
 
-        const {editorDataArray, scrollTop, editorOptions} = this.props,
+        const {editorDataArray, scrollTop, editorOptions, editorHeight} = this.props,
             len = editorDataArray.length;
 
         let start = Math.floor(scrollTop / editorOptions.lineHeight),
-            stop = start + Math.ceil(editorOptions.height / editorOptions.lineHeight);
+            stop = start + Math.ceil(editorHeight / editorOptions.lineHeight);
 
         start -= editorOptions.lineCache;
         stop += editorOptions.lineCache;
@@ -87,6 +87,7 @@ TextScroller.propTypes = {
     style: PropTypes.object,
 
     editorDataArray: PropTypes.array,
+    editorHeight: PropTypes.number,
     editorOptions: PropTypes.object,
     scrollTop: PropTypes.number,
     scrollLeft: PropTypes.number,
@@ -102,6 +103,7 @@ TextScroller.defaultProps = {
     style: null,
 
     editorDataArray: [],
+    editorHeight: 200,
     editorOptions: null,
     scrollTop: 0,
     scrollLeft: 0,

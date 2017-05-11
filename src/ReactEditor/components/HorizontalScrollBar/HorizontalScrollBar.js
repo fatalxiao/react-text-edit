@@ -12,7 +12,7 @@ export default class HorizontalScrollBar extends Component {
 
         super(props);
 
-        this.wrapperWidth = props.editorOptions.width - props.editorOptions.scrollBarWidth
+        this.wrapperWidth = props.editorWidth - props.editorOptions.scrollBarWidth
             - props.editorOptions.horizontalPadding * 2;
         this.scrollBarWidth = props.editorOptions.scrollBarMinLength;
         this.scrollBarLeft = 0;
@@ -142,6 +142,7 @@ HorizontalScrollBar.propTypes = {
     className: PropTypes.string,
     style: PropTypes.object,
 
+    editorWidth: PropTypes.number,
     editorOptions: PropTypes.object,
     scrollLeft: PropTypes.number,
     contentWidth: PropTypes.number,
@@ -155,6 +156,7 @@ HorizontalScrollBar.defaultProps = {
     className: '',
     style: null,
 
+    editorWidth: 500,
     editorOptions: null,
     scrollLeft: 0,
     contentWidth: 0
