@@ -18,11 +18,12 @@ export default class HorizontalScrollBar extends Component {
         this.scrollBarLeft = 0;
 
         this.isWrapperMouseDown = false;
-        this.mouseDownPosition = null;
         this.isScrollBarMouseDown = false;
+        this.mouseDownPosition = null;
 
         this.calculateScrollBarWidth = this::this.calculateScrollBarWidth;
         this.calculateLeft = this::this.calculateLeft;
+        this.calculateScrollLeft = this::this.calculateScrollLeft;
         this.mouseDownHandle = this::this.mouseDownHandle;
         this.mouseMoveHandle = this::this.mouseMoveHandle;
         this.mouseUpHandle = this::this.mouseUpHandle;
