@@ -38,8 +38,6 @@ export default class EditorCursor extends Component {
 
         const {left, col} = CharSize.calculateCursorPosition(string, offsetLeft, editorEl);
 
-        console.log(left + editorOptions.horizontalPadding, top);
-
         return {
             left: left + editorOptions.horizontalPadding,
             top
