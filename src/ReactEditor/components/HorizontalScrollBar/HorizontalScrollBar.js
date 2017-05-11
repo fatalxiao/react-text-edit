@@ -14,7 +14,8 @@ export default class HorizontalScrollBar extends Component {
 
         this.wrapperWidth = props.editorOptions.width - props.editorOptions.scrollBarWidth
             - props.editorOptions.horizontalPadding * 2;
-        this.scrollWidth = props.editorOptions.scrollBarMinLength;
+        this.scrollBarWidth = props.editorOptions.scrollBarMinLength;
+        this.scrollBarLeft = 0;
 
         this.isWrapperMouseDown = false;
         this.mouseDownPosition = null;
@@ -46,14 +47,14 @@ export default class HorizontalScrollBar extends Component {
 
     /**
      * calculate horizontal scroll bar offset left based on text scrollLeft
-     * @param scrollWidth
+     * @param scrollBarWidth
      * @returns {number}
      */
-    calculateLeft(scrollWidth = this.scrollWidth) {
+    calculateLeft(scrollBarWidth = this.scrollBarWidth) {
 
         const {editorOptions, scrollLeft, contentWidth} = this.props;
 
-        return (editorOptions.width - scrollWidth - editorOptions.scrollBarWidth) * scrollLeft
+        return (editorOptions.width - scrollBarWidth - editorOptions.scrollBarWidth) * scrollLeft
             / (contentWidth - this.wrapperWidth);
 
     }
@@ -61,15 +62,15 @@ export default class HorizontalScrollBar extends Component {
     /**
      * calculate text scrollLeft based on horizontal scroll bar offset left
      * @param left
-     * @param scrollWidth
+     * @param scrollBarWidth
      * @returns {number}
      */
-    calculateScrollLeft(left, scrollWidth = this.scrollWidth) {
+    calculateScrollLeft(left = this.scrollBarLeft, scrollBarWidth = this.scrollBarWidth) {
 
         const {editorOptions, contentWidth} = this.props;
 
         return (contentWidth - this.wrapperWidth) * left
-            / (editorOptions.width - scrollWidth - editorOptions.scrollBarWidth);
+            / (editorOptions.width - scrollBarWidth - editorOptions.scrollBarWidth);
 
     }
 
@@ -80,7 +81,8 @@ export default class HorizontalScrollBar extends Component {
 
         this.mouseDownPosition = {
             left: e.clientX,
-            top: e.clientY
+            top: e.clientY,
+            scrollBarLeft: this.scrollBarLeft
         };
 
     }
@@ -93,6 +95,10 @@ export default class HorizontalScrollBar extends Component {
             return;
         }
 
+        const left = Valid.range(this.mouseDownPosition.scrollBarLeft + e.clientX - this.mouseDownPosition.left,
+            0, this.wrapperWidth - this.scrollBarWidth);
+
+        this.props.scrollX(this.calculateScrollLeft(left));
 
     }
 
@@ -100,10 +106,17 @@ export default class HorizontalScrollBar extends Component {
 
         e.stopPropagation();
 
+        const {editorOptions, scrollX} = this.props;
+
+        // move scroll bar when wrapper mouse up
         if (this.isWrapperMouseDown
             && this.mouseDownPosition.left === e.clientX && this.mouseDownPosition.top === e.clientY) {
-            const left = Valid.range(e.clientX - this.scrollWidth / 2, 0, this.wrapperWidth - this.scrollWidth);
-            this.props.scrollX(this.calculateScrollLeft(left));
+
+            this.scrollBarLeft = Valid.range(e.clientX - this.scrollBarWidth / 2 - editorOptions.horizontalPadding,
+                0, this.wrapperWidth - this.scrollBarWidth);
+
+            scrollX(this.calculateScrollLeft());
+
         }
 
         this.isWrapperMouseDown = false;
@@ -126,11 +139,12 @@ export default class HorizontalScrollBar extends Component {
 
         const {className, style} = this.props;
 
-        this.scrollWidth = this.calculateScrollBarWidth();
+        this.scrollBarWidth = this.calculateScrollBarWidth();
+        this.scrollBarLeft = this.calculateLeft();
 
         const scrollBarStyle = {
-            width: this.scrollWidth,
-            transform: `translate3d(${this.calculateLeft()}px, 0, 0)`
+            width: this.scrollBarWidth,
+            transform: `translate3d(${this.scrollBarLeft}px, 0, 0)`
         };
 
         return (
