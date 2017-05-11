@@ -7,7 +7,7 @@
     left: 0;
     bottom: 0;
     cursor: pointer;
-    pointer-events: all;
+    pointer-events: auto;
     z-index: $scroll-bar-z-index;
 
     .react-editor-horizontal-scroll-bar {

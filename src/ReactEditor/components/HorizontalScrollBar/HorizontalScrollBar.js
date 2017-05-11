@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import Valid from '../../utils/Valid';
+import Event from '../../utils/Event';
 
 import './HorizontalScrollBar.scss';
 
@@ -15,12 +16,14 @@ export default class HorizontalScrollBar extends Component {
             - props.editorOptions.horizontalPadding * 2;
         this.scrollWidth = props.editorOptions.scrollBarMinLength;
 
-        this.isMouseDown = false;
+        this.isWrapperMouseDown = false;
+        this.wrapperMouseDownPosition = null;
+        this.isScrollBarMouseDown = false;
 
         this.calculateScrollBarWidth = this::this.calculateScrollBarWidth;
         this.calculateLeft = this::this.calculateLeft;
-        this.wrapperClickHandle = this::this.wrapperClickHandle;
-        this.mouseDownHandle = this::this.mouseDownHandle;
+        this.wrapperMouseDownHandle = this::this.wrapperMouseDownHandle;
+        this.scrollBarMouseDownHandle = this::this.scrollBarMouseDownHandle;
         this.mouseMoveHandle = this::this.mouseMoveHandle;
         this.mouseUpHandle = this::this.mouseUpHandle;
 
@@ -75,24 +78,29 @@ export default class HorizontalScrollBar extends Component {
      *
      * @param e
      */
-    wrapperClickHandle(e) {
-        const left = Valid.range(e.clientX - this.scrollWidth / 2, 0, this.wrapperWidth - this.scrollWidth);
-        this.props.scrollX(this.calculateScrollLeft(left));
-    }
-
-    mouseDownHandle(e) {
+    wrapperMouseDownHandle(e) {
 
         e.stopPropagation();
+        this.isWrapperMouseDown = true;
 
-        this.isMouseDown = true;
+        this.wrapperMouseDownPosition = {
+            left: e.clientX,
+            top: e.clientY
+        };
 
+
+    }
+
+    scrollBarMouseDownHandle(e) {
+        e.stopPropagation();
+        this.isScrollBarMouseDown = true;
     }
 
     mouseMoveHandle(e) {
 
         e.stopPropagation();
 
-        if (!this.isMouseDown) {
+        if (!this.isScrollBarMouseDown) {
             return;
         }
 
@@ -102,18 +110,25 @@ export default class HorizontalScrollBar extends Component {
 
         e.stopPropagation();
 
-        this.isMouseDown = false;
+        if (this.isWrapperMouseDown
+            && this.wrapperMouseDownPosition.left === e.clientX && this.wrapperMouseDownPosition.top === e.clientY) {
+            const left = Valid.range(e.clientX - this.scrollWidth / 2, 0, this.wrapperWidth - this.scrollWidth);
+            this.props.scrollX(this.calculateScrollLeft(left));
+        }
+
+        this.isWrapperMouseDown = false;
+        this.isScrollBarMouseDown = false;
 
     }
 
     componentDidMount() {
-        window.addEventListener('mousemove', this.mouseMoveHandle);
-        window.addEventListener('mouseup', this.mouseUpHandle);
+        Event.addEvent(document, 'mousemove', this.mouseMoveHandle);
+        Event.addEvent(document, 'mouseup', this.mouseUpHandle);
     }
 
     componentWillUnmount() {
-        window.removeEventListener('mousemove', this.mouseMoveHandle);
-        window.removeEventListener('mouseup', this.mouseUpHandle);
+        Event.removeEvent(document, 'mousemove', this.mouseMoveHandle);
+        Event.removeEvent(document, 'mouseup', this.mouseUpHandle);
     }
 
     render() {
@@ -130,10 +145,10 @@ export default class HorizontalScrollBar extends Component {
         return (
             <div className={`react-editor-horizontal-scroll-bar-wrapper ${className}`}
                  style={style}
-                 onClick={this.wrapperClickHandle}>
+                 onMouseDown={this.wrapperMouseDownHandle}>
                 <div className="react-editor-horizontal-scroll-bar"
                      style={scrollBarStyle}
-                     onMouseDown={this.mouseDownHandle}></div>
+                     onMouseDown={this.scrollBarMouseDownHandle}></div>
             </div>
         );
 
