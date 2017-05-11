@@ -35,7 +35,7 @@ export default class VerticalScrollBar extends Component {
 
         return Valid.range(
             this.wrapperHeight ** 2 / (editorDataArray.length * editorOptions.lineHeight),
-            editorOptions.scrollBarMinLength
+            editorOptions.scrollBarMinLength, editorOptions.height
         );
 
     }

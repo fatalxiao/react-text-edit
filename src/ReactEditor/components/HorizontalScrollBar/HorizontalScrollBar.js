@@ -41,7 +41,7 @@ export default class HorizontalScrollBar extends Component {
         return Valid.range(
             // width of horizontal scroll bar wrapper should minus width of vertical scroll bar wrapper
             (editorOptions.width - editorOptions.scrollBarWidth) * this.wrapperWidth / contentWidth,
-            editorOptions.scrollBarMinLength
+            editorOptions.scrollBarMinLength, this.wrapperWidth
         );
 
     }
