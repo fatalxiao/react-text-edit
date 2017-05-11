@@ -144,6 +144,10 @@ export default class Editor extends Component {
 
     componentDidMount() {
 
+        this.setState({
+            editorEl: this.refs.editor
+        });
+
         Event.addEvent(document, 'dragstart', Event.preventEvent);
 
         this.state.editorOptions.isFullScreen && Event.addEvent(window, 'resize', this.resizeHandle);

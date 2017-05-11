@@ -70,8 +70,59 @@ function calculateMaxLineWidth(dataArray, editorEl) {
 
 }
 
+function calculateCursorPosition(string, left, editorEl) {
+
+    let widthCount = 0, leftValue, rightValue,
+        index = 0, leftIndex, rightIndex;
+
+    for (let char of string) {
+
+        widthCount += calculateCharWidth(char, editorEl);
+
+        if (widthCount < left) {
+            leftValue = widthCount;
+            leftIndex = index;
+        }
+
+        if (widthCount > left) {
+            rightValue = widthCount;
+            rightIndex = index;
+            break;
+        }
+
+        index++;
+
+    }
+
+    if (leftValue && rightValue) {
+        if (rightValue - left < leftValue - left) { // right position is colser
+            return {
+                left: rightValue,
+                col: rightIndex
+            };
+        } else { // left position
+            return {
+                left: leftValue,
+                col: leftIndex
+            };
+        }
+    } else if (leftValue && !rightValue) {
+        return {
+            left: leftValue,
+            col: leftIndex
+        };
+    }
+
+    return {
+        left: 0,
+        col: 0
+    };
+
+}
+
 export default {
     calculateCharWidth,
     calculateStringWidth,
-    calculateMaxLineWidth
+    calculateMaxLineWidth,
+    calculateCursorPosition
 };

@@ -42,16 +42,12 @@ export default class TextScroller extends Component {
     }
 
     mouseDownHandle(e) {
-
-        console.log(e.clientX, e.clientY);
-
         this.setState({
             mouseDownPosition: {
                 left: e.clientX,
                 top: e.clientY
             }
         });
-
     }
 
     render() {
