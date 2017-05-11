@@ -31,12 +31,16 @@ export default class Editor extends Component {
             forbiddenScrollRebound: false
         };
 
+        const editorDataArray = props.data.split('\n'),
+            editorOptions = {...this.defaultOptions, ...props.options};
+
         this.state = {
 
-            editorDataArray: props.data.split('\n'),
-            editorOptions: {...this.defaultOptions, ...props.options},
+            editorDataArray,
+            editorOptions,
 
             contentWidth: 0,
+            contentHeight: this.calculateContentHeight(editorDataArray, editorOptions.lineHeight),
 
             scrollTop: 0,
             scrollLeft: 0
@@ -45,6 +49,7 @@ export default class Editor extends Component {
 
         this._setNextState = this::this._setNextState;
         this.calculateContentWidth = this::this.calculateContentWidth;
+        this.calculateContentHeight = this::this.calculateContentHeight;
         this.scrollX = this::this.scrollX;
         this.scrollY = this::this.scrollY;
         this.dataChangedHandle = this::this.dataChangedHandle;
@@ -62,12 +67,13 @@ export default class Editor extends Component {
         });
     }
 
-    calculateContentWidth() {
-        const contentWidth = Math.ceil(CharSize.calculateMaxLineWidth(this.state.editorDataArray, this.refs.editor));
-        console.log(contentWidth);
-        this.setState({
-            contentWidth
-        });
+    calculateContentWidth(editorDataArray = this.state.editorDataArray) {
+        return Math.ceil(CharSize.calculateMaxLineWidth(editorDataArray, this.refs.editor));
+    }
+
+    calculateContentHeight(editorDataArray = this.state.editorDataArray,
+                           lineHeight = this.state.editorOptions.lineHeight) {
+        return editorDataArray.length * lineHeight;
     }
 
     scrollX(scrollLeft) {
@@ -127,7 +133,9 @@ export default class Editor extends Component {
         Event.addEvent(document, 'dragstart', Event.preventEvent);
 
         setTimeout(() => {
-            this.calculateContentWidth();
+            this.setState({
+                contentWidth: this.calculateContentWidth()
+            });
         }, 0);
 
     }
@@ -144,7 +152,10 @@ export default class Editor extends Component {
             state.editorOptions = {...this.defaultOptions, ...nextProps.options};
         }
 
-        this.setState(state);
+        if (!(_.isEmpty(state))) {
+            state.contentHeight = this.calculateContentHeight(state.editorDataArray, state.editorOptions.lineHeight);
+            this.setState(state);
+        }
 
     }
 

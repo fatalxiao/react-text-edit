@@ -30,53 +30,19 @@ export default class HorizontalScrollBar extends Component {
 
     }
 
-    /**
-     * calculate horizontal scroll bar width
-     * @returns {*}
-     */
     calculateScrollBarWidth() {
-
         const {editorOptions, contentWidth} = this.props;
-
-        return Valid.range(
-            // width of horizontal scroll bar wrapper should minus width of vertical scroll bar wrapper
-            (editorOptions.width - editorOptions.scrollBarWidth) * this.wrapperWidth / contentWidth,
-            editorOptions.scrollBarMinLength
-        );
-
+        return Valid.range(this.wrapperWidth ** 2 / contentWidth, editorOptions.scrollBarMinLength);
     }
 
-    /**
-     * calculate horizontal scroll bar offset left based on text scrollLeft
-     * @param scrollBarWidth
-     * @returns {number}
-     */
     calculateLeft(scrollBarWidth = this.scrollBarWidth) {
-
-        const {editorOptions, scrollLeft, contentWidth} = this.props;
-
-        const left = (editorOptions.width - scrollBarWidth - editorOptions.scrollBarWidth) * scrollLeft
-            / (contentWidth - this.wrapperWidth);
-
-        console.log(left);
-
-        return left;
-
+        const {scrollLeft, contentWidth} = this.props;
+        return (this.wrapperWidth - scrollBarWidth) * scrollLeft / (contentWidth - this.wrapperWidth);
     }
 
-    /**
-     * calculate text scrollLeft based on horizontal scroll bar offset left
-     * @param left
-     * @param scrollBarWidth
-     * @returns {number}
-     */
     calculateScrollLeft(left = this.scrollBarLeft, scrollBarWidth = this.scrollBarWidth) {
-
-        const {editorOptions, contentWidth} = this.props;
-
-        return (contentWidth - this.wrapperWidth) * left
-            / (editorOptions.width - scrollBarWidth - editorOptions.scrollBarWidth);
-
+        const {contentWidth} = this.props;
+        return (contentWidth - this.wrapperWidth) * left / (this.wrapperWidth - scrollBarWidth);
     }
 
     mouseDownHandle(e, isWrapper) {

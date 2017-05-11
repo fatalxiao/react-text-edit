@@ -30,32 +30,18 @@ export default class VerticalScrollBar extends Component {
     }
 
     calculateScrollBarHeight() {
-
-        const {editorDataArray, editorOptions} = this.props;
-
-        return Valid.range(
-            this.wrapperHeight ** 2 / (editorDataArray.length * editorOptions.lineHeight),
-            editorOptions.scrollBarMinLength, editorOptions.height
-        );
-
+        const {editorOptions, contentHeight} = this.props;
+        return Valid.range(this.wrapperHeight ** 2 / contentHeight, editorOptions.scrollBarMinLength);
     }
 
     calculateTop(scrollBarHeight = this.scrollBarHeight) {
-
-        const {editorDataArray, editorOptions, scrollTop} = this.props;
-
-        return (this.wrapperHeight - scrollBarHeight) * scrollTop
-            / ((editorDataArray.length - 1) * editorOptions.lineHeight);
-
+        const {editorOptions, scrollTop, contentHeight} = this.props;
+        return (this.wrapperHeight - scrollBarHeight) * scrollTop / (contentHeight - editorOptions.lineHeight);
     }
 
     calculateScrollTop(top = this.scrollBarTop, scrollBarHeight = this.scrollBarHeight) {
-
-        const {editorDataArray, editorOptions} = this.props;
-
-        return ((editorDataArray.length - 1) * editorOptions.lineHeight) * top
-            / (this.wrapperHeight - scrollBarHeight);
-
+        const {editorOptions, contentHeight} = this.props;
+        return (contentHeight - editorOptions.lineHeight) * top / (this.wrapperHeight - scrollBarHeight);
     }
 
     mouseDownHandle(e, isWrapper) {
@@ -157,6 +143,7 @@ VerticalScrollBar.propTypes = {
     editorDataArray: PropTypes.array,
     editorOptions: PropTypes.object,
     scrollTop: PropTypes.number,
+    contentHeight: PropTypes.number,
 
     scrollY: PropTypes.func
 
