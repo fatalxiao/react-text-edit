@@ -9,13 +9,24 @@
     cursor: pointer;
     pointer-events: auto;
     z-index: $scroll-bar-z-index;
+    opacity: .5;
+    transition: opacity $transition-duration ease-in-out;
 
     .react-editor-horizontal-scroll-bar {
         height: 12px;
         border-radius: 6px;
-        border: 2px solid $theme-bg;
+        padding: 2px;
         box-sizing: border-box;
-        background: $theme-scroll-bar;
         cursor: pointer;
+
+        .react-editor-horizontal-scroll-bar-inner {
+            height: 8px;
+            border-radius: 6px;
+            background: $theme-scroll-bar;
+        }
+    }
+
+    &:hover {
+        opacity: 1;
     }
 }

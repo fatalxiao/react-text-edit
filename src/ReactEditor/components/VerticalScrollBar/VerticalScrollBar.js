@@ -49,7 +49,9 @@ export default class VerticalScrollBar extends Component {
             <div className={`react-editor-vertical-scroll-bar-wrapper ${className}`}
                  style={style}>
                 <div className="react-editor-vertical-scroll-bar"
-                     style={scrollBarStyle}></div>
+                     style={scrollBarStyle}>
+                    <div className="react-editor-vertical-scroll-bar-inner"></div>
+                </div>
             </div>
         );
 
