@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import Calculation from '../../utils/Calculation';
+import CharSize from '../../utils/CharSize';
 
 import './TextInput.scss';
 
@@ -34,9 +35,13 @@ export default class TextInput extends Component {
 
     changeHandle(e) {
 
-        const {editorDataArray, cursorPosition, onChange} = this.props;
+        const {editorEl, editorDataArray, cursorPosition, onChange} = this.props,
+            newData = Calculation.calculateResultText(editorDataArray, cursorPosition, e.target.value),
+            offset = {
+                left: CharSize.calculateStringWidth(e.target.value, editorEl)
+            };
 
-        onChange(Calculation.calculateResultText(editorDataArray, cursorPosition, e.target.value));
+        onChange(newData, offset);
 
         e.target.value = '';
         this.init();
@@ -71,6 +76,7 @@ export default class TextInput extends Component {
 
 TextInput.propTypes = {
 
+    editorEl: PropTypes.object,
     isEditorFocused: PropTypes.bool,
     editorDataArray: PropTypes.array,
     cursorPosition: PropTypes.object,
@@ -80,6 +86,7 @@ TextInput.propTypes = {
 };
 
 TextInput.defaultProps = {
+    editorEl: null,
     editorDataArray: [],
     cursorPosition: null
 };

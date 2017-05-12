@@ -114,15 +114,24 @@ export default class Editor extends Component {
         });
     }
 
-    onChange(editorDataArray) {
+    onChange(editorDataArray, cursorOffset) {
 
         const {onChange} = this.props;
-
-        this.setState({
+        let state = {
             editorDataArray,
             contentWidth: this.calculateContentWidth(editorDataArray),
             contentHeight: this.calculateContentHeight(editorDataArray)
-        }, () => {
+            // selectStopX: undefined,
+            // selectStopY: undefined
+        };
+
+        // if (cursorOffset) {
+        //     if (cursorOffset.left) {
+        //         state;
+        //     }
+        // }
+
+        this.setState(state, () => {
             onChange && onChange(editorDataArray.join('\n'));
         });
 
