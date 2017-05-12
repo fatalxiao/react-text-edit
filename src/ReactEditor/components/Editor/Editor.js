@@ -164,11 +164,12 @@ export default class Editor extends Component {
 
         this.isMouseDown = true;
 
-        const {scrollLeft, scrollTop} = this.state;
+        const {scrollLeft, scrollTop} = this.state,
+            editorOffset = DomLib.getOffset(this.refs.editor);
 
         this.setState({
-            selectStartX: e.clientX + scrollLeft,
-            selectStartY: e.clientY + scrollTop,
+            selectStartX: e.clientX - editorOffset.left + scrollLeft,
+            selectStartY: e.clientY - editorOffset.top + scrollTop,
             selectStopX: undefined,
             selectStopY: undefined
         });
