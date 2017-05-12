@@ -1,0 +1,7 @@
+@import '../../assets/sass/common.scss';
+
+.react-editor-active-line {
+    position: absolute;
+    left: 0;
+    background: $theme-active-line-bg;
+}

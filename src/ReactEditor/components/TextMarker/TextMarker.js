@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
+import ActiveLine from '../ActiveLine';
+
 import './TextMarker.scss';
 
 export default class TextMarker extends Component {
@@ -10,24 +12,13 @@ export default class TextMarker extends Component {
     }
 
     render() {
-
-        const {editorOptions, contentWidth, cursorPosition} = this.props;
-
-        const activeLineStyle = {
-            width: contentWidth + editorOptions.horizontalPadding * 2 + editorOptions.scrollBarWidth,
-            height: editorOptions.lineHeight,
-            top: cursorPosition.top
-        };
-
         return (
             <div className="react-editor-text-marker">
 
-                <div className="react-editor-active-line"
-                     style={activeLineStyle}></div>
+                <ActiveLine {...this.props}/>
 
             </div>
         );
-
     }
 };
 
