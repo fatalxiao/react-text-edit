@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import _ from 'lodash';
 
 import EditorLoading from '../EditorLoading';
@@ -289,7 +288,7 @@ export default class Editor extends Component {
     render() {
 
         const {className, style} = this.props;
-        const {editorInital, editorWidth, editorHeight, editorOptions} = this.state;
+        const {editorWidth, editorHeight, editorOptions} = this.state;
 
         const editorSize = {
             width: editorWidth,
@@ -310,16 +309,7 @@ export default class Editor extends Component {
                             {...this.state}
                             {...this}/>
 
-                <CSSTransitionGroup transitionName="react-editor-loading"
-                                    transitionEnterTimeout={0}
-                                    transitionLeaveTimeout={250}>
-                    {
-                        editorInital ?
-                            null
-                            :
-                            <EditorLoading/>
-                    }
-                </CSSTransitionGroup>
+                <EditorLoading {...this.state}/>
 
                 <div className="react-editor-test-char-count"></div>
 
