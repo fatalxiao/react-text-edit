@@ -83,7 +83,8 @@ export default class TextScroller extends Component {
                  style={scrollerStyle}>
 
                 <TextInput {...this.props}
-                           cursorPosition={selectStopPosition}/>
+                           selectStartPosition={selectStartPosition}
+                           selectStopPosition={selectStopPosition}/>
 
                 <TextMarker {...this.props}
                             selectStartPosition={selectStartPosition}

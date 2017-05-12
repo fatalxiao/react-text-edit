@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import Calculation from '../../utils/Calculation';
 import CharSize from '../../utils/CharSize';
@@ -12,7 +13,14 @@ export default class TextInput extends Component {
 
         super(props);
 
+        this.ChangeType = {
+            INPUT: 'INPUT',
+            BACK_SPACE: 'BACK_SPACE',
+            CARRIAGE_RETURN: 'CARRIAGE_RETURN'
+        };
+
         this.init = this::this.init;
+        this.doChange = this::this.doChange;
         this.changeHandle = this::this.changeHandle;
         this.keyDownHandle = this::this.keyDownHandle;
 
@@ -33,23 +41,39 @@ export default class TextInput extends Component {
 
     }
 
-    changeHandle(e) {
+    doChange(e, type) {
 
-        const {editorEl, editorDataArray, cursorPosition, onChange} = this.props,
-            newData = Calculation.calculateResultText(editorDataArray, cursorPosition, e.target.value),
-            offset = {
-                left: CharSize.calculateStringWidth(e.target.value, editorEl)
-            };
+        const {editorEl, editorDataArray, selectStartPosition, selectStopPosition, onChange} = this.props;
 
-        onChange(newData, offset);
+        let newPostion = selectStopPosition;
+        if (selectStartPosition && selectStopPosition) { // if there is a selection
+            newPostion = Calculation.sortPosition(selectStartPosition, selectStopPosition)[0];
+        }
+
+        const newData = Calculation.calculateResultText(editorDataArray, selectStopPosition, e.target.value);
+
+        newPostion.left += CharSize.calculateStringWidth(e.target.value, editorEl);
+
+        onChange(newData, newPostion);
 
         e.target.value = '';
         this.init();
 
     }
 
-    keyDownHandle() {
+    changeHandle(e) {
+        this.doChange(e, this.ChangeType.INPUT);
+    }
 
+    keyDownHandle(e) {
+        switch (e.keyCode) {
+            case 8:
+                this.doChange(e, this.ChangeType.BACK_SPACE);
+                break;
+            case 13:
+                this.doChange(e, this.ChangeType.CARRIAGE_RETURN);
+                break;
+        }
     }
 
     componentDidMount() {
@@ -79,7 +103,8 @@ TextInput.propTypes = {
     editorEl: PropTypes.object,
     isEditorFocused: PropTypes.bool,
     editorDataArray: PropTypes.array,
-    cursorPosition: PropTypes.object,
+    selectStartPosition: PropTypes.object,
+    selectStopPosition: PropTypes.object,
 
     onChange: PropTypes.func
 
@@ -88,5 +113,6 @@ TextInput.propTypes = {
 TextInput.defaultProps = {
     editorEl: null,
     editorDataArray: [],
-    cursorPosition: null
+    selectStartPosition: null,
+    selectStopPosition: null
 };
