@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import _ from 'lodash';
 
+import EditorLoading from '../EditorLoading';
 import TextScroller from '../TextScroller';
 import ScrollBars from '../ScrollBars';
 
@@ -41,6 +43,8 @@ export default class Editor extends Component {
         }
 
         this.state = {
+
+            editorInital: false,
 
             editorEl: null,
 
@@ -204,9 +208,10 @@ export default class Editor extends Component {
 
         setTimeout(() => {
             this.setState({
-                contentWidth: this.calculateContentWidth()
+                contentWidth: this.calculateContentWidth(),
+                editorInital: true
             });
-        }, 0);
+        }, 100);
 
     }
 
@@ -247,7 +252,7 @@ export default class Editor extends Component {
     render() {
 
         const {className, style} = this.props;
-        const {editorWidth, editorHeight, editorOptions} = this.state;
+        const {editorInital, editorWidth, editorHeight, editorOptions} = this.state;
 
         const editorSize = {
             width: editorWidth,
@@ -268,6 +273,17 @@ export default class Editor extends Component {
                 <ScrollBars {...this.props}
                             {...this.state}
                             {...this}/>
+
+                <CSSTransitionGroup transitionName="react-editor-loading"
+                                    transitionEnterTimeout={0}
+                                    transitionLeaveTimeout={250}>
+                    {
+                        editorInital ?
+                            null
+                            :
+                            <EditorLoading/>
+                    }
+                </CSSTransitionGroup>
 
                 <div className="react-editor-test-char-count"></div>
 
