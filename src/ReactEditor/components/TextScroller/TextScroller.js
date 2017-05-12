@@ -41,7 +41,7 @@ export default class TextScroller extends Component {
 
     calculateCursorPosition() {
 
-        const {editorEl, editorDataArray, editorOptions, scrollLeft, scrollTop, mouseX, mouseY} = this.props;
+        const {editorEl, editorDataArray, editorOptions, scrollLeft, mouseX, mouseY} = this.props;
 
         if (isNaN(mouseX) || isNaN(mouseY)) {
             return;
