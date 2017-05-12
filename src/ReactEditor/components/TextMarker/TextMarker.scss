@@ -1,0 +1,11 @@
+@import '../../assets/sass/common.scss';
+
+.react-editor-text-marker {
+    font: inherit;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}

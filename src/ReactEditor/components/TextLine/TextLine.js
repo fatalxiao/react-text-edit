@@ -11,14 +11,14 @@ export default class TextLine extends Component {
 
     render() {
 
-        const {className, style, data, editorOptions} = this.props,
+        const {style, data, editorOptions} = this.props,
             lineStyle = {
                 height: editorOptions.lineHeight,
                 lineHeight: `${Math.round(editorOptions.lineHeight * 1.2)}px`
             };
 
         return (
-            <div className={`react-editor-text-line ${className}`}
+            <div className="react-editor-text-line"
                  style={{...style, ...lineStyle}}>
                 {data}
             </div>
@@ -28,21 +28,13 @@ export default class TextLine extends Component {
 };
 
 TextLine.propTypes = {
-
-    className: PropTypes.string,
     style: PropTypes.object,
-
     data: PropTypes.string,
     editorOptions: PropTypes.object
-
 };
 
 TextLine.defaultProps = {
-
-    className: '',
     style: null,
-
     data: '',
     editorOptions: null
-
 };

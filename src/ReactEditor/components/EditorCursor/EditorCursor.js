@@ -11,19 +11,18 @@ export default class EditorCursor extends Component {
 
     render() {
 
-        const {className, style, editorOptions, position} = this.props;
+        const {editorOptions, cursorPosition} = this.props;
         let left, top;
 
-        if (position) {
-            ({left, top} = position);
+        if (cursorPosition) {
+            ({left, top} = cursorPosition);
         } else {
             left = editorOptions.horizontalPadding;
             top = 0;
         }
 
         return (
-            <div className={`react-editor-cursor-wrapper ${className}`}
-                 style={style}>
+            <div className="react-editor-cursor-wrapper">
 
                 <div className="react-editor-cursor"
                      style={{transform: `translate3d(${left}px, ${top}px, 0)`}}></div>
@@ -35,31 +34,21 @@ export default class EditorCursor extends Component {
 };
 
 EditorCursor.propTypes = {
-
-    className: PropTypes.string,
-    style: PropTypes.object,
-
     editorEl: PropTypes.object,
     editorDataArray: PropTypes.array,
     editorOptions: PropTypes.object,
     scrollLeft: PropTypes.number,
     scrollTop: PropTypes.number,
     mouseDownPosition: PropTypes.object,
-    position: PropTypes.object
-
+    cursorPosition: PropTypes.object
 };
 
 EditorCursor.defaultProps = {
-
-    className: '',
-    style: null,
-
     editorEl: null,
     editorDataArray: [],
     editorOptions: null,
     scrollLeft: 0,
     scrollTop: 0,
     mouseDownPosition: null,
-    position: null
-
+    cursorPosition: null
 };

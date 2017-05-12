@@ -13,11 +13,10 @@ export default class TextContainer extends Component {
 
     render() {
 
-        const {className, style, editorDataArray, editorOptions, displayIndex} = this.props;
+        const {editorDataArray, editorOptions, displayIndex} = this.props;
 
         return (
-            <div className={`react-editor-text-container ${className}`}
-                 style={style}>
+            <div className="react-editor-text-container">
 
                 {
                     editorDataArray.map((line, index) => {
@@ -40,26 +39,16 @@ export default class TextContainer extends Component {
 };
 
 TextContainer.propTypes = {
-
-    className: PropTypes.string,
-    style: PropTypes.object,
-
     editorDataArray: PropTypes.array,
     editorOptions: PropTypes.object,
     displayIndex: PropTypes.object
-
 };
 
 TextContainer.defaultProps = {
-
-    className: '',
-    style: null,
-
     editorDataArray: [],
     editorOptions: null,
     displayIndex: {
         start: 0,
         stop: 0
     }
-
 };

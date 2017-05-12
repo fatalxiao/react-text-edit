@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-
+import TextMarker from '../TextMarker';
 import TextContainer from '../TextContainer';
 import EditorCursor from '../EditorCursor';
 
@@ -66,7 +66,7 @@ export default class TextScroller extends Component {
 
     render() {
 
-        const {className, style, editorDataArray, editorOptions, scrollTop, scrollLeft, contentWidth} = this.props,
+        const {editorDataArray, editorOptions, scrollTop, scrollLeft, contentWidth} = this.props,
             scrollerStyle = {
                 width: contentWidth + editorOptions.scrollBarWidth + editorOptions.horizontalPadding * 2,
                 height: editorDataArray.length * editorOptions.lineHeight,
@@ -76,14 +76,17 @@ export default class TextScroller extends Component {
             cursorPosition = this.calculateCursorPosition();
 
         return (
-            <div className={`react-editor-text-scroller ${className}`}
-                 style={{...style, ...scrollerStyle}}>
+            <div className="react-editor-text-scroller"
+                 style={scrollerStyle}>
+
+                <TextMarker {...this.props}
+                            cursorPosition={cursorPosition}/>
 
                 <TextContainer {...this.props}
                                displayIndex={displayIndex}/>
 
                 <EditorCursor {...this.props}
-                              position={cursorPosition}/>
+                              cursorPosition={cursorPosition}/>
 
             </div>
         );
@@ -92,9 +95,6 @@ export default class TextScroller extends Component {
 };
 
 TextScroller.propTypes = {
-
-    className: PropTypes.string,
-    style: PropTypes.object,
 
     editorDataArray: PropTypes.array,
     editorHeight: PropTypes.number,
@@ -110,10 +110,6 @@ TextScroller.propTypes = {
 };
 
 TextScroller.defaultProps = {
-
-    className: '',
-    style: null,
-
     editorDataArray: [],
     editorHeight: 200,
     editorOptions: null,
@@ -122,5 +118,4 @@ TextScroller.defaultProps = {
     scrollLeft: 0,
     mouseDownX: 0,
     mouseDownY: 0
-
 };

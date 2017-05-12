@@ -108,8 +108,6 @@ export default class HorizontalScrollBar extends Component {
 
     render() {
 
-        const {className, style} = this.props;
-
         this.scrollBarWidth = this.calculateScrollBarWidth();
         this.scrollBarLeft = this.calculateLeft();
 
@@ -119,8 +117,7 @@ export default class HorizontalScrollBar extends Component {
         };
 
         return (
-            <div className={`react-editor-horizontal-scroll-bar-wrapper ${className}`}
-                 style={style}
+            <div className="react-editor-horizontal-scroll-bar-wrapper"
                  onMouseDown={(e) => {
                      this.mouseDownHandle(e, true);
                  }}>
@@ -139,9 +136,6 @@ export default class HorizontalScrollBar extends Component {
 
 HorizontalScrollBar.propTypes = {
 
-    className: PropTypes.string,
-    style: PropTypes.object,
-
     editorWidth: PropTypes.number,
     editorOptions: PropTypes.object,
     scrollLeft: PropTypes.number,
@@ -152,13 +146,8 @@ HorizontalScrollBar.propTypes = {
 };
 
 HorizontalScrollBar.defaultProps = {
-
-    className: '',
-    style: null,
-
     editorWidth: 500,
     editorOptions: null,
     scrollLeft: 0,
     contentWidth: 0
-
 };

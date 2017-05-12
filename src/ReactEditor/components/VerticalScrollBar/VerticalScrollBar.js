@@ -105,8 +105,6 @@ export default class VerticalScrollBar extends Component {
 
     render() {
 
-        const {className, style} = this.props;
-
         this.scrollBarHeight = this.calculateScrollBarHeight();
         this.scrollBarTop = this.calculateTop();
 
@@ -116,11 +114,11 @@ export default class VerticalScrollBar extends Component {
         };
 
         return (
-            <div className={`react-editor-vertical-scroll-bar-wrapper ${className}`}
-                 style={style}
+            <div className="react-editor-vertical-scroll-bar-wrapper"
                  onMouseDown={(e) => {
                      this.mouseDownHandle(e, true);
                  }}>
+
                 <div className="react-editor-vertical-scroll-bar"
                      style={scrollBarStyle}
                      onMouseDown={(e) => {
@@ -128,6 +126,7 @@ export default class VerticalScrollBar extends Component {
                      }}>
                     <div className="react-editor-vertical-scroll-bar-inner"></div>
                 </div>
+
             </div>
         );
 
@@ -136,9 +135,6 @@ export default class VerticalScrollBar extends Component {
 };
 
 VerticalScrollBar.propTypes = {
-
-    className: PropTypes.string,
-    style: PropTypes.object,
 
     editorDataArray: PropTypes.array,
     editorHeight: PropTypes.number,
@@ -151,13 +147,8 @@ VerticalScrollBar.propTypes = {
 };
 
 VerticalScrollBar.defaultProps = {
-
-    className: '',
-    style: null,
-
     editorDataArray: [],
     editorHeight: 200,
     editorOptions: null,
     scrollTop: 0
-
 };
