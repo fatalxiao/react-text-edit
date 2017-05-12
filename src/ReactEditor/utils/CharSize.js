@@ -4,6 +4,10 @@ let testContainer,
 
 function calculateCharCount(editorEl) {
 
+    if (!editorEl) {
+        return;
+    }
+
     let el = editorEl.querySelector('.react-editor-test-char-count'),
         width = el.getBoundingClientRect().width;
 
@@ -16,6 +20,10 @@ function calculateCharCount(editorEl) {
 }
 
 function calculateCharWidth(char, editorEl) {
+
+    if (!char || !editorEl) {
+        return 0;
+    }
 
     if (char in charSize) {
         return charSize[char];
@@ -36,7 +44,7 @@ function calculateCharWidth(char, editorEl) {
 
 function calculateStringWidth(string, editorEl) {
 
-    if (!string) {
+    if (!string || !editorEl) {
         return 0;
     }
 
@@ -50,6 +58,10 @@ function calculateStringWidth(string, editorEl) {
 }
 
 function calculateMaxLineWidth(dataArray, editorEl) {
+
+    if (!dataArray || dataArray.length === 0 || !editorEl) {
+        return 0;
+    }
 
     let max = 0;
 
@@ -71,6 +83,15 @@ function calculateMaxLineWidth(dataArray, editorEl) {
 }
 
 function calculateCursorPosition(string, left, editorEl) {
+
+    const DEFAULT_VALUE = {
+        left: 0,
+        col: 0
+    };
+
+    if (!string || left === undefined || !editorEl) {
+        return DEFAULT_VALUE;
+    }
 
     let widthCount = 0, leftValue, rightValue,
         index = 0, leftIndex, rightIndex;
@@ -113,10 +134,7 @@ function calculateCursorPosition(string, left, editorEl) {
         };
     }
 
-    return {
-        left: 0,
-        col: 0
-    };
+    return DEFAULT_VALUE;
 
 }
 

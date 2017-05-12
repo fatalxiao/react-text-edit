@@ -41,6 +41,8 @@ export default class Editor extends Component {
 
         this.state = {
 
+            editorEl: null,
+
             editorDataArray,
             editorOptions,
 
@@ -51,7 +53,10 @@ export default class Editor extends Component {
             contentHeight: this.calculateContentHeight(editorDataArray, editorOptions.lineHeight),
 
             scrollTop: 0,
-            scrollLeft: 0
+            scrollLeft: 0,
+
+            mouseX: 0,
+            mouseY: 0
 
         };
 
@@ -63,6 +68,7 @@ export default class Editor extends Component {
         this.dataChangedHandle = this::this.dataChangedHandle;
         this.wheelHandle = this::this.wheelHandle;
         this.resizeHandle = this::this.resizeHandle;
+        this.mouseDownHandle = this::this.mouseDownHandle;
 
     }
 
@@ -139,7 +145,17 @@ export default class Editor extends Component {
     }
 
     resizeHandle() {
+        this._setNextState({
+            editorWidth: window.innerWidth,
+            editorHeight: window.innerHeight
+        });
+    }
 
+    mouseDownHandle(e) {
+        this.setState({
+            mouseX: e.clientX,
+            mouseY: e.clientY
+        });
     }
 
     componentDidMount() {
@@ -189,6 +205,7 @@ export default class Editor extends Component {
 
     componentWillUnmount() {
         Event.removeEvent(document, 'dragstart', Event.preventEvent);
+        this.state.editorOptions.isFullScreen && Event.removeEvent(window, 'resize', this.resizeHandle);
     }
 
     render() {
@@ -205,7 +222,8 @@ export default class Editor extends Component {
             <div ref="editor"
                  className={`react-editor ${editorOptions.isFullScreen ? 'react-editor-full-screen' : ''} ${className}`}
                  style={{...editorSize, ...style}}
-                 onWheel={this.wheelHandle}>
+                 onWheel={this.wheelHandle}
+                 onMouseDown={this.mouseDownHandle}>
 
                 <TextScroller {...this.props}
                               {...this.state}

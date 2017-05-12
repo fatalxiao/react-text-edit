@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
+
 import TextContainer from '../TextContainer';
 import EditorCursor from '../EditorCursor';
 
 import Valid from '../../utils/Valid';
+import CharSize from '../../utils/CharSize';
 
 import './TextScroller.scss';
 
@@ -14,12 +16,8 @@ export default class TextScroller extends Component {
 
         super(props);
 
-        this.state = {
-            mouseDownPosition: null
-        };
-
         this.calDisplayIndex = this::this.calDisplayIndex;
-        this.mouseDownHandle = this::this.mouseDownHandle;
+        this.calculateCursorPosition = this::this.calculateCursorPosition;
 
     }
 
@@ -41,13 +39,29 @@ export default class TextScroller extends Component {
 
     }
 
-    mouseDownHandle(e) {
-        this.setState({
-            mouseDownPosition: {
-                left: e.clientX,
-                top: e.clientY
-            }
-        });
+    calculateCursorPosition() {
+
+        const {editorEl, editorDataArray, editorOptions, scrollLeft, scrollTop, mouseX, mouseY} = this.props;
+
+        if (isNaN(mouseX) || isNaN(mouseY)) {
+            return;
+        }
+
+        const offsetTop = Valid.range(mouseY + scrollTop - 10, 0),
+            row = Math.round(offsetTop / editorOptions.lineHeight),
+            top = row * editorOptions.lineHeight,
+            string = editorDataArray[row],
+            offsetLeft = Valid.range(mouseX + scrollLeft - editorOptions.horizontalPadding + 3, 0);
+
+        const {left, col} = CharSize.calculateCursorPosition(string, offsetLeft, editorEl);
+
+        return {
+            left: left + editorOptions.horizontalPadding,
+            top,
+            row,
+            col
+        };
+
     }
 
     render() {
@@ -58,18 +72,18 @@ export default class TextScroller extends Component {
                 height: editorDataArray.length * editorOptions.lineHeight,
                 transform: `translate3d(${-scrollLeft}px, ${-scrollTop}px, 0)`
             },
-            displayIndex = this.calDisplayIndex();
+            displayIndex = this.calDisplayIndex(),
+            cursorPosition = this.calculateCursorPosition();
 
         return (
             <div className={`react-editor-text-scroller ${className}`}
-                 style={{...style, ...scrollerStyle}}
-                 onMouseDown={this.mouseDownHandle}>
+                 style={{...style, ...scrollerStyle}}>
 
                 <TextContainer {...this.props}
                                displayIndex={displayIndex}/>
 
                 <EditorCursor {...this.props}
-                              {...this.state}/>
+                              position={cursorPosition}/>
 
             </div>
         );
@@ -85,9 +99,11 @@ TextScroller.propTypes = {
     editorDataArray: PropTypes.array,
     editorHeight: PropTypes.number,
     editorOptions: PropTypes.object,
+    contentWidth: PropTypes.number,
     scrollTop: PropTypes.number,
     scrollLeft: PropTypes.number,
-    contentWidth: PropTypes.number,
+    mouseX: PropTypes.number,
+    mouseY: PropTypes.number,
 
     onChange: PropTypes.func
 
@@ -101,8 +117,10 @@ TextScroller.defaultProps = {
     editorDataArray: [],
     editorHeight: 200,
     editorOptions: null,
+    contentWidth: 0,
     scrollTop: 0,
     scrollLeft: 0,
-    contentWidth: 0
+    mouseX: 0,
+    mouseY: 0
 
 };
