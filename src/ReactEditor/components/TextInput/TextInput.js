@@ -19,14 +19,16 @@ export default class TextInput extends Component {
 
     init(props = this.props) {
 
-        if (props.isEditorFocused) {
+        if (!props.isEditorFocused) {
+            return;
+        }
 
-            const textInput = this.refs.textInput;
+        const textInput = this.refs.textInput;
 
+        setTimeout(() => {
             textInput.focus();
             textInput.setSelectionRange(0, 0);
-
-        }
+        }, 0);
 
     }
 
