@@ -39,19 +39,19 @@ export default class TextScroller extends Component {
 
     }
 
-    calculateCursorPosition() {
+    calculateCursorPosition(x, y) {
 
-        const {editorEl, editorDataArray, editorOptions, selectStartX, selectStartY} = this.props;
+        const {editorEl, editorDataArray, editorOptions} = this.props;
 
-        if (isNaN(selectStartX) || isNaN(selectStartY)) {
+        if (isNaN(x) || isNaN(y)) {
             return;
         }
 
-        const offsetTop = Valid.range(selectStartY - 10, 0),
+        const offsetTop = Valid.range(y - 10, 0),
             row = Math.round(offsetTop / editorOptions.lineHeight),
             top = row * editorOptions.lineHeight,
             string = editorDataArray[row],
-            offsetLeft = Valid.range(selectStartX - editorOptions.horizontalPadding + 3, 0);
+            offsetLeft = Valid.range(x - editorOptions.horizontalPadding + 3, 0);
 
         const {left, col} = CharSize.calculateCursorPosition(string, offsetLeft, editorEl);
 
@@ -66,27 +66,32 @@ export default class TextScroller extends Component {
 
     render() {
 
-        const {editorDataArray, editorOptions, scrollTop, scrollLeft, contentWidth} = this.props,
+        const {
+                editorDataArray, editorOptions, contentWidth, scrollTop, scrollLeft,
+                selectStartX, selectStartY, selectStopX, selectStopY
+            } = this.props,
             scrollerStyle = {
                 width: contentWidth + editorOptions.scrollBarWidth + editorOptions.horizontalPadding * 2,
                 height: editorDataArray.length * editorOptions.lineHeight,
                 transform: `translate3d(${-scrollLeft}px, ${-scrollTop}px, 0)`
             },
             displayIndex = this.calDisplayIndex(),
-            cursorPosition = this.calculateCursorPosition();
+            selectStartPosition = this.calculateCursorPosition(selectStartX, selectStartY),
+            selectStopPosition = this.calculateCursorPosition(selectStopX, selectStopY);
 
         return (
             <div className="react-editor-text-scroller"
                  style={scrollerStyle}>
 
                 <TextMarker {...this.props}
-                            cursorPosition={cursorPosition}/>
+                            selectStartPosition={selectStartPosition}
+                            selectStopPosition={selectStopPosition}/>
 
                 <TextContainer {...this.props}
                                displayIndex={displayIndex}/>
 
                 <EditorCursor {...this.props}
-                              cursorPosition={cursorPosition}/>
+                              cursorPosition={selectStopPosition || selectStartPosition}/>
 
             </div>
         );
@@ -104,6 +109,8 @@ TextScroller.propTypes = {
     scrollLeft: PropTypes.number,
     selectStartX: PropTypes.number,
     selectStartY: PropTypes.number,
+    selectStopX: PropTypes.number,
+    selectStopY: PropTypes.number,
 
     onChange: PropTypes.func
 
@@ -116,6 +123,8 @@ TextScroller.defaultProps = {
     contentWidth: 0,
     scrollTop: 0,
     scrollLeft: 0,
-    selectStartX: 0,
-    selectStartY: 0
+    selectStartX: undefined,
+    selectStartY: undefined,
+    selectStopX: undefined,
+    selectStopY: undefined
 };

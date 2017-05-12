@@ -8,6 +8,7 @@ import ScrollBars from '../ScrollBars';
 import Valid from '../../utils/Valid';
 import CharSize from '../../utils/CharSize';
 import Event from '../../utils/Event';
+import DomLib from '../../utils/DomLib';
 
 import './Editor.scss';
 
@@ -18,7 +19,7 @@ export default class Editor extends Component {
         super(props);
 
         this._nextStateAnimationFrameId = null;
-
+        this.isMouseDown = false;
         this.defaultOptions = {
             isFullScreen: false,
             lineHeight: 20,
@@ -56,7 +57,9 @@ export default class Editor extends Component {
             scrollLeft: 0,
 
             selectStartX: undefined,
-            selectStartY: undefined
+            selectStartY: undefined,
+            selectStopX: undefined,
+            selectStopY: undefined
 
         };
 
@@ -69,6 +72,8 @@ export default class Editor extends Component {
         this.wheelHandle = this::this.wheelHandle;
         this.resizeHandle = this::this.resizeHandle;
         this.mouseDownHandle = this::this.mouseDownHandle;
+        this.mouseMoveHandle = this::this.mouseMoveHandle;
+        this.mouseUpHandle = this::this.mouseUpHandle;
 
     }
 
@@ -152,10 +157,38 @@ export default class Editor extends Component {
     }
 
     mouseDownHandle(e) {
+
+        this.isMouseDown = true;
+
+        const {scrollLeft, scrollTop} = this.state;
+
         this.setState({
-            selectStartX: e.clientX + this.state.scrollLeft,
-            selectStartY: e.clientY + this.state.scrollTop
+            selectStartX: e.clientX + scrollLeft,
+            selectStartY: e.clientY + scrollTop,
+            selectStopX: undefined,
+            selectStopY: undefined
         });
+
+    }
+
+    mouseMoveHandle(e) {
+
+        if (!this.isMouseDown) {
+            return;
+        }
+
+        const {scrollLeft, scrollTop} = this.state,
+            editorOffset = DomLib.getOffset(this.refs.editor);
+
+        this.setState({
+            selectStopX: e.clientX - editorOffset.left + scrollLeft,
+            selectStopY: e.clientY - editorOffset.top + scrollTop
+        });
+
+    }
+
+    mouseUpHandle() {
+        this.isMouseDown = false;
     }
 
     componentDidMount() {
@@ -165,7 +198,8 @@ export default class Editor extends Component {
         });
 
         Event.addEvent(document, 'dragstart', Event.preventEvent);
-
+        Event.addEvent(document, 'mousemove', this.mouseMoveHandle);
+        Event.addEvent(document, 'mouseup', this.mouseUpHandle);
         this.state.editorOptions.isFullScreen && Event.addEvent(window, 'resize', this.resizeHandle);
 
         setTimeout(() => {
@@ -205,6 +239,8 @@ export default class Editor extends Component {
 
     componentWillUnmount() {
         Event.removeEvent(document, 'dragstart', Event.preventEvent);
+        Event.removeEvent(document, 'mousemove', this.mouseMoveHandle);
+        Event.removeEvent(document, 'mouseup', this.mouseUpHandle);
         this.state.editorOptions.isFullScreen && Event.removeEvent(window, 'resize', this.resizeHandle);
     }
 

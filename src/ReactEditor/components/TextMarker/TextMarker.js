@@ -12,6 +12,9 @@ export default class TextMarker extends Component {
     }
 
     render() {
+
+        const {selectStartPosition, selectStopPosition} = this.props;
+
         return (
             <div className="react-editor-text-marker">
 
@@ -25,11 +28,13 @@ export default class TextMarker extends Component {
 TextMarker.propTypes = {
     editorOptions: PropTypes.object,
     contentWidth: PropTypes.number,
-    cursorPosition: PropTypes.object
+    selectStartPosition: PropTypes.object,
+    selectStopPosition: PropTypes.object
 };
 
 TextMarker.defaultProps = {
     editorOptions: null,
     contentWidth: 0,
-    cursorPosition: null
+    selectStartPosition: null,
+    selectStopPosition: null
 };

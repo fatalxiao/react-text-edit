@@ -11,12 +11,12 @@ export default class ActiveLine extends Component {
 
     render() {
 
-        const {editorOptions, contentWidth, cursorPosition} = this.props;
+        const {editorOptions, contentWidth, selectStartPosition, selectStopPosition} = this.props;
 
         const activeLineStyle = {
             width: contentWidth + editorOptions.horizontalPadding * 2 + editorOptions.scrollBarWidth,
             height: editorOptions.lineHeight,
-            top: cursorPosition.top
+            top: selectStopPosition ? selectStopPosition.top : (selectStartPosition ? selectStartPosition.top : 0)
         };
 
         return (
@@ -30,11 +30,13 @@ export default class ActiveLine extends Component {
 ActiveLine.propTypes = {
     editorOptions: PropTypes.object,
     contentWidth: PropTypes.number,
-    cursorPosition: PropTypes.object
+    selectStartPosition: PropTypes.object,
+    selectStopPosition: PropTypes.object
 };
 
 ActiveLine.defaultProps = {
     editorOptions: null,
     contentWidth: 0,
-    cursorPosition: null
+    selectStartPosition: null,
+    selectStopPosition: null
 };
