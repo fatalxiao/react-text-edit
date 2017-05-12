@@ -240,7 +240,7 @@ export default class Editor extends Component {
         }
 
         if (state.editorDataArray) {
-            state.contentWidth = this.calculateContentWidth(state.editorDataArray, this.refs.editorEl);
+            state.contentWidth = this.calculateContentWidth(state.editorDataArray);
             console.log(state.contentWidth);
         }
 

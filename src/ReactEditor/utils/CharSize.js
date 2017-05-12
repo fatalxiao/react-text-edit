@@ -94,7 +94,7 @@ function calculateCursorPosition(string, left, editorEl) {
     }
 
     let widthCount = 0, leftValue, rightValue,
-        index = 0, leftIndex, rightIndex;
+        index = 1, leftIndex, rightIndex;
 
     for (let char of string) {
 
@@ -116,7 +116,7 @@ function calculateCursorPosition(string, left, editorEl) {
     }
 
     if (leftValue && rightValue) {
-        if (rightValue - left < leftValue - left) { // right position is colser
+        if (rightValue - left < left - leftValue) { // right position is colser
             return {
                 left: rightValue,
                 col: rightIndex
