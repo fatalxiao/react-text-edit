@@ -41,17 +41,17 @@ export default class TextScroller extends Component {
 
     calculateCursorPosition() {
 
-        const {editorEl, editorDataArray, editorOptions, mouseX, mouseY} = this.props;
+        const {editorEl, editorDataArray, editorOptions, mouseDownX, mouseDownY} = this.props;
 
-        if (isNaN(mouseX) || isNaN(mouseY)) {
+        if (isNaN(mouseDownX) || isNaN(mouseDownY)) {
             return;
         }
 
-        const offsetTop = Valid.range(mouseY - 10, 0),
+        const offsetTop = Valid.range(mouseDownY - 10, 0),
             row = Math.round(offsetTop / editorOptions.lineHeight),
             top = row * editorOptions.lineHeight,
             string = editorDataArray[row],
-            offsetLeft = Valid.range(mouseX - editorOptions.horizontalPadding + 3, 0);
+            offsetLeft = Valid.range(mouseDownX - editorOptions.horizontalPadding + 3, 0);
 
         const {left, col} = CharSize.calculateCursorPosition(string, offsetLeft, editorEl);
 
@@ -102,8 +102,8 @@ TextScroller.propTypes = {
     contentWidth: PropTypes.number,
     scrollTop: PropTypes.number,
     scrollLeft: PropTypes.number,
-    mouseX: PropTypes.number,
-    mouseY: PropTypes.number,
+    mouseDownX: PropTypes.number,
+    mouseDownY: PropTypes.number,
 
     onChange: PropTypes.func
 
@@ -120,7 +120,7 @@ TextScroller.defaultProps = {
     contentWidth: 0,
     scrollTop: 0,
     scrollLeft: 0,
-    mouseX: 0,
-    mouseY: 0
+    mouseDownX: 0,
+    mouseDownY: 0
 
 };
