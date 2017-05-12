@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import ActiveLine from '../ActiveLine';
+import TextSelection from '../TextSelection';
 
 import './TextMarker.scss';
 
@@ -20,21 +21,24 @@ export default class TextMarker extends Component {
 
                 <ActiveLine {...this.props}/>
 
+                {
+                    selectStartPosition && selectStopPosition ?
+                        <TextSelection {...this.props}/>
+                        :
+                        null
+                }
+
             </div>
         );
     }
 };
 
 TextMarker.propTypes = {
-    editorOptions: PropTypes.object,
-    contentWidth: PropTypes.number,
     selectStartPosition: PropTypes.object,
     selectStopPosition: PropTypes.object
 };
 
 TextMarker.defaultProps = {
-    editorOptions: null,
-    contentWidth: 0,
     selectStartPosition: null,
     selectStopPosition: null
 };

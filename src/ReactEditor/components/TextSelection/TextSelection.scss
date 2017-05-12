@@ -1,0 +1,8 @@
+@import '../../assets/sass/common.scss';
+
+.react-editor-text-selection {
+    .react-editor-text-selection-line {
+        position: absolute;
+        background: $theme-selection-line-bg;
+    }
+}
