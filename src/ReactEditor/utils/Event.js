@@ -18,22 +18,18 @@ function removeEvent(el, type, cb) {
     }
 }
 
-function triggerPopupEventHandle(el, triggerEl, popupEl, currentVisible) {
+function isTriggerOnEl(e, el) {
 
-    let flag = true;
+    let target = e.target;
 
-    while (el) {
-        if (el == popupEl) {
-            return currentVisible;
-        } else if (el == triggerEl) {
-            return !currentVisible;
+    while (target) {
+        if (target == el) {
+            return true;
         }
-        el = el.parentNode;
+        target = target.parentNode;
     }
 
-    if (flag) {
-        return false;
-    }
+    return false;
 
 }
 
@@ -45,6 +41,6 @@ function preventEvent(e) {
 export default {
     addEvent,
     removeEvent,
-    triggerPopupEventHandle,
+    isTriggerOnEl,
     preventEvent
 };

@@ -20,7 +20,7 @@ function sortPosition(start, stop) {
 
 function calculateResultText(origin, pos, string) {
 
-    if (!origin || !pos || !origin[pos.row] || !string) {
+    if (!origin || !pos || !(pos.row in origin) || !string) {
         return;
     }
 

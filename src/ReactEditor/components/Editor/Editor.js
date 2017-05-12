@@ -48,6 +48,8 @@ export default class Editor extends Component {
 
             editorEl: null,
 
+            isEditorFocused: true,
+
             editorDataArray,
             editorOptions,
 
@@ -60,8 +62,8 @@ export default class Editor extends Component {
             scrollTop: 0,
             scrollLeft: 0,
 
-            selectStartX: undefined,
-            selectStartY: undefined,
+            selectStartX: editorOptions.horizontalPadding,
+            selectStartY: 0,
             selectStopX: undefined,
             selectStopY: undefined
 
@@ -72,7 +74,7 @@ export default class Editor extends Component {
         this.calculateContentHeight = this::this.calculateContentHeight;
         this.scrollX = this::this.scrollX;
         this.scrollY = this::this.scrollY;
-        this.dataChangedHandle = this::this.dataChangedHandle;
+        this.onChange = this::this.onChange;
         this.wheelHandle = this::this.wheelHandle;
         this.resizeHandle = this::this.resizeHandle;
         this.mouseDownHandle = this::this.mouseDownHandle;
@@ -112,7 +114,7 @@ export default class Editor extends Component {
         });
     }
 
-    dataChangedHandle(editorDataArray) {
+    onChange(editorDataArray) {
 
         const {onChange} = this.props;
 
@@ -163,12 +165,20 @@ export default class Editor extends Component {
 
     mouseDownHandle(e) {
 
+        if (!Event.isTriggerOnEl(e, this.refs.editor)) {
+            this.setState({
+                isEditorFocused: false
+            });
+            return;
+        }
+
         this.isMouseDown = true;
 
         const {scrollLeft, scrollTop} = this.state,
             editorOffset = DomLib.getOffset(this.refs.editor);
 
         this.setState({
+            isEditorFocused: true,
             selectStartX: e.clientX - editorOffset.left + scrollLeft,
             selectStartY: e.clientY - editorOffset.top + scrollTop,
             selectStopX: undefined,
@@ -187,6 +197,7 @@ export default class Editor extends Component {
             editorOffset = DomLib.getOffset(this.refs.editor);
 
         this.setState({
+            isEditorFocused: true,
             selectStopX: e.clientX - editorOffset.left + scrollLeft,
             selectStopY: e.clientY - editorOffset.top + scrollTop
         });
@@ -197,6 +208,18 @@ export default class Editor extends Component {
         this.isMouseDown = false;
     }
 
+    editorFocusHandle() {
+        this.setState({
+            isEditorFocused: false
+        });
+    }
+
+    editorBlurHandle() {
+        this.setState({
+            isEditorFocused: false
+        });
+    }
+
     componentDidMount() {
 
         this.setState({
@@ -204,6 +227,7 @@ export default class Editor extends Component {
         });
 
         Event.addEvent(document, 'dragstart', Event.preventEvent);
+        Event.addEvent(document, 'mousedown', this.mouseDownHandle);
         Event.addEvent(document, 'mousemove', this.mouseMoveHandle);
         Event.addEvent(document, 'mouseup', this.mouseUpHandle);
         this.state.editorOptions.isFullScreen && Event.addEvent(window, 'resize', this.resizeHandle);
@@ -256,6 +280,7 @@ export default class Editor extends Component {
 
     componentWillUnmount() {
         Event.removeEvent(document, 'dragstart', Event.preventEvent);
+        Event.removeEvent(document, 'mousedown', this.mouseDownHandle);
         Event.removeEvent(document, 'mousemove', this.mouseMoveHandle);
         Event.removeEvent(document, 'mouseup', this.mouseUpHandle);
         this.state.editorOptions.isFullScreen && Event.removeEvent(window, 'resize', this.resizeHandle);
@@ -275,12 +300,11 @@ export default class Editor extends Component {
             <div ref="editor"
                  className={`react-editor ${editorOptions.isFullScreen ? 'react-editor-full-screen' : ''} ${className}`}
                  style={{...editorSize, ...style}}
-                 onWheel={this.wheelHandle}
-                 onMouseDown={this.mouseDownHandle}>
+                 onWheel={this.wheelHandle}>
 
                 <TextScroller {...this.props}
                               {...this.state}
-                              onChange={this.dataChangedHandle}/>
+                              {...this}/>
 
                 <ScrollBars {...this.props}
                             {...this.state}

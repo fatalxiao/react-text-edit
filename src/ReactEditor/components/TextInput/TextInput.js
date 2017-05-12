@@ -11,20 +11,33 @@ export default class TextInput extends Component {
 
         super(props);
 
+        this.init = this::this.init;
         this.changeHandle = this::this.changeHandle;
         this.keyDownHandle = this::this.keyDownHandle;
 
     }
 
-    changeHandle() {
+    init(props = this.props) {
 
-        const {editorDataArray, cursorPosition, onChange} = this.props,
-            textInput = this.refs.textInput;
+        if (props.isEditorFocused) {
 
-        onChange(Calculation.calculateResultText(editorDataArray, cursorPosition, textInput.value));
+            const textInput = this.refs.textInput;
 
-        textInput.value = '';
-        textInput.setSelectionRange(0, 0);
+            textInput.focus();
+            textInput.setSelectionRange(0, 0);
+
+        }
+
+    }
+
+    changeHandle(e) {
+
+        const {editorDataArray, cursorPosition, onChange} = this.props;
+
+        onChange(Calculation.calculateResultText(editorDataArray, cursorPosition, e.target.value));
+
+        e.target.value = '';
+        this.init();
 
     }
 
@@ -32,29 +45,31 @@ export default class TextInput extends Component {
 
     }
 
+    componentDidMount() {
+        this.init();
+    }
+
     componentWillReceiveProps(nextProps) {
-        this.refs.textInput.focus();
-        this.refs.textInput.setSelectionRange(0, 0);
+        this.init(nextProps);
+    }
+
+    componentDidUpdate(prevProps) {
+        this.init(prevProps);
     }
 
     render() {
-
-        const {cursorPosition} = this.props,
-            {left, top} = cursorPosition;
-
         return (
             <textarea ref="textInput"
                       className="react-editor-text-input"
-                      style={{transform: `translate3d(${left}px, ${top}px, 0)`}}
                       onChange={this.changeHandle}
                       onKeyDown={this.keyDownHandle}></textarea>
         );
-
     }
 };
 
 TextInput.propTypes = {
 
+    isEditorFocused: PropTypes.bool,
     editorDataArray: PropTypes.array,
     cursorPosition: PropTypes.object,
 

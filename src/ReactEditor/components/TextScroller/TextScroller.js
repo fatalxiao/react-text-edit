@@ -68,7 +68,7 @@ export default class TextScroller extends Component {
     render() {
 
         const {
-                editorDataArray, editorOptions, contentWidth, scrollTop, scrollLeft,
+                isEditorFocused, editorDataArray, editorOptions, contentWidth, scrollTop, scrollLeft,
                 selectStartX, selectStartY, selectStopX, selectStopY
             } = this.props,
             scrollerStyle = {
@@ -85,13 +85,8 @@ export default class TextScroller extends Component {
             <div className="react-editor-text-scroller"
                  style={scrollerStyle}>
 
-                {
-                    cursorPosition ?
-                        <TextInput {...this.props}
-                                   cursorPosition={cursorPosition}/>
-                        :
-                        null
-                }
+                <TextInput {...this.props}
+                           cursorPosition={cursorPosition}/>
 
                 <TextMarker {...this.props}
                             selectStartPosition={selectStartPosition}
@@ -100,8 +95,13 @@ export default class TextScroller extends Component {
                 <TextContainer {...this.props}
                                displayIndex={displayIndex}/>
 
-                <EditorCursor {...this.props}
-                              cursorPosition={cursorPosition}/>
+                {
+                    isEditorFocused ?
+                        <EditorCursor {...this.props}
+                                      cursorPosition={cursorPosition}/>
+                        :
+                        null
+                }
 
             </div>
         );
@@ -111,6 +111,7 @@ export default class TextScroller extends Component {
 
 TextScroller.propTypes = {
 
+    isEditorFocused: PropTypes.bool,
     editorDataArray: PropTypes.array,
     editorHeight: PropTypes.number,
     editorOptions: PropTypes.object,
