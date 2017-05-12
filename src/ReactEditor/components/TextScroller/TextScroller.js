@@ -76,15 +76,14 @@ export default class TextScroller extends Component {
             },
             displayIndex = this.calDisplayIndex(),
             selectStartPosition = this.calculateCursorPosition(selectStartX, selectStartY),
-            selectStopPosition = this.calculateCursorPosition(selectStopX, selectStopY),
-            cursorPosition = selectStopPosition || selectStartPosition;
+            selectStopPosition = this.calculateCursorPosition(selectStopX, selectStopY);
 
         return (
             <div className="react-editor-text-scroller"
                  style={scrollerStyle}>
 
                 <TextInput {...this.props}
-                           cursorPosition={cursorPosition}/>
+                           cursorPosition={selectStopPosition}/>
 
                 <TextMarker {...this.props}
                             selectStartPosition={selectStartPosition}
@@ -96,7 +95,7 @@ export default class TextScroller extends Component {
                 {
                     isEditorFocused ?
                         <EditorCursor {...this.props}
-                                      cursorPosition={cursorPosition}/>
+                                      cursorPosition={selectStopPosition}/>
                         :
                         null
                 }

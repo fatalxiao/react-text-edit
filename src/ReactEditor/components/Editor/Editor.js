@@ -61,10 +61,10 @@ export default class Editor extends Component {
             scrollTop: 0,
             scrollLeft: 0,
 
-            selectStartX: editorOptions.horizontalPadding,
-            selectStartY: 0,
-            selectStopX: undefined,
-            selectStopY: undefined
+            selectStartX: undefined,
+            selectStartY: undefined,
+            selectStopX: editorOptions.horizontalPadding,
+            selectStopY: 0
 
         };
 
@@ -183,10 +183,10 @@ export default class Editor extends Component {
 
         this.setState({
             isEditorFocused: true,
-            selectStartX: e.clientX - editorOffset.left + scrollLeft,
-            selectStartY: e.clientY - editorOffset.top + scrollTop,
-            selectStopX: undefined,
-            selectStopY: undefined
+            selectStartX: undefined,
+            selectStartY: undefined,
+            selectStopX: e.clientX - editorOffset.left + scrollLeft,
+            selectStopY: e.clientY - editorOffset.top + scrollTop
         });
 
     }
@@ -213,11 +213,21 @@ export default class Editor extends Component {
         const {scrollLeft, scrollTop} = this.state,
             editorOffset = DomLib.getOffset(this.refs.editor);
 
-        this.setState({
+        let state = {
             isEditorFocused: true,
             selectStopX: e.clientX - editorOffset.left + scrollLeft,
             selectStopY: e.clientY - editorOffset.top + scrollTop
-        });
+        };
+
+        if (!this.state.selectStartX) {
+            state.selectStartX = this.state.selectStopX;
+        }
+
+        if (!this.state.selectStartY) {
+            state.selectStartY = this.state.selectStopY;
+        }
+
+        this.setState(state);
 
     }
 
