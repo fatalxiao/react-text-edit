@@ -18,6 +18,23 @@ function sortPosition(start, stop) {
 
 }
 
+function calculateResultText(origin, pos, string) {
+
+    if (!origin || !pos || !origin[pos.row] || !string) {
+        return;
+    }
+
+    let result = origin.slice(),
+        temp = result[pos.row].split('');
+
+    temp.splice(pos.col, 0, string);
+    result[pos.row] = temp.join('');
+
+    return result;
+
+}
+
 export default {
-    sortPosition
+    sortPosition,
+    calculateResultText
 };

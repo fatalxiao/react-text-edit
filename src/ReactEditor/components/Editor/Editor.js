@@ -114,11 +114,14 @@ export default class Editor extends Component {
 
     dataChangedHandle(editorDataArray) {
 
+        console.log(editorDataArray);
+
         const {onChange} = this.props;
 
         this.setState({
             editorDataArray,
-            contentWidth: CharSize.calculateMaxLineWidth(editorDataArray)
+            contentWidth: CharSize.calculateMaxLineWidth(editorDataArray),
+            contentHeight: this.calculateContentHeight(editorDataArray)
         }, () => {
             onChange && onChange(editorDataArray.join('\n'));
         });
@@ -208,11 +211,11 @@ export default class Editor extends Component {
         this.state.editorOptions.isFullScreen && Event.addEvent(window, 'resize', this.resizeHandle);
 
         setTimeout(() => {
-            this.setState({
+            this._setNextState({
                 contentWidth: this.calculateContentWidth(),
                 editorInital: true
             });
-        }, 100);
+        }, 0);
 
     }
 
@@ -220,24 +223,26 @@ export default class Editor extends Component {
 
         let state = {};
 
-        if (nextProps.data !== this.state.data) {
+        if (nextProps.data !== this.state.editorDataArray.join('\n')) {
             state.editorDataArray = nextProps.data.split('\n');
-        }
-
-        if (nextProps.width !== this.state.editorWidth) {
-            state.editorWidth = nextProps.width;
-        }
-
-        if (nextProps.height !== this.state.editorHeight) {
-            state.editorHeight = nextProps.height;
         }
 
         if (!(_.isEqual(nextProps.options, this.props.options))) {
             state.editorOptions = {...this.defaultOptions, ...nextProps.options};
         }
 
+        const editorOptions = state.editorOptions || this.state.editorOptions;
+
+        if (!editorOptions.isFullScreen && nextProps.width !== this.state.editorWidth) {
+            state.editorWidth = nextProps.width;
+        }
+
+        if (!editorOptions.isFullScreen && nextProps.height !== this.state.editorHeight) {
+            state.editorHeight = nextProps.height;
+        }
+
         if (!(_.isEmpty(state))) {
-            state.contentHeight = this.calculateContentHeight(state.editorDataArray, state.editorOptions.lineHeight);
+            state.contentHeight = this.calculateContentHeight(state.editorDataArray, editorOptions.lineHeight);
             this.setState(state);
         }
 

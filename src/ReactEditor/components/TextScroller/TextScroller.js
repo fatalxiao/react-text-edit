@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
+import TextInput from '../TextInput';
 import TextMarker from '../TextMarker';
 import TextContainer from '../TextContainer';
 import EditorCursor from '../EditorCursor';
@@ -77,11 +78,20 @@ export default class TextScroller extends Component {
             },
             displayIndex = this.calDisplayIndex(),
             selectStartPosition = this.calculateCursorPosition(selectStartX, selectStartY),
-            selectStopPosition = this.calculateCursorPosition(selectStopX, selectStopY);
+            selectStopPosition = this.calculateCursorPosition(selectStopX, selectStopY),
+            cursorPosition = selectStopPosition || selectStartPosition;
 
         return (
             <div className="react-editor-text-scroller"
                  style={scrollerStyle}>
+
+                {
+                    cursorPosition ?
+                        <TextInput {...this.props}
+                                   cursorPosition={cursorPosition}/>
+                        :
+                        null
+                }
 
                 <TextMarker {...this.props}
                             selectStartPosition={selectStartPosition}
@@ -91,7 +101,7 @@ export default class TextScroller extends Component {
                                displayIndex={displayIndex}/>
 
                 <EditorCursor {...this.props}
-                              cursorPosition={selectStopPosition || selectStartPosition}/>
+                              cursorPosition={cursorPosition}/>
 
             </div>
         );

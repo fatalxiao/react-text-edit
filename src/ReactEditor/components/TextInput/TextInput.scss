@@ -1,0 +1,17 @@
+@import '../../assets/sass/common.scss';
+
+.react-editor-text-input {
+    position: absolute;
+    z-index: 999;
+    opacity: 0;
+    background: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    resize: none;
+    outline: none;
+    overflow: hidden;
+    padding: 0;
+    width: 0;
+    height: 0;
+}
