@@ -55,8 +55,8 @@ export default class Editor extends Component {
             scrollTop: 0,
             scrollLeft: 0,
 
-            mouseDownX: 0,
-            mouseDownY: 0
+            selectStartX: undefined,
+            selectStartY: undefined
 
         };
 
@@ -153,8 +153,8 @@ export default class Editor extends Component {
 
     mouseDownHandle(e) {
         this.setState({
-            mouseDownX: e.clientX + this.state.scrollLeft,
-            mouseDownY: e.clientY + this.state.scrollTop
+            selectStartX: e.clientX + this.state.scrollLeft,
+            selectStartY: e.clientY + this.state.scrollTop
         });
     }
 
