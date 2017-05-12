@@ -26,7 +26,7 @@ export default class EditorCursor extends Component {
                  style={style}>
 
                 <div className="react-editor-cursor"
-                     style={{left, top}}></div>
+                     style={{transform: `translate3d(${left}px, ${top}px, 0)`}}></div>
 
             </div>
         );
