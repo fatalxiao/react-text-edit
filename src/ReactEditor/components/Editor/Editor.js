@@ -114,13 +114,11 @@ export default class Editor extends Component {
 
     dataChangedHandle(editorDataArray) {
 
-        console.log(editorDataArray);
-
         const {onChange} = this.props;
 
         this.setState({
             editorDataArray,
-            contentWidth: CharSize.calculateMaxLineWidth(editorDataArray),
+            contentWidth: this.calculateContentWidth(editorDataArray),
             contentHeight: this.calculateContentHeight(editorDataArray)
         }, () => {
             onChange && onChange(editorDataArray.join('\n'));
@@ -241,8 +239,16 @@ export default class Editor extends Component {
             state.editorHeight = nextProps.height;
         }
 
-        if (!(_.isEmpty(state))) {
+        if (state.editorDataArray) {
+            state.contentWidth = this.calculateContentWidth(state.editorDataArray, this.refs.editorEl);
+            console.log(state.contentWidth);
+        }
+
+        if (state.editorDataArray || state.editorOptions) {
             state.contentHeight = this.calculateContentHeight(state.editorDataArray, editorOptions.lineHeight);
+        }
+
+        if (!(_.isEmpty(state))) {
             this.setState(state);
         }
 
