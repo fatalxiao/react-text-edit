@@ -153,8 +153,8 @@ export default class Editor extends Component {
 
     mouseDownHandle(e) {
         this.setState({
-            mouseX: e.clientX,
-            mouseY: e.clientY
+            mouseX: e.clientX + this.state.scrollLeft,
+            mouseY: e.clientY + this.state.scrollTop
         });
     }
 

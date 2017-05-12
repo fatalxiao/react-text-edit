@@ -47,7 +47,7 @@ export default class TextScroller extends Component {
             return;
         }
 
-        const offsetTop = Valid.range(mouseY + scrollTop - 10, 0),
+        const offsetTop = Valid.range(mouseY - 10, 0),
             row = Math.round(offsetTop / editorOptions.lineHeight),
             top = row * editorOptions.lineHeight,
             string = editorDataArray[row],
