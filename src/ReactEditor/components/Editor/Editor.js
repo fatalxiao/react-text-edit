@@ -76,6 +76,7 @@ export default class Editor extends Component {
         this.onChange = this::this.onChange;
         this.wheelHandle = this::this.wheelHandle;
         this.resizeHandle = this::this.resizeHandle;
+        this.editorMouseDownHandle = this::this.editorMouseDownHandle;
         this.mouseDownHandle = this::this.mouseDownHandle;
         this.mouseMoveHandle = this::this.mouseMoveHandle;
         this.mouseUpHandle = this::this.mouseUpHandle;
@@ -162,14 +163,9 @@ export default class Editor extends Component {
         });
     }
 
-    mouseDownHandle(e) {
+    editorMouseDownHandle(e) {
 
-        if (!Event.isTriggerOnEl(e, this.refs.editor)) {
-            this.setState({
-                isEditorFocused: false
-            });
-            return;
-        }
+        e.stopPropagation();
 
         this.isMouseDown = true;
 
@@ -183,6 +179,19 @@ export default class Editor extends Component {
             selectStopX: undefined,
             selectStopY: undefined
         });
+
+    }
+
+    mouseDownHandle(e) {
+
+        if (!Event.isTriggerOnEl(e, this.refs.editor)) {
+            this.setState({
+                isEditorFocused: false
+            });
+            return;
+        }
+
+        this.editorMouseDownHandle(e);
 
     }
 
@@ -205,18 +214,6 @@ export default class Editor extends Component {
 
     mouseUpHandle() {
         this.isMouseDown = false;
-    }
-
-    editorFocusHandle() {
-        this.setState({
-            isEditorFocused: false
-        });
-    }
-
-    editorBlurHandle() {
-        this.setState({
-            isEditorFocused: false
-        });
     }
 
     componentDidMount() {
