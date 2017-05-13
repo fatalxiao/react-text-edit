@@ -118,7 +118,7 @@ TextScroller.propTypes = {
     selectStartX: PropTypes.number,
     selectStartY: PropTypes.number,
     selectStopX: PropTypes.number,
-    selectStopY: PropTypes.number,
+    selectStopY: PropTypes.number
 };
 
 TextScroller.defaultProps = {

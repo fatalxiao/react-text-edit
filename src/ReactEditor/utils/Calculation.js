@@ -18,6 +18,13 @@ function sortPosition(start, stop) {
 
 }
 
+function hasSelection(start, stop) {
+    if (start && stop && start.row !== stop.row && start.col !== stop.col) {
+        return true;
+    }
+    return false;
+}
+
 function insertValue(dataArray, pos, value) {
 
     if (!dataArray || !pos || !(pos.row in dataArray) || !value) {
@@ -36,5 +43,6 @@ function insertValue(dataArray, pos, value) {
 
 export default {
     sortPosition,
+    hasSelection,
     insertValue
 };

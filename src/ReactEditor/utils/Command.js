@@ -5,7 +5,7 @@ function doDelete(e, props) {
 
     const {editorDataArray, selectStartPosition, selectStopPosition} = props;
 
-    if (selectStartPosition && selectStopPosition) { // if there is a selection
+    if (Calculation.hasSelection(selectStartPosition, selectStopPosition)) {
 
         let newPosition = Calculation.sortPosition(start, stop)[0];
 
@@ -44,7 +44,7 @@ function doInput(e, props) {
         return;
     }
 
-    if (selectStartPosition && selectStopPosition) {
+    if (Calculation.hasSelection(selectStartPosition, selectStopPosition)) {
         return doReplace(e, props);
     } else {
         return doInsert(e, props);
