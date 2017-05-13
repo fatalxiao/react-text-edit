@@ -67,6 +67,7 @@ function calculateCursorSelectionPosition(props) {
         const string = editorDataArray[cursorPosition.row];
         let tempCol, tempchar, tempChars;
 
+        // calculate start position
         selectStartPosition = Object.assign({}, cursorPosition);
         tempCol = cursorPosition.col;
         tempChars = [];
@@ -88,6 +89,7 @@ function calculateCursorSelectionPosition(props) {
             selectStartPosition.col -= tempChars.length;
         }
 
+        // calculate stop position
         selectStopPosition = Object.assign({}, cursorPosition);
         tempCol = cursorPosition.col;
         tempChars = [];
@@ -108,7 +110,6 @@ function calculateCursorSelectionPosition(props) {
             selectStopPosition.left += CharSize.calculateStringWidth(tempChars.join(''), editorEl);
             selectStopPosition.col += tempChars.length;
         }
-
 
     } else {
         selectStartPosition = calculateCursorPosition(selectStartX, selectStartY, props);
