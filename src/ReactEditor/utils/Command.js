@@ -1,15 +1,15 @@
 import Calculation from './Calculation';
 import CharSize from './CharSize';
 
-function doDelete(e, props) {
+function doDeleteSelection(props) {
 
     const {editorDataArray, selectStartPosition, selectStopPosition} = props;
 
     if (Calculation.hasSelection(selectStartPosition, selectStopPosition)) {
-
-        let newPosition = Calculation.sortPosition(start, stop)[0];
-
-
+        return {
+            newDataArray: Calculation.deleteSelection(editorDataArray, selectStartPosition, selectStopPosition),
+            newPosition: Calculation.sortPosition(selectStartPosition, selectStopPosition)[0]
+        };
     }
 
     return {
@@ -32,7 +32,7 @@ function doInsert(value, props) {
 
 }
 
-function doReplace(e, props) {
+function doReplace(value, props) {
     return;
 }
 
@@ -52,8 +52,16 @@ function doInput(e, props) {
 
 }
 
-function doBackSpace(e, props) {
-    return;
+function doBackSpace(props) {
+
+    const {selectStartPosition, selectStopPosition} = props;
+
+    if (Calculation.hasSelection(selectStartPosition, selectStopPosition)) {
+        return doDeleteSelection(props);
+    } else {
+        return; //doInsert(props);
+    }
+
 }
 
 function doCarriageReturn(e, props) {
@@ -61,6 +69,7 @@ function doCarriageReturn(e, props) {
 }
 
 export default {
+    doDeleteSelection,
     doInput,
     doBackSpace,
     doCarriageReturn
