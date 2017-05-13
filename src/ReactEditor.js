@@ -49,7 +49,13 @@ export default class ReactEditor extends Component {
              * whether forbidden scroll rebound or not
              * @type {boolean}
              */
-            forbiddenScrollRebound: false
+            forbiddenScrollRebound: false,
+
+            /**
+             * for detecting double-click or triple-click
+             * @type {number}
+             */
+            continuousClickInterval: 250
 
         };
 
@@ -104,7 +110,8 @@ ReactEditor.propTypes = {
         horizontalPadding: PropTypes.number,
         scrollBarWidth: PropTypes.number,
         scrollBarMinLength: PropTypes.number,
-        forbiddenScrollRebound: PropTypes.bool
+        forbiddenScrollRebound: PropTypes.bool,
+        continuousClickInterval: PropTypes.number
     }),
 
     /**

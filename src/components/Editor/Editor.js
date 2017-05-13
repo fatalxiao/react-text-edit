@@ -31,6 +31,8 @@ export default class Editor extends Component {
          */
         this.isMouseDown = false;
 
+        this.lastMouseDownTimeStamp = null;
+
         let editorDataArray = props.data.split('\n');
 
         let editorWidth = props.width,
@@ -58,7 +60,7 @@ export default class Editor extends Component {
              * whether this editor is focused
              * @type {boolean}
              */
-            isEditorFocused: true,
+            isEditorFocused: false,
 
             /**
              * editor data
@@ -124,7 +126,11 @@ export default class Editor extends Component {
              * select stop vertical offset
              * @type {number}
              */
-            selectStopY: 0
+            selectStopY: 0,
+
+            isDoubleClick: false,
+
+            isTripleClick: false
 
         };
 
@@ -267,20 +273,33 @@ export default class Editor extends Component {
      */
     editorMouseDownHandle(e) {
 
-        e.stopPropagation();
-
         this.isMouseDown = true;
 
-        const {scrollLeft, scrollTop} = this.state,
+        const {editorOptions} = this.props,
+            {scrollLeft, scrollTop, isDoubleClick, isTripleClick} = this.state,
             editorOffset = DomLib.getOffset(this.refs.editor);
 
-        this.setState({
+        let state = {
             isEditorFocused: true,
             selectStartX: undefined,
             selectStartY: undefined,
             selectStopX: e.clientX - editorOffset.left + scrollLeft,
             selectStopY: e.clientY - editorOffset.top + scrollTop
-        });
+        };
+
+        if (!isTripleClick && isDoubleClick && this.lastMouseDownTimeStamp
+            && e.timeStamp - this.lastMouseDownTimeStamp < editorOptions.continuousClickInterval) { // triple-click
+            state.isTripleClick = true;
+        } else if (!isTripleClick && !isDoubleClick && this.lastMouseDownTimeStamp
+            && e.timeStamp - this.lastMouseDownTimeStamp < editorOptions.continuousClickInterval) { // double-click
+            state.isDoubleClick = true;
+        } else {
+            state.isDoubleClick = false;
+            state.isTripleClick = false;
+        }
+
+        this.lastMouseDownTimeStamp = e.timeStamp;
+        this.setState(state);
 
     }
 
@@ -292,7 +311,9 @@ export default class Editor extends Component {
 
         if (!Event.isTriggerOnEl(e, this.refs.editor)) {
             this.setState({
-                isEditorFocused: false
+                isEditorFocused: false,
+                isDoubleClick: false,
+                isTripleClick: false
             });
             return;
         }
