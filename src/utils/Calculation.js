@@ -1,4 +1,78 @@
 import CharSize from './CharSize';
+import Valid from './Valid';
+
+function calculateTextDisplayIndex({editorDataArray, scrollTop, editorOptions, editorHeight}) {
+
+    const len = editorDataArray.length;
+
+    let start = Math.floor(scrollTop / editorOptions.lineHeight),
+        stop = start + Math.ceil(editorHeight / editorOptions.lineHeight);
+
+    start -= editorOptions.lineCache;
+    stop += editorOptions.lineCache;
+
+    return {
+        start: Valid.range(start, 0, len),
+        stop: Valid.range(stop, 0, len)
+    };
+
+}
+
+function calculateCursorPosition(x, y, {editorEl, editorDataArray, editorOptions}) {
+
+    if (isNaN(x) || isNaN(y)) {
+        return;
+    }
+
+    const offsetTop = Valid.range(y - 10, 0),
+        row = Math.round(offsetTop / editorOptions.lineHeight),
+        top = row * editorOptions.lineHeight,
+        offsetLeft = Valid.range(x - editorOptions.horizontalPadding + 3, 0),
+        {left, col} = CharSize.calculateCursorPosition(editorDataArray[row], offsetLeft, editorEl);
+
+    return {
+        left: left + editorOptions.horizontalPadding,
+        top,
+        row,
+        col
+    };
+
+}
+
+function calculateCursorSelectionPosition(props) {
+
+    const {
+        editorEl, editorDataArray, editorOptions, contentWidth, isDoubleClick, isTripleClick,
+        selectStartX, selectStartY, selectStopX, selectStopY
+    } = props;
+
+    let selectStartPosition, selectStopPosition, cursorPosition;
+
+    if (isTripleClick) {
+
+        cursorPosition = calculateCursorPosition(selectStopX, selectStopY, props);
+
+        selectStartPosition = Object.assign({}, cursorPosition);
+        selectStartPosition.left = editorOptions.horizontalPadding;
+        selectStartPosition.col = 0;
+
+        selectStopPosition = Object.assign({}, cursorPosition);
+        selectStopPosition.left = contentWidth + editorOptions.horizontalPadding * 2 + editorOptions.scrollBarWidth;
+        selectStopPosition.col = editorDataArray[cursorPosition.row].length;
+
+    } else if (isDoubleClick) {
+        selectStartPosition = calculateCursorPosition(selectStartX, selectStartY, props);
+        selectStopPosition = calculateCursorPosition(selectStopX, selectStopY, props);
+        cursorPosition = Object.assign({}, selectStopPosition);
+    } else {
+        selectStartPosition = calculateCursorPosition(selectStartX, selectStartY, props);
+        selectStopPosition = calculateCursorPosition(selectStopX, selectStopY, props);
+        cursorPosition = Object.assign({}, selectStopPosition);
+    }
+
+    return {selectStartPosition, selectStopPosition, cursorPosition};
+
+}
 
 function sortPosition(start, stop) {
 
@@ -139,6 +213,9 @@ function insertValue(dataArray, pos, value, lineHeight, editorEl) {
 }
 
 export default {
+    calculateTextDisplayIndex,
+    calculateCursorPosition,
+    calculateCursorSelectionPosition,
     sortPosition,
     hasSelection,
     getSelectionValue,

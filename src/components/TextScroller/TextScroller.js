@@ -8,6 +8,7 @@ import EditorCursor from '../EditorCursor';
 
 import Valid from '../../utils/Valid';
 import CharSize from '../../utils/CharSize';
+import Calculation from '../../utils/Calculation';
 
 import './TextScroller.scss';
 
@@ -17,26 +18,7 @@ export default class TextScroller extends Component {
 
         super(props);
 
-        this.calDisplayIndex = this::this.calDisplayIndex;
         this.calculateCursorPosition = this::this.calculateCursorPosition;
-
-    }
-
-    calDisplayIndex() {
-
-        const {editorDataArray, scrollTop, editorOptions, editorHeight} = this.props,
-            len = editorDataArray.length;
-
-        let start = Math.floor(scrollTop / editorOptions.lineHeight),
-            stop = start + Math.ceil(editorHeight / editorOptions.lineHeight);
-
-        start -= editorOptions.lineCache;
-        stop += editorOptions.lineCache;
-
-        return {
-            start: Valid.range(start, 0, len),
-            stop: Valid.range(stop, 0, len)
-        };
 
     }
 
@@ -65,28 +47,26 @@ export default class TextScroller extends Component {
 
     render() {
 
-        const {
-                isEditorFocused, editorDataArray, editorOptions, contentWidth, scrollTop, scrollLeft,
-                selectStartX, selectStartY, selectStopX, selectStopY
-            } = this.props,
+        const {isEditorFocused, editorDataArray, editorOptions, contentWidth, scrollTop, scrollLeft} = this.props,
             scrollerStyle = {
                 width: contentWidth + editorOptions.scrollBarWidth + editorOptions.horizontalPadding * 2,
                 height: editorDataArray.length * editorOptions.lineHeight,
                 transform: `translate3d(${-scrollLeft}px, ${-scrollTop}px, 0)`
             },
-            displayIndex = this.calDisplayIndex(),
-            selectStartPosition = this.calculateCursorPosition(selectStartX, selectStartY),
-            selectStopPosition = this.calculateCursorPosition(selectStopX, selectStopY);
+            displayIndex = Calculation.calculateTextDisplayIndex(this.props),
+            {selectStartPosition, selectStopPosition, cursorPosition} = Calculation.calculateCursorSelectionPosition(this.props);
 
         return (
             <div className="react-editor-text-scroller"
                  style={scrollerStyle}>
 
                 <TextInput {...this.props}
+                           cursorPosition={cursorPosition}
                            selectStartPosition={selectStartPosition}
                            selectStopPosition={selectStopPosition}/>
 
                 <TextMarker {...this.props}
+                            cursorPosition={cursorPosition}
                             selectStartPosition={selectStartPosition}
                             selectStopPosition={selectStopPosition}/>
 
@@ -96,7 +76,7 @@ export default class TextScroller extends Component {
                 {
                     isEditorFocused ?
                         <EditorCursor {...this.props}
-                                      cursorPosition={selectStopPosition}/>
+                                      cursorPosition={cursorPosition}/>
                         :
                         null
                 }

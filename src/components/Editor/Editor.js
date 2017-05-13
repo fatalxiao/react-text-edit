@@ -289,10 +289,12 @@ export default class Editor extends Component {
 
         if (!isTripleClick && isDoubleClick && this.lastMouseDownTimeStamp
             && e.timeStamp - this.lastMouseDownTimeStamp < editorOptions.continuousClickInterval) { // triple-click
+            state.isDoubleClick = false;
             state.isTripleClick = true;
         } else if (!isTripleClick && !isDoubleClick && this.lastMouseDownTimeStamp
             && e.timeStamp - this.lastMouseDownTimeStamp < editorOptions.continuousClickInterval) { // double-click
             state.isDoubleClick = true;
+            state.isTripleClick = false;
         } else {
             state.isDoubleClick = false;
             state.isTripleClick = false;
