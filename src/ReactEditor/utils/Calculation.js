@@ -18,16 +18,16 @@ function sortPosition(start, stop) {
 
 }
 
-function calculateResultText(origin, pos, string) {
+function insertValue(dataArray, pos, value) {
 
-    if (!origin || !pos || !(pos.row in origin) || !string) {
+    if (!dataArray || !pos || !(pos.row in dataArray) || !value) {
         return;
     }
 
-    let result = origin.slice(),
+    let result = dataArray.slice(),
         temp = result[pos.row].split('');
 
-    temp.splice(pos.col, 0, string);
+    temp.splice(pos.col, 0, value);
     result[pos.row] = temp.join('');
 
     return result;
@@ -36,5 +36,5 @@ function calculateResultText(origin, pos, string) {
 
 export default {
     sortPosition,
-    calculateResultText
+    insertValue
 };

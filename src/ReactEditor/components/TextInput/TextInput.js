@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 
-import Calculation from '../../utils/Calculation';
-import CharSize from '../../utils/CharSize';
+import Command from '../../utils/Command';
 
 import './TextInput.scss';
 
@@ -35,23 +33,14 @@ export default class TextInput extends Component {
 
     }
 
-    doChange(e, type) {
+    doChange(e, result) {
 
-        const {editorEl, editorDataArray, selectStartPosition, selectStopPosition, onChange} = this.props;
-
-        // calculate new cursor position
-        let newPostion = selectStopPosition;
-        if (selectStartPosition && selectStopPosition) { // if there is a selection
-            newPostion = Calculation.sortPosition(selectStartPosition, selectStopPosition)[0];
+        if (!result) {
+            return;
         }
 
-        // calculate new data
-        let newData;
-
-        newData = Calculation.calculateResultText(editorDataArray, newPostion, e.target.value);
-        newPostion.left += CharSize.calculateStringWidth(e.target.value, editorEl);
-
-        onChange(newData, newPostion);
+        const {newDataArray, newPosition} = result;
+        this.props.onChange(newDataArray, newPosition);
 
         e.target.value = '';
         this.init();
@@ -59,16 +48,16 @@ export default class TextInput extends Component {
     }
 
     changeHandle(e) {
-        this.doChange(e);
+        this.doChange(e, Command.doInput(e.target.value, this.props));
     }
 
     keyDownHandle(e) {
         // switch (e.keyCode) {
         //     case 8:
-        //         this.doChange(e, Calculation.ChangeType.BACK_SPACE);
+        //         this.doChange(e, Command.doBackSpace(this.props));
         //         break;
         //     case 13:
-        //         this.doChange(e, Calculation.ChangeType.CARRIAGE_RETURN);
+        //         this.doChange(e, Command.doCarriageReturn(this.props));
         //         break;
         // }
     }
