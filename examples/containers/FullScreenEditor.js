@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import ReactEditor from 'src';
+import ReactEditor from 'src/ReactEditor';
 
 import MacDownHelpText from 'assets/files/MacDownHelp.txt';
 
