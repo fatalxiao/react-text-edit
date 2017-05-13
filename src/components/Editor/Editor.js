@@ -35,7 +35,7 @@ export default class Editor extends Component {
 
         let editorWidth = props.width,
             editorHeight = props.height;
-        if (props.editorOptions.isFullScreen) {
+        if (props.isFullScreen) {
             editorWidth = window.innerWidth;
             editorHeight = window.innerHeight;
         }
@@ -67,13 +67,13 @@ export default class Editor extends Component {
             editorDataArray,
 
             /**
-             * editor width from invoker (or '100%' if isFullScreen is true in editorOptions)
+             * editor width from invoker (or '100%' if isFullScreen is true)
              * @type {number}
              */
             editorWidth,
 
             /**
-             * editor height from invoker (or '100%' if isFullScreen is true in editorOptions)
+             * editor height from invoker (or '100%' if isFullScreen is true)
              * @type {number}
              */
             editorHeight,
@@ -351,7 +351,7 @@ export default class Editor extends Component {
         Event.addEvent(document, 'mousedown', this.mouseDownHandle);
         Event.addEvent(document, 'mousemove', this.mouseMoveHandle);
         Event.addEvent(document, 'mouseup', this.mouseUpHandle);
-        this.props.editorOptions.isFullScreen && Event.addEvent(window, 'resize', this.resizeHandle);
+        this.props.isFullScreen && Event.addEvent(window, 'resize', this.resizeHandle);
 
         // asyn calculate content width and start editor
         setTimeout(() => {
@@ -371,11 +371,11 @@ export default class Editor extends Component {
             state.editorDataArray = nextProps.data.split('\n');
         }
 
-        if (!nextProps.editorOptions.isFullScreen && nextProps.width !== this.state.editorWidth) {
+        if (!nextProps.isFullScreen && nextProps.width !== this.state.editorWidth) {
             state.editorWidth = nextProps.width;
         }
 
-        if (!nextProps.editorOptions.isFullScreen && nextProps.height !== this.state.editorHeight) {
+        if (!nextProps.isFullScreen && nextProps.height !== this.state.editorHeight) {
             state.editorHeight = nextProps.height;
         }
 
@@ -401,12 +401,12 @@ export default class Editor extends Component {
         Event.removeEvent(document, 'mousedown', this.mouseDownHandle);
         Event.removeEvent(document, 'mousemove', this.mouseMoveHandle);
         Event.removeEvent(document, 'mouseup', this.mouseUpHandle);
-        this.props.editorOptions.isFullScreen && Event.removeEvent(window, 'resize', this.resizeHandle);
+        this.props.isFullScreen && Event.removeEvent(window, 'resize', this.resizeHandle);
     }
 
     render() {
 
-        const {className, style, editorOptions} = this.props;
+        const {className, style, isFullScreen} = this.props;
         const {editorWidth, editorHeight} = this.state;
 
         const editorSize = {
@@ -416,7 +416,7 @@ export default class Editor extends Component {
 
         return (
             <div ref="editor"
-                 className={`react-editor ${editorOptions.isFullScreen ? 'react-editor-full-screen' : ''} ${className}`}
+                 className={`react-editor ${isFullScreen ? 'react-editor-full-screen' : ''} ${className}`}
                  style={{...editorSize, ...style}}
                  onWheel={this.wheelHandle}>
 
@@ -447,11 +447,11 @@ Editor.propTypes = {
 
     data: PropTypes.string,
 
+    isFullScreen: PropTypes.bool,
     width: PropTypes.number,
     height: PropTypes.number,
 
     editorOptions: PropTypes.shape({
-        isFullScreen: PropTypes.bool,
         width: PropTypes.number,
         height: PropTypes.number,
         lineHeight: PropTypes.number,
@@ -473,6 +473,7 @@ Editor.defaultProps = {
 
     data: '',
 
+    isFullScreen: false,
     width: 500,
     height: 200,
 

@@ -76,11 +76,11 @@ ReactEditor.propTypes = {
 
     data: PropTypes.string,
 
+    isFullScreen: PropTypes.bool,
     width: PropTypes.number,
     height: PropTypes.number,
 
     options: PropTypes.shape({
-        isFullScreen: PropTypes.bool,
         width: PropTypes.number,
         height: PropTypes.number,
         lineHeight: PropTypes.number,
@@ -102,6 +102,7 @@ ReactEditor.defaultProps = {
 
     data: '',
 
+    isFullScreen: false,
     width: 500,
     height: 200,
 
