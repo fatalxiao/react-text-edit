@@ -20,15 +20,15 @@
 
 @keyframes blink {
     0% {
-        opacity: 0;
-    }
-    1% {
         opacity: 1;
     }
     50% {
         opacity: 1;
     }
     51% {
+        opacity: 0;
+    }
+    99% {
         opacity: 0;
     }
 }
