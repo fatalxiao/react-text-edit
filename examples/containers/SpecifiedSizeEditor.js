@@ -39,7 +39,7 @@ export default class SpecifiedSizeEditor extends Component {
                     <ReactEditor className="specified-size-editor"
                                  data={data1}
                                  width={500}
-                                 heigh={200}
+                                 height={200}
                                  onChange={(data) => {
                                      this.changeHandle(1, data);
                                  }}/>
@@ -50,7 +50,7 @@ export default class SpecifiedSizeEditor extends Component {
                     <ReactEditor className="specified-size-editor"
                                  data={data2}
                                  width={800}
-                                 heigh={400}
+                                 height={400}
                                  onChange={(data) => {
                                      this.changeHandle(2, data);
                                  }}/>
