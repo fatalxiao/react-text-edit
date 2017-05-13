@@ -108,7 +108,6 @@ export default class TextScroller extends Component {
 };
 
 TextScroller.propTypes = {
-
     isEditorFocused: PropTypes.bool,
     editorDataArray: PropTypes.array,
     editorHeight: PropTypes.number,
@@ -120,9 +119,6 @@ TextScroller.propTypes = {
     selectStartY: PropTypes.number,
     selectStopX: PropTypes.number,
     selectStopY: PropTypes.number,
-
-    onChange: PropTypes.func
-
 };
 
 TextScroller.defaultProps = {
