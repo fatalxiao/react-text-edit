@@ -116,8 +116,6 @@ export default class Editor extends Component {
 
     onChange(editorDataArray, cursorPosition) {
 
-        const {onChange} = this.props;
-
         this.setState({
             editorDataArray,
             contentWidth: this.calculateContentWidth(editorDataArray),
@@ -127,7 +125,7 @@ export default class Editor extends Component {
             selectStopX: cursorPosition.left,
             selectStopY: cursorPosition.top
         }, () => {
-            onChange && onChange(editorDataArray.join('\n'));
+            this.props.onChange && this.props.onChange(editorDataArray.join('\n'));
         });
 
     }
