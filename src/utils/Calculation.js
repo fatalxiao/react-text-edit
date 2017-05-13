@@ -61,9 +61,55 @@ function calculateCursorSelectionPosition(props) {
         selectStopPosition.col = editorDataArray[cursorPosition.row].length;
 
     } else if (isDoubleClick) {
-        selectStartPosition = calculateCursorPosition(selectStartX, selectStartY, props);
-        selectStopPosition = calculateCursorPosition(selectStopX, selectStopY, props);
-        cursorPosition = Object.assign({}, selectStopPosition);
+
+        cursorPosition = calculateCursorPosition(selectStopX, selectStopY, props);
+
+        const string = editorDataArray[cursorPosition.row];
+        let tempCol, tempchar, tempChars;
+
+        selectStartPosition = Object.assign({}, cursorPosition);
+        tempCol = cursorPosition.col;
+        tempChars = [];
+        do {
+
+            tempchar = string.at(tempCol - 1);
+
+            if (!editorOptions.discontinuousChars.includes(tempchar)) {
+                tempChars.push(tempchar);
+            } else {
+                break;
+            }
+
+            tempCol--;
+
+        } while (tempCol > 0);
+        if (tempChars.length > 0) {
+            selectStartPosition.left -= CharSize.calculateStringWidth(tempChars.join(''), editorEl);
+            selectStartPosition.col -= tempChars.length;
+        }
+
+        selectStopPosition = Object.assign({}, cursorPosition);
+        tempCol = cursorPosition.col;
+        tempChars = [];
+        do {
+
+            tempchar = string.at(tempCol);
+
+            if (!editorOptions.discontinuousChars.includes(tempchar)) {
+                tempChars.push(tempchar);
+            } else {
+                break;
+            }
+
+            tempCol++;
+
+        } while (tempCol < string.length);
+        if (tempChars.length > 0) {
+            selectStopPosition.left += CharSize.calculateStringWidth(tempChars.join(''), editorEl);
+            selectStopPosition.col += tempChars.length;
+        }
+
+
     } else {
         selectStartPosition = calculateCursorPosition(selectStartX, selectStartY, props);
         selectStopPosition = calculateCursorPosition(selectStopX, selectStopY, props);

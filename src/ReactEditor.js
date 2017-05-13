@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import 'string.prototype.at';
 
 import Editor from './components/Editor';
 
@@ -55,7 +56,17 @@ export default class ReactEditor extends Component {
              * for detecting double-click or triple-click
              * @type {number}
              */
-            continuousClickInterval: 250
+            continuousClickInterval: 250,
+
+            /**
+             * discontinued selection when double-click if meet these chars
+             * @type {array of string}
+             */
+            discontinuousChars: [
+                ' ', '"', '\'', '{', '}', '[', ']', ',', '.', '|', '\\',
+                '#', '!', '@', '%', '^', '&', '*', '(', ')', '+', '=',
+                '/', '?', '<', '>', ';', ':', '~', '`', '-'
+            ]
 
         };
 
@@ -67,6 +78,7 @@ export default class ReactEditor extends Component {
                     editorOptions={Object.assign(this.defaultOptions, this.props.options)}/>
         );
     }
+
 };
 
 ReactEditor.propTypes = {
@@ -102,7 +114,7 @@ ReactEditor.propTypes = {
     height: PropTypes.number,
 
     /**
-     * editor extra options (see defaultOptions for detail)
+     * editor extra options (see "defaultOptions" for detail)
      */
     options: PropTypes.shape({
         lineHeight: PropTypes.number,
@@ -111,7 +123,8 @@ ReactEditor.propTypes = {
         scrollBarWidth: PropTypes.number,
         scrollBarMinLength: PropTypes.number,
         forbiddenScrollRebound: PropTypes.bool,
-        continuousClickInterval: PropTypes.number
+        continuousClickInterval: PropTypes.number,
+        discontinuousChars: PropTypes.array
     }),
 
     /**
