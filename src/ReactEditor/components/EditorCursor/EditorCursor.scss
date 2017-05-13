@@ -13,12 +13,12 @@
         position: absolute;
         width: 2px;
         height: 20px;
-        animation: twinkle 1s ease-in-out infinite;
+        animation: blink 1s ease-in-out infinite;
         background: $theme-cursor;
     }
 }
 
-@keyframes twinkle {
+@keyframes blink {
     0% {
         opacity: 0;
     }
