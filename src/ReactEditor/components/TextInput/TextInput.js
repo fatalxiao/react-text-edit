@@ -56,9 +56,6 @@ export default class TextInput extends Component {
             case 8:
                 this.doChange(e, Command.doDelete(this.props));
                 break;
-            case 13:
-                // this.doChange(e, Command.doCarriageReturn(this.props));
-                break;
         }
     }
 

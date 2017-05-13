@@ -1,5 +1,4 @@
 import Calculation from './Calculation';
-import CharSize from './CharSize';
 
 function doDeleteLine(props) {
     const {editorEl, editorDataArray, editorOptions, selectStopPosition} = props;
@@ -48,20 +47,13 @@ function doDelete(props) {
 }
 
 function doInsert(value, props) {
-
-    const {editorEl, editorDataArray, selectStopPosition} = props;
-
-    let newPosition = Object.assign({}, selectStopPosition);
-
-    let newDataArray = Calculation.insertValue(editorDataArray, newPosition, value);
-    newPosition.left += CharSize.calculateStringWidth(value, editorEl);
-
-    return {newDataArray, newPosition};
-
+    const {editorEl, editorDataArray, editorOptions, selectStopPosition} = props;
+    return Calculation.insertValue(editorDataArray, selectStopPosition, value, editorOptions.lineHeight, editorEl);
 }
 
 function doReplace(value, props) {
-    return;
+    let {newDataArray, newPosition} = doDeleteSelection(props);
+    return doInsert(value, {...props, editorDataArray: newDataArray, selectStopPosition: newPosition});
 }
 
 function doInput(e, props) {
@@ -76,10 +68,6 @@ function doInput(e, props) {
 
 }
 
-function doCarriageReturn(e, props) {
-    return;
-}
-
 export default {
     doDeleteLine,
     doDeleteChar,
@@ -88,6 +76,5 @@ export default {
     doDelete,
     doInsert,
     doReplace,
-    doInput,
-    doCarriageReturn
+    doInput
 };

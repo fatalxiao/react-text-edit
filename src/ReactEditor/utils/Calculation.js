@@ -84,19 +84,31 @@ function deleteSelection(dataArray, start, stop) {
 
 }
 
-function insertValue(dataArray, pos, value) {
+function insertValue(dataArray, pos, value, lineHeight, editorEl) {
 
     if (!dataArray || !pos || !(pos.row in dataArray) || !value) {
         return;
     }
 
-    let result = dataArray.slice(),
-        temp = result[pos.row].split('');
+    let newDataArray = dataArray.slice(),
+        newPosition = Object.assign({}, pos),
+        temp = dataArray[pos.row].split('');
 
     temp.splice(pos.col, 0, value);
-    result[pos.row] = temp.join('');
+    newDataArray[pos.row] = temp.join('');
 
-    return result.join('\n').split('\n');
+    const valueArray = value.split('\n');
+    if (valueArray.length > 1) {
+        newPosition.top += (valueArray.length - 1) * lineHeight;
+        newPosition.left = CharSize.calculateStringWidth(valueArray[valueArray.length - 1], editorEl);
+    } else {
+        newPosition.left += CharSize.calculateStringWidth(value, editorEl);
+    }
+
+    return {
+        newDataArray: newDataArray.join('\n').split('\n'),
+        newPosition
+    };
 
 }
 
