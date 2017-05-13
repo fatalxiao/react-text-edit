@@ -27,6 +27,32 @@ function hasSelection(start, stop) {
     return false;
 }
 
+function getSelectionValue(dataArray, start, stop) {
+
+    if (!dataArray || !start || !stop || !hasSelection(start, stop)) {
+        return '';
+    }
+
+    [start, stop] = sortPosition(start, stop);
+
+    if (start.row === stop.row) { // in one line
+        return dataArray[start.row].slice(start.col, stop.col);
+    } else {
+
+        let result = [];
+
+        result.push(dataArray[start.row].slice(start.col));
+        for (let i = start.row + 1; i < stop.row; i++) {
+            result.push(dataArray[i]);
+        }
+        result.push(dataArray[stop.row].slice(0, stop.col));
+
+        return result;
+
+    }
+
+}
+
 function deleteLine(dataArray, pos, lineHeight, editorEl) {
 
     if (!dataArray || !pos || !(pos.row in dataArray) || !lineHeight) {
@@ -115,6 +141,7 @@ function insertValue(dataArray, pos, value, lineHeight, editorEl) {
 export default {
     sortPosition,
     hasSelection,
+    getSelectionValue,
     deleteLine,
     deleteChar,
     deleteSelection,

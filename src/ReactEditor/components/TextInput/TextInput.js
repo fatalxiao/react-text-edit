@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 import Command from '../../utils/Command';
+import Calculation from '../../utils/Calculation';
 
 import './TextInput.scss';
 
@@ -11,14 +13,19 @@ export default class TextInput extends Component {
 
         super(props);
 
-        this.init = this::this.init;
+        this.state = {
+            value: this.calculateValue(props)
+        };
+
+        this.focus = this::this.focus;
+        this.calculateValue = this::this.calculateValue;
         this.doChange = this::this.doChange;
         this.changeHandle = this::this.changeHandle;
         this.keyDownHandle = this::this.keyDownHandle;
 
     }
 
-    init(props = this.props) {
+    focus(props = this.props) {
 
         if (!props.isEditorFocused) {
             return;
@@ -28,56 +35,81 @@ export default class TextInput extends Component {
 
         setTimeout(() => {
             textInput.focus();
-            textInput.setSelectionRange(0, 0);
+            textInput.setSelectionRange(0, textInput.value.length);
         }, 0);
 
     }
 
-    doChange(e, result) {
+    calculateValue(props = this.props) {
+        return Calculation.getSelectionValue(
+            props.editorDataArray, props.selectStartPosition, props.selectStopPosition
+        );
+    }
+
+    doChange(result) {
 
         if (!result) {
             return;
         }
 
         const {newDataArray, newPosition} = result;
-        this.props.onChange(newDataArray, newPosition);
 
-        e.target.value = '';
-        this.init();
+        this.setState({
+            value: ''
+        }, () => {
+            this.props.onChange(newDataArray, newPosition);
+            this.focus();
+        });
 
     }
 
     changeHandle(e) {
-        this.doChange(e, Command.doInput(e.target.value, this.props));
+        this.doChange(Command.doInput(e.target.value, this.props));
     }
 
     keyDownHandle(e) {
         switch (e.keyCode) {
             case 8:
-                this.doChange(e, Command.doDelete(this.props));
+                this.doChange(Command.doDelete(this.props));
                 break;
         }
     }
 
     componentDidMount() {
-        this.init();
+        this.focus();
     }
 
     componentWillReceiveProps(nextProps) {
-        this.init(nextProps);
+
+        if (!_.isEqual(nextProps.selectStartPosition, this.props.selectStartPosition)
+            || !_.isEqual(nextProps.selectStopPosition, this.props.selectStopPosition)) {
+            this.setState({
+                value: this.calculateValue(nextProps)
+            }, () => {
+                this.focus(nextProps);
+            });
+        }
+
+        this.focus(nextProps);
+
     }
 
     componentDidUpdate(prevProps) {
-        this.init(prevProps);
+        this.focus(prevProps);
     }
 
     render() {
+
+        const {value} = this.state;
+
         return (
             <textarea ref="textInput"
                       className="react-editor-text-input"
+                      value={value}
                       onChange={this.changeHandle}
                       onKeyDown={this.keyDownHandle}></textarea>
         );
+
     }
 };
 
