@@ -68,16 +68,19 @@ function deleteSelection(dataArray, start, stop) {
         return;
     }
 
-    let result = dataArray.slice();
+    let newDataArray = dataArray.slice();
     [start, stop] = sortPosition(start, stop);
 
-    result[start.row] = result[start.row].slice(0, start.col) + result[stop.row].slice(stop.col);
+    newDataArray[start.row] = dataArray[start.row].slice(0, start.col) + dataArray[stop.row].slice(stop.col);
 
     if (start.row !== stop.row) { // not in one line
-        result.splice(start.row + 1, stop.row - start.row);
+        newDataArray.splice(start.row + 1, stop.row - start.row);
     }
 
-    return result;
+    return {
+        newDataArray,
+        newPosition: sortPosition(start, stop)[0]
+    };
 
 }
 
