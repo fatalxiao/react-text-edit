@@ -19,17 +19,67 @@ export default class Editor extends Component {
 
         super(props);
 
-        this._nextStateAnimationFrameId = null;
-        this.isMouseDown = false;
+        /**
+         * for resize event
+         * @type {null}
+         */
+        this.nextStateAnimationFrameId = null;
+
+        /**
+         * default editor options
+         * @type {object}
+         */
         this.defaultOptions = {
+
+            /**
+             * whether display full screen or not
+             * @type {boolean}
+             */
             isFullScreen: false,
+
+            /**
+             * height of one text line
+             * @type {number}
+             */
             lineHeight: 20,
+
+            /**
+             * before and after text render cache
+             * @type {number}
+             */
             lineCache: 5,
+
+            /**
+             * horizontal Padding of editor (both left and right)
+             * @type {number}
+             */
             horizontalPadding: 6,
+
+            /**
+             * width of scroll bars
+             * @type {number}
+             */
             scrollBarWidth: 12,
+
+            /**
+             * minimum length of scroll bars
+             * @type {number}
+             */
             scrollBarMinLength: 60,
+
+            /**
+             * whether forbidden scroll rebound or not
+             * @type {boolean}
+             */
             forbiddenScrollRebound: false
+
         };
+
+        /**
+         * mouse down flag
+         * @type {boolean}
+         */
+        this.isMouseDown = false;
 
         let editorDataArray = props.data.split('\n'),
             editorOptions = {...this.defaultOptions, ...props.options};
@@ -43,32 +93,99 @@ export default class Editor extends Component {
 
         this.state = {
 
+            /**
+             * editor inital flag
+             * @type {boolean}
+             */
             editorInital: false,
 
+            /**
+             * editor element
+             * @type {object}
+             */
             editorEl: null,
 
+            /**
+             * whether this editor is focused
+             * @type {boolean}
+             */
             isEditorFocused: true,
 
+            /**
+             * editor data
+             * @type {array}
+             */
             editorDataArray,
+
+            /**
+             * editor options
+             * @type {object}
+             */
             editorOptions,
 
+            /**
+             * editor width from invoker (or '100%' if isFullScreen is true in editorOptions)
+             * @type {number}
+             */
             editorWidth,
+
+            /**
+             * editor height from invoker (or '100%' if isFullScreen is true in editorOptions)
+             * @type {number}
+             */
             editorHeight,
 
+            /**
+             * editor text content width
+             * @type {number}
+             */
             contentWidth: 0,
+
+            /**
+             * editor text content height
+             * @type {number}
+             */
             contentHeight: this.calculateContentHeight(editorDataArray, editorOptions.lineHeight),
 
-            scrollTop: 0,
+            /**
+             * editor text content scroll left offset
+             * @type {number}
+             */
             scrollLeft: 0,
 
+            /**
+             * editor text content scroll top offset
+             * @type {number}
+             */
+            scrollTop: 0,
+
+            /**
+             * select start horizontal offset
+             * @type {number}
+             */
             selectStartX: undefined,
+
+            /**
+             * select start vertical offset
+             * @type {number}
+             */
             selectStartY: undefined,
+
+            /**
+             * select stop horizontal offset
+             * @type {number}
+             */
             selectStopX: editorOptions.horizontalPadding,
+
+            /**
+             * select stop vertical offset
+             * @type {number}
+             */
             selectStopY: 0
 
         };
 
-        this._setNextState = this::this._setNextState;
+        this.setNextState = this::this.setNextState;
         this.calculateContentWidth = this::this.calculateContentWidth;
         this.calculateContentHeight = this::this.calculateContentHeight;
         this.scrollX = this::this.scrollX;
@@ -83,12 +200,12 @@ export default class Editor extends Component {
 
     }
 
-    _setNextState(state) {
-        if (this._nextStateAnimationFrameId) {
-            cancelAnimationFrame(this._nextStateAnimationFrameId);
+    setNextState(state) {
+        if (this.nextStateAnimationFrameId) {
+            cancelAnimationFrame(this.nextStateAnimationFrameId);
         }
-        this._nextStateAnimationFrameId = requestAnimationFrame(() => {
-            this._nextStateAnimationFrameId = null;
+        this.nextStateAnimationFrameId = requestAnimationFrame(() => {
+            this.nextStateAnimationFrameId = null;
             this.setState(state);
         });
     }
@@ -150,7 +267,7 @@ export default class Editor extends Component {
             editorOptions.forbiddenScrollRebound && e.preventDefault();
         }
 
-        // this._setNextState({
+        // this.setNextState({
         this.setState({
             scrollTop: top,
             scrollLeft: left
@@ -159,7 +276,7 @@ export default class Editor extends Component {
     }
 
     resizeHandle() {
-        this._setNextState({
+        this.setNextState({
             editorWidth: window.innerWidth,
             editorHeight: window.innerHeight
         });
@@ -241,7 +358,7 @@ export default class Editor extends Component {
         this.state.editorOptions.isFullScreen && Event.addEvent(window, 'resize', this.resizeHandle);
 
         setTimeout(() => {
-            this._setNextState({
+            this.setNextState({
                 contentWidth: this.calculateContentWidth(),
                 editorInital: true
             });
