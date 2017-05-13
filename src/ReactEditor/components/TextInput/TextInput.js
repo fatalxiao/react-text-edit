@@ -13,12 +13,6 @@ export default class TextInput extends Component {
 
         super(props);
 
-        this.ChangeType = {
-            INPUT: 'INPUT',
-            BACK_SPACE: 'BACK_SPACE',
-            CARRIAGE_RETURN: 'CARRIAGE_RETURN'
-        };
-
         this.init = this::this.init;
         this.doChange = this::this.doChange;
         this.changeHandle = this::this.changeHandle;
@@ -45,13 +39,16 @@ export default class TextInput extends Component {
 
         const {editorEl, editorDataArray, selectStartPosition, selectStopPosition, onChange} = this.props;
 
+        // calculate new cursor position
         let newPostion = selectStopPosition;
         if (selectStartPosition && selectStopPosition) { // if there is a selection
             newPostion = Calculation.sortPosition(selectStartPosition, selectStopPosition)[0];
         }
 
-        const newData = Calculation.calculateResultText(editorDataArray, selectStopPosition, e.target.value);
+        // calculate new data
+        let newData;
 
+        newData = Calculation.calculateResultText(editorDataArray, newPostion, e.target.value);
         newPostion.left += CharSize.calculateStringWidth(e.target.value, editorEl);
 
         onChange(newData, newPostion);
@@ -62,18 +59,18 @@ export default class TextInput extends Component {
     }
 
     changeHandle(e) {
-        this.doChange(e, this.ChangeType.INPUT);
+        this.doChange(e);
     }
 
     keyDownHandle(e) {
-        switch (e.keyCode) {
-            case 8:
-                this.doChange(e, this.ChangeType.BACK_SPACE);
-                break;
-            case 13:
-                this.doChange(e, this.ChangeType.CARRIAGE_RETURN);
-                break;
-        }
+        // switch (e.keyCode) {
+        //     case 8:
+        //         this.doChange(e, Calculation.ChangeType.BACK_SPACE);
+        //         break;
+        //     case 13:
+        //         this.doChange(e, Calculation.ChangeType.CARRIAGE_RETURN);
+        //         break;
+        // }
     }
 
     componentDidMount() {
