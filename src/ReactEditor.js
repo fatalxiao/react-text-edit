@@ -16,12 +16,6 @@ export default class ReactEditor extends Component {
         this.defaultOptions = {
 
             /**
-             * whether display full screen or not
-             * @type {boolean}
-             */
-            isFullScreen: false,
-
-            /**
              * height of one text line
              * @type {number}
              */
@@ -71,18 +65,40 @@ export default class ReactEditor extends Component {
 
 ReactEditor.propTypes = {
 
+    /**
+     * specified editor className
+     */
     className: PropTypes.string,
+
+    /**
+     * specified editor style
+     */
     style: PropTypes.object,
 
+    /**
+     * editor text data
+     */
     data: PropTypes.string,
 
+    /**
+     * whether display full screen or not
+     */
     isFullScreen: PropTypes.bool,
+
+    /**
+     * specified editor width
+     */
     width: PropTypes.number,
+
+    /**
+     * specified editor height
+     */
     height: PropTypes.number,
 
+    /**
+     * editor extra options (see defaultOptions for detail)
+     */
     options: PropTypes.shape({
-        width: PropTypes.number,
-        height: PropTypes.number,
         lineHeight: PropTypes.number,
         lineCache: PropTypes.number,
         horizontalPadding: PropTypes.number,
@@ -91,6 +107,9 @@ ReactEditor.propTypes = {
         forbiddenScrollRebound: PropTypes.bool
     }),
 
+    /**
+     * text data change callback
+     */
     onChange: PropTypes.func
 
 };

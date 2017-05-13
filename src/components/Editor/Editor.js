@@ -451,16 +451,7 @@ Editor.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
 
-    editorOptions: PropTypes.shape({
-        width: PropTypes.number,
-        height: PropTypes.number,
-        lineHeight: PropTypes.number,
-        lineCache: PropTypes.number,
-        horizontalPadding: PropTypes.number,
-        scrollBarWidth: PropTypes.number,
-        scrollBarMinLength: PropTypes.number,
-        forbiddenScrollRebound: PropTypes.bool
-    }),
+    editorOptions: PropTypes.object,
 
     onChange: PropTypes.func
 
