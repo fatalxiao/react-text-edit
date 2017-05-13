@@ -148,13 +148,13 @@ export default class Editor extends Component {
             contentHeight: this.calculateContentHeight(editorDataArray, editorOptions.lineHeight),
 
             /**
-             * editor text content scroll left offset
+             * editor text content scroll horizontal offset
              * @type {number}
              */
             scrollLeft: 0,
 
             /**
-             * editor text content scroll top offset
+             * editor text content scroll vertical offset
              * @type {number}
              */
             scrollTop: 0,
@@ -200,6 +200,10 @@ export default class Editor extends Component {
 
     }
 
+    /**
+     * resize event for optimization
+     * @param state
+     */
     setNextState(state) {
         if (this.nextStateAnimationFrameId) {
             cancelAnimationFrame(this.nextStateAnimationFrameId);
@@ -210,27 +214,51 @@ export default class Editor extends Component {
         });
     }
 
+    /**
+     * calculate max line width as text content width,
+     * @param editorDataArray
+     * @returns {number}
+     */
     calculateContentWidth(editorDataArray = this.state.editorDataArray) {
         return Math.ceil(CharSize.calculateMaxLineWidth(editorDataArray, this.refs.editor));
     }
 
+    /**
+     * calculate lines height as text content height
+     * @param editorDataArray
+     * @param lineHeight
+     * @returns {number}
+     */
     calculateContentHeight(editorDataArray = this.state.editorDataArray,
                            lineHeight = this.state.editorOptions.lineHeight) {
         return editorDataArray.length * lineHeight;
     }
 
+    /**
+     * set text content scroll horizontal offset
+     * @param scrollLeft
+     */
     scrollX(scrollLeft) {
         this.setState({
             scrollLeft
         });
     }
 
+    /**
+     * set text content scroll vertical offset
+     * @param scrollLeft
+     */
     scrollY(scrollTop) {
         this.setState({
             scrollTop
         });
     }
 
+    /**
+     * handle text change event, reset new text data and cursor position
+     * @param editorDataArray
+     * @param cursorPosition
+     */
     onChange(editorDataArray, cursorPosition) {
 
         this.setState({
@@ -247,6 +275,10 @@ export default class Editor extends Component {
 
     }
 
+    /**
+     * handle wheel event, reset text content offset
+     * @param e
+     */
     wheelHandle(e) {
 
         const {editorDataArray, editorWidth, editorOptions, scrollTop, scrollLeft, contentWidth} = this.state,
@@ -275,6 +307,9 @@ export default class Editor extends Component {
 
     }
 
+    /**
+     * handle editor resize, reset editor size
+     */
     resizeHandle() {
         this.setNextState({
             editorWidth: window.innerWidth,
@@ -282,6 +317,10 @@ export default class Editor extends Component {
         });
     }
 
+    /**
+     * handle editor mouse down event, reset focus flag and text selection
+     * @param e
+     */
     editorMouseDownHandle(e) {
 
         e.stopPropagation();
@@ -301,6 +340,10 @@ export default class Editor extends Component {
 
     }
 
+    /**
+     * handle global mouse down event, reset focus false if trigger target is not this editor
+     * @param e
+     */
     mouseDownHandle(e) {
 
         if (!Event.isTriggerOnEl(e, this.refs.editor)) {
@@ -314,6 +357,10 @@ export default class Editor extends Component {
 
     }
 
+    /**
+     * handle global mouse move event, reset text selection
+     * @param e
+     */
     mouseMoveHandle(e) {
 
         if (!this.isMouseDown) {
@@ -341,22 +388,28 @@ export default class Editor extends Component {
 
     }
 
+    /**
+     * handle global mouse up event, reset editor mouse down flag false
+     */
     mouseUpHandle() {
         this.isMouseDown = false;
     }
 
     componentDidMount() {
 
+        // set editorEl in state for children components
         this.setState({
             editorEl: this.refs.editor
         });
 
+        // add global events
         Event.addEvent(document, 'dragstart', Event.preventEvent);
         Event.addEvent(document, 'mousedown', this.mouseDownHandle);
         Event.addEvent(document, 'mousemove', this.mouseMoveHandle);
         Event.addEvent(document, 'mouseup', this.mouseUpHandle);
         this.state.editorOptions.isFullScreen && Event.addEvent(window, 'resize', this.resizeHandle);
 
+        // asyn calculate content width and start editor
         setTimeout(() => {
             this.setNextState({
                 contentWidth: this.calculateContentWidth(),
