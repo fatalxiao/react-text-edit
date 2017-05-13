@@ -26,67 +26,16 @@ export default class Editor extends Component {
         this.nextStateAnimationFrameId = null;
 
         /**
-         * default editor options
-         * @type {object}
-         */
-        this.defaultOptions = {
-
-            /**
-             * whether display full screen or not
-             * @type {boolean}
-             */
-            isFullScreen: false,
-
-            /**
-             * height of one text line
-             * @type {number}
-             */
-            lineHeight: 20,
-
-            /**
-             * before and after text render cache
-             * @type {number}
-             */
-            lineCache: 5,
-
-            /**
-             * horizontal Padding of editor (both left and right)
-             * @type {number}
-             */
-            horizontalPadding: 6,
-
-            /**
-             * width of scroll bars
-             * @type {number}
-             */
-            scrollBarWidth: 12,
-
-            /**
-             * minimum length of scroll bars
-             * @type {number}
-             */
-            scrollBarMinLength: 60,
-
-            /**
-             * whether forbidden scroll rebound or not
-             * @type {boolean}
-             */
-            forbiddenScrollRebound: false
-
-        };
-
-        /**
          * mouse down flag
          * @type {boolean}
          */
         this.isMouseDown = false;
 
-        let editorDataArray = props.data.split('\n'),
-            editorOptions = {...this.defaultOptions, ...props.options};
+        let editorDataArray = props.data.split('\n');
 
         let editorWidth = props.width,
             editorHeight = props.height;
-        if (editorOptions.isFullScreen) {
+        if (props.editorOptions.isFullScreen) {
             editorWidth = window.innerWidth;
             editorHeight = window.innerHeight;
         }
@@ -118,12 +67,6 @@ export default class Editor extends Component {
             editorDataArray,
 
             /**
-             * editor options
-             * @type {object}
-             */
-            editorOptions,
-
-            /**
              * editor width from invoker (or '100%' if isFullScreen is true in editorOptions)
              * @type {number}
              */
@@ -145,7 +88,7 @@ export default class Editor extends Component {
              * editor text content height
              * @type {number}
              */
-            contentHeight: this.calculateContentHeight(editorDataArray, editorOptions.lineHeight),
+            contentHeight: this.calculateContentHeight(editorDataArray, props.editorOptions.lineHeight),
 
             /**
              * editor text content scroll horizontal offset
@@ -175,7 +118,7 @@ export default class Editor extends Component {
              * select stop horizontal offset
              * @type {number}
              */
-            selectStopX: editorOptions.horizontalPadding,
+            selectStopX: props.editorOptions.horizontalPadding,
 
             /**
              * select stop vertical offset
@@ -230,7 +173,7 @@ export default class Editor extends Component {
      * @returns {number}
      */
     calculateContentHeight(editorDataArray = this.state.editorDataArray,
-                           lineHeight = this.state.editorOptions.lineHeight) {
+                           lineHeight = this.props.editorOptions.lineHeight) {
         return editorDataArray.length * lineHeight;
     }
 
@@ -281,7 +224,8 @@ export default class Editor extends Component {
      */
     wheelHandle(e) {
 
-        const {editorDataArray, editorWidth, editorOptions, scrollTop, scrollLeft, contentWidth} = this.state,
+        const {editorOptions} = this.props,
+            {editorDataArray, editorWidth, scrollTop, scrollLeft, contentWidth} = this.state,
             maxScrollLeft = contentWidth
                 - (editorWidth - editorOptions.horizontalPadding * 2 - editorOptions.scrollBarWidth),
             maxScrollTop = (editorDataArray.length - 1) * editorOptions.lineHeight;
@@ -407,7 +351,7 @@ export default class Editor extends Component {
         Event.addEvent(document, 'mousedown', this.mouseDownHandle);
         Event.addEvent(document, 'mousemove', this.mouseMoveHandle);
         Event.addEvent(document, 'mouseup', this.mouseUpHandle);
-        this.state.editorOptions.isFullScreen && Event.addEvent(window, 'resize', this.resizeHandle);
+        this.props.editorOptions.isFullScreen && Event.addEvent(window, 'resize', this.resizeHandle);
 
         // asyn calculate content width and start editor
         setTimeout(() => {
@@ -427,17 +371,11 @@ export default class Editor extends Component {
             state.editorDataArray = nextProps.data.split('\n');
         }
 
-        if (!(_.isEqual(nextProps.options, this.props.options))) {
-            state.editorOptions = {...this.defaultOptions, ...nextProps.options};
-        }
-
-        const editorOptions = state.editorOptions || this.state.editorOptions;
-
-        if (!editorOptions.isFullScreen && nextProps.width !== this.state.editorWidth) {
+        if (!nextProps.editorOptions.isFullScreen && nextProps.width !== this.state.editorWidth) {
             state.editorWidth = nextProps.width;
         }
 
-        if (!editorOptions.isFullScreen && nextProps.height !== this.state.editorHeight) {
+        if (!nextProps.editorOptions.isFullScreen && nextProps.height !== this.state.editorHeight) {
             state.editorHeight = nextProps.height;
         }
 
@@ -446,8 +384,10 @@ export default class Editor extends Component {
             console.log(state.contentWidth);
         }
 
-        if (state.editorDataArray || state.editorOptions) {
-            state.contentHeight = this.calculateContentHeight(state.editorDataArray, editorOptions.lineHeight);
+        if (state.editorDataArray || nextProps.editorOptions) {
+            state.contentHeight = this.calculateContentHeight(
+                state.editorDataArray, nextProps.editorOptions.lineHeight
+            );
         }
 
         if (!(_.isEmpty(state))) {
@@ -461,13 +401,13 @@ export default class Editor extends Component {
         Event.removeEvent(document, 'mousedown', this.mouseDownHandle);
         Event.removeEvent(document, 'mousemove', this.mouseMoveHandle);
         Event.removeEvent(document, 'mouseup', this.mouseUpHandle);
-        this.state.editorOptions.isFullScreen && Event.removeEvent(window, 'resize', this.resizeHandle);
+        this.props.editorOptions.isFullScreen && Event.removeEvent(window, 'resize', this.resizeHandle);
     }
 
     render() {
 
-        const {className, style} = this.props;
-        const {editorWidth, editorHeight, editorOptions} = this.state;
+        const {className, style, editorOptions} = this.props;
+        const {editorWidth, editorHeight} = this.state;
 
         const editorSize = {
             width: editorWidth,
@@ -510,7 +450,7 @@ Editor.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
 
-    options: PropTypes.shape({
+    editorOptions: PropTypes.shape({
         isFullScreen: PropTypes.bool,
         width: PropTypes.number,
         height: PropTypes.number,
@@ -536,6 +476,6 @@ Editor.defaultProps = {
     width: 500,
     height: 200,
 
-    options: null
+    editorOptions: null
 
 };
