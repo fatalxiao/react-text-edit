@@ -1,3 +1,5 @@
+import CharSize from './CharSize';
+
 function sortPosition(start, stop) {
 
     if (!start || !stop || isNaN(start.row) || isNaN(start.col) || isNaN(stop.row) || isNaN(stop.col)) {
@@ -19,10 +21,45 @@ function sortPosition(start, stop) {
 }
 
 function hasSelection(start, stop) {
-    if (start && stop && start.row !== stop.row && start.col !== stop.col) {
+    if (start && stop && (start.row !== stop.row || start.col !== stop.col)) {
         return true;
     }
     return false;
+}
+
+function deleteLine(dataArray, pos, lineHeight, editorEl) {
+
+    if (!dataArray || !pos || !(pos.row in dataArray) || !lineHeight) {
+        return;
+    }
+
+    let newDataArray = dataArray.slice(),
+        newPosition = Object.assign({}, pos);
+
+    newPosition.left = CharSize.calculateStringWidth(dataArray[pos.row - 1], editorEl);
+    newPosition.top -= lineHeight;
+
+    newDataArray[pos.row - 1] = newDataArray[pos.row - 1] + newDataArray[pos.row];
+    newDataArray.splice(pos.row, 1);
+
+    return {newDataArray, newPosition};
+
+}
+
+function deleteChar(dataArray, pos, editorEl) {
+
+    if (!dataArray || !pos || !(pos.row in dataArray)) {
+        return;
+    }
+
+    let newDataArray = dataArray.slice(),
+        newPosition = Object.assign({}, pos);
+
+    newDataArray[pos.row] = newDataArray[pos.row].slice(0, pos.col - 1) + newDataArray[pos.row].slice(pos.col);
+    newPosition.left -= CharSize.calculateStringWidth(dataArray[pos.row].slice(pos.col - 1, pos.col), editorEl);
+
+    return {newDataArray, newPosition};
+
 }
 
 function deleteSelection(dataArray, start, stop) {
@@ -34,10 +71,9 @@ function deleteSelection(dataArray, start, stop) {
     let result = dataArray.slice();
     [start, stop] = sortPosition(start, stop);
 
-    if (start.row === stop.row) { // in one line
-        result[start.row] = result[start.row].slice(0, start.col) + result[start.row].slice(stop.col);
-    } else {
-        result[start.row] = result[start.row].slice(0, start.col) + result[stop.row].slice(stop.col);
+    result[start.row] = result[start.row].slice(0, start.col) + result[stop.row].slice(stop.col);
+
+    if (start.row !== stop.row) { // not in one line
         result.splice(start.row + 1, stop.row - start.row);
     }
 
@@ -64,6 +100,8 @@ function insertValue(dataArray, pos, value) {
 export default {
     sortPosition,
     hasSelection,
+    deleteLine,
+    deleteChar,
     deleteSelection,
     insertValue
 };

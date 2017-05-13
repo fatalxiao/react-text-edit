@@ -54,7 +54,7 @@ export default class TextInput extends Component {
     keyDownHandle(e) {
         switch (e.keyCode) {
             case 8:
-                this.doChange(e, Command.doBackSpace(this.props));
+                this.doChange(e, Command.doDelete(this.props));
                 break;
             case 13:
                 // this.doChange(e, Command.doCarriageReturn(this.props));

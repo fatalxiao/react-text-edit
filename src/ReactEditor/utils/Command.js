@@ -1,20 +1,46 @@
 import Calculation from './Calculation';
 import CharSize from './CharSize';
 
+function doDeleteLine(props) {
+    const {editorEl, editorDataArray, editorOptions, selectStopPosition} = props;
+    return Calculation.deleteLine(editorDataArray, selectStopPosition, editorOptions.lineHeight, editorEl);
+}
+
+function doDeleteChar(props) {
+    const {editorEl, editorDataArray, selectStopPosition} = props;
+    return Calculation.deleteChar(editorDataArray, selectStopPosition, editorEl);
+}
+
+function doDeletePosition(props) {
+
+    const {editorDataArray, selectStopPosition} = props;
+
+    if (selectStopPosition.row === 0 && selectStopPosition.col === 0) {
+        return {
+            newDataArray: editorDataArray,
+            newPosition: selectStopPosition
+        };
+    }
+
+    if (selectStopPosition.col === 0) {
+        return doDeleteLine(props);
+    } else {
+        return doDeleteChar(props);
+    }
+
+}
+
 function doDeleteSelection(props) {
 
     const {editorDataArray, selectStartPosition, selectStopPosition} = props;
 
-    if (Calculation.hasSelection(selectStartPosition, selectStopPosition)) {
-        return {
-            newDataArray: Calculation.deleteSelection(editorDataArray, selectStartPosition, selectStopPosition),
-            newPosition: Calculation.sortPosition(selectStartPosition, selectStopPosition)[0]
-        };
+    if (!editorDataArray || !selectStartPosition || !selectStopPosition) {
+        return;
     }
 
     return {
-        newDataArray: editorDataArray,
-        newPosition: selectStopPosition
+        newDataArray: Calculation.deleteSelection(editorDataArray, selectStartPosition, selectStopPosition),
+        newPosition: Calculation.sortPosition(selectStartPosition, selectStopPosition)[0]
     };
 
 }
@@ -22,6 +48,10 @@ function doDeleteSelection(props) {
 function doInsert(value, props) {
 
     const {editorEl, editorDataArray, selectStopPosition} = props;
+
+    if (!editorEl || !editorDataArray || !selectStopPosition) {
+        return;
+    }
 
     let newPosition = Object.assign({}, selectStopPosition);
 
@@ -40,10 +70,6 @@ function doInput(e, props) {
 
     const {selectStartPosition, selectStopPosition} = props;
 
-    if (!selectStopPosition) {
-        return;
-    }
-
     if (Calculation.hasSelection(selectStartPosition, selectStopPosition)) {
         return doReplace(e, props);
     } else {
@@ -52,14 +78,14 @@ function doInput(e, props) {
 
 }
 
-function doBackSpace(props) {
+function doDelete(props) {
 
     const {selectStartPosition, selectStopPosition} = props;
 
     if (Calculation.hasSelection(selectStartPosition, selectStopPosition)) {
         return doDeleteSelection(props);
     } else {
-        return; //doInsert(props);
+        return doDeletePosition(props);
     }
 
 }
@@ -71,6 +97,6 @@ function doCarriageReturn(e, props) {
 export default {
     doDeleteSelection,
     doInput,
-    doBackSpace,
+    doDelete,
     doCarriageReturn
 };
