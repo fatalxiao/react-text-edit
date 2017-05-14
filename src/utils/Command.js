@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Calculation from './Calculation';
 
 function doDeleteLine(props) {
@@ -36,9 +37,25 @@ function doDeleteSelection(props) {
 
 function doDelete(props) {
 
-    const {selectStartPosition, selectStopPosition} = props;
+    const {editorOptions, selectStartPosition, selectStopPosition} = props;
 
-    if (Calculation.hasSelection(selectStartPosition, selectStopPosition)) {
+    if (!selectStartPosition || _.isEqual(selectStartPosition, selectStopPosition)) {
+        return doDeleteSelection({
+            ...props,
+            selectStartPosition: {
+                left: editorOptions.horizontalPadding,
+                top: selectStopPosition.top,
+                row: selectStopPosition.row,
+                col: 0
+            },
+            selectStopPosition: {
+                left: editorOptions.horizontalPadding,
+                top: selectStopPosition.top + editorOptions.lineHeight,
+                row: selectStopPosition.row + 1,
+                col: 0
+            }
+        });
+    } else if (Calculation.hasSelection(selectStartPosition, selectStopPosition)) {
         return doDeleteSelection(props);
     } else {
         return doDeletePosition(props);

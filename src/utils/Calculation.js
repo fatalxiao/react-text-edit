@@ -224,27 +224,32 @@ function hasSelection(start, stop) {
 
 function getSelectionValue({editorDataArray, selectStartPosition, selectStopPosition}) {
 
-    if (!editorDataArray || !selectStartPosition || !selectStopPosition
-        || !hasSelection(selectStartPosition, selectStopPosition)) {
+    if (!editorDataArray || !selectStopPosition) {
         return '';
     }
 
     let [start, stop] = sortPosition(selectStartPosition, selectStopPosition);
 
-    if (start.row === stop.row) { // in one line
-        return editorDataArray[start.row].slice(start.col, stop.col);
-    } else {
+    if (hasSelection(start, stop)) {
 
-        let result = [];
+        if (start.row === stop.row) { // in one line
+            return editorDataArray[start.row].slice(start.col, stop.col);
+        } else {
 
-        result.push(editorDataArray[start.row].slice(start.col));
-        for (let i = start.row + 1; i < stop.row; i++) {
-            result.push(editorDataArray[i]);
+            let result = [];
+
+            result.push(editorDataArray[start.row].slice(start.col));
+            for (let i = start.row + 1; i < stop.row; i++) {
+                result.push(editorDataArray[i]);
+            }
+            result.push(editorDataArray[stop.row].slice(0, stop.col));
+
+            return result.join('\n');
+
         }
-        result.push(editorDataArray[stop.row].slice(0, stop.col));
 
-        return result.join('\n');
-
+    } else {
+        return editorDataArray[stop.row] + '\n';
     }
 
 }
