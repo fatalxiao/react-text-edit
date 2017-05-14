@@ -26,7 +26,7 @@ module.exports = {
             'containers': resolve('examples/containers'),
             'src': resolve('src'),
             'dist': resolve('dist'),
-            'vendors': resolve('examples/utils'),
+            'utils': resolve('examples/utils'),
             'reduxes': resolve('examples/reduxes'),
             'docs': resolve('docs')
         }

@@ -1,0 +1,30 @@
+@import './common.scss';
+
+.mark-down-editor-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+
+    .mark-down-html {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        overflow: auto;
+        background: #fff;
+        box-sizing: border-box;
+        padding: 20px;
+    }
+
+    .mark-down-editor {
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 50%;
+        height: 100%;
+    }
+}
