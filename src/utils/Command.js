@@ -37,6 +37,18 @@ function doDeleteSelection(props) {
 
 function doDelete(props) {
 
+    const {selectStartPosition, selectStopPosition} = props;
+
+    if (Calculation.hasSelection(selectStartPosition, selectStopPosition)) {
+        return doDeleteSelection(props);
+    } else {
+        return doDeletePosition(props);
+    }
+
+}
+
+function doCut(props) {
+
     const {editorOptions, selectStartPosition, selectStopPosition} = props;
 
     if (!selectStartPosition || _.isEqual(selectStartPosition, selectStopPosition)) {
@@ -57,9 +69,9 @@ function doDelete(props) {
         });
     } else if (Calculation.hasSelection(selectStartPosition, selectStopPosition)) {
         return doDeleteSelection(props);
-    } else {
-        return doDeletePosition(props);
     }
+
+    return;
 
 }
 
@@ -91,6 +103,7 @@ export default {
     doDeletePosition,
     doDeleteSelection,
     doDelete,
+    doCut,
     doInsert,
     doReplace,
     doInput

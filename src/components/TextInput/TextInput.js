@@ -62,16 +62,17 @@ export default class TextInput extends Component {
     }
 
     changeHandle(e) {
-        if (e.target.value === '') {
-            this.doChange(Command.doDelete(this.props)); // cut
-        } else {
+        // if (e.target.value === '') {
+        //     this.doChange(Command.doCut(this.props)); // cut
+        // } else {
             this.doChange(Command.doInput(e.target.value, this.props));
-        }
+        // }
     }
 
     keyDownHandle(e) {
         switch (e.keyCode) {
             case 8: // back space
+                e.preventDefault();
                 this.doChange(Command.doDelete(this.props));
                 break;
         }
