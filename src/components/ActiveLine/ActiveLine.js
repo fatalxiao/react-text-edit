@@ -13,13 +13,13 @@ export default class ActiveLine extends Component {
 
     render() {
 
-        const {editorDataArray, editorOptions, contentWidth, selectStopPosition} = this.props,
+        const {editorDataArray, editorOptions, contentWidth, cursorPosition} = this.props,
             isEmpty = Calculation.isEmptyTextData(editorDataArray),
             activeLineStyle = {
                 width: contentWidth + editorOptions.horizontalPadding
                 + (isEmpty ? 0 : editorOptions.scrollBarWidth + editorOptions.horizontalPadding),
                 height: editorOptions.lineHeight,
-                top: selectStopPosition.top
+                top: cursorPosition.top
             };
 
         return (
@@ -33,11 +33,11 @@ export default class ActiveLine extends Component {
 ActiveLine.propTypes = {
     editorOptions: PropTypes.object,
     contentWidth: PropTypes.number,
-    selectStopPosition: PropTypes.object
+    cursorPosition: PropTypes.object
 };
 
 ActiveLine.defaultProps = {
     editorOptions: null,
     contentWidth: 0,
-    selectStopPosition: null
+    cursorPosition: null
 };

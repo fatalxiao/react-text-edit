@@ -41,9 +41,7 @@ export default class TextInput extends Component {
     }
 
     calculateValue(props = this.props) {
-        return Calculation.getSelectionValue(
-            props.editorDataArray, props.selectStartPosition, props.selectStopPosition
-        );
+        return Calculation.getSelectionValue(props);
     }
 
     doChange(result) {

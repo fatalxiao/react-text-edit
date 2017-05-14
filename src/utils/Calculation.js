@@ -81,8 +81,15 @@ function calculateCursorSelectionPosition(props) {
         selectStartPosition.col = 0;
 
         selectStopPosition = Object.assign({}, cursorPosition);
-        selectStopPosition.left = contentWidth + editorOptions.horizontalPadding * 2 + editorOptions.scrollBarWidth;
-        selectStopPosition.col = editorDataArray[cursorPosition.row].length;
+        if (selectStopPosition.row === editorDataArray.length - 1) { // last line
+            selectStopPosition.left = contentWidth + editorOptions.horizontalPadding * 2 + editorOptions.scrollBarWidth;
+            selectStopPosition.col = editorDataArray[cursorPosition.row].length;
+        } else {
+            selectStopPosition.left = editorOptions.horizontalPadding;
+            selectStopPosition.col = 0;
+            selectStopPosition.top += editorOptions.lineHeight;
+            selectStopPosition.row += 1;
+        }
 
     } else if (isDoubleClick) {
 
@@ -215,27 +222,28 @@ function hasSelection(start, stop) {
     return false;
 }
 
-function getSelectionValue(dataArray, start, stop) {
+function getSelectionValue({editorDataArray, selectStartPosition, selectStopPosition}) {
 
-    if (!dataArray || !start || !stop || !hasSelection(start, stop)) {
+    if (!editorDataArray || !selectStartPosition || !selectStopPosition
+        || !hasSelection(selectStartPosition, selectStopPosition)) {
         return '';
     }
 
-    [start, stop] = sortPosition(start, stop);
+    let [start, stop] = sortPosition(selectStartPosition, selectStopPosition);
 
     if (start.row === stop.row) { // in one line
-        return dataArray[start.row].slice(start.col, stop.col);
+        return editorDataArray[start.row].slice(start.col, stop.col);
     } else {
 
         let result = [];
 
-        result.push(dataArray[start.row].slice(start.col));
+        result.push(editorDataArray[start.row].slice(start.col));
         for (let i = start.row + 1; i < stop.row; i++) {
-            result.push(dataArray[i]);
+            result.push(editorDataArray[i]);
         }
-        result.push(dataArray[stop.row].slice(0, stop.col));
+        result.push(editorDataArray[stop.row].slice(0, stop.col));
 
-        return result;
+        return result.join('\n');
 
     }
 
