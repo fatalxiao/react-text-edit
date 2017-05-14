@@ -65,7 +65,7 @@ export default class TextInput extends Component {
         // if (e.target.value === '') {
         //     this.doChange(Command.doCut(this.props)); // cut
         // } else {
-            this.doChange(Command.doInput(e.target.value, this.props));
+        this.doChange(Command.doInput(e.target.value, this.props));
         // }
     }
 
