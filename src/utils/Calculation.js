@@ -65,50 +65,91 @@ function calculateCursorSelectionPosition(props) {
         cursorPosition = calculateCursorPosition(selectStopX, selectStopY, props);
 
         const string = editorDataArray[cursorPosition.row];
-        let tempCol, tempchar, tempChars;
 
-        // calculate start position
-        selectStartPosition = Object.assign({}, cursorPosition);
-        tempCol = cursorPosition.col;
-        tempChars = [];
-        do {
+        if (string.length > 0) {
 
-            tempchar = string.at(tempCol - 1);
+            let tempCol, tempchar, tempStartChars = [], tempStopChars = [];
 
-            if (!editorOptions.discontinuousChars.includes(tempchar)) {
-                tempChars.push(tempchar);
-            } else {
-                break;
+            // calculate start position
+            selectStartPosition = Object.assign({}, cursorPosition);
+            tempCol = cursorPosition.col;
+            if (tempCol > 0) {
+                do {
+
+                    tempchar = string.at(tempCol - 1);
+
+                    if (!editorOptions.discontinuousChars.includes(tempchar)) {
+                        tempStartChars.push(tempchar);
+                    } else {
+                        break;
+                    }
+
+                    tempCol--;
+
+                } while (tempCol > 0);
+                if (tempStartChars.length > 0) {
+                    selectStartPosition.left -= CharSize.calculateStringWidth(tempStartChars.join(''), editorEl);
+                    selectStartPosition.col -= tempStartChars.length;
+                }
             }
 
-            tempCol--;
+            // calculate stop position
+            selectStopPosition = Object.assign({}, cursorPosition);
+            tempCol = cursorPosition.col;
+            if (tempCol < string.length) {
+                do {
 
-        } while (tempCol > 0);
-        if (tempChars.length > 0) {
-            selectStartPosition.left -= CharSize.calculateStringWidth(tempChars.join(''), editorEl);
-            selectStartPosition.col -= tempChars.length;
-        }
+                    tempchar = string.at(tempCol);
 
-        // calculate stop position
-        selectStopPosition = Object.assign({}, cursorPosition);
-        tempCol = cursorPosition.col;
-        tempChars = [];
-        do {
+                    if (!editorOptions.discontinuousChars.includes(tempchar)) {
+                        tempStopChars.push(tempchar);
+                    } else {
+                        break;
+                    }
 
-            tempchar = string.at(tempCol);
+                    tempCol++;
 
-            if (!editorOptions.discontinuousChars.includes(tempchar)) {
-                tempChars.push(tempchar);
-            } else {
-                break;
+                } while (tempCol < string.length);
+                if (tempStopChars.length > 0) {
+                    selectStopPosition.left += CharSize.calculateStringWidth(tempStopChars.join(''), editorEl);
+                    selectStopPosition.col += tempStopChars.length;
+                }
             }
 
-            tempCol++;
+            if (tempStartChars.length === 0 && tempStopChars.length === 0) {
 
-        } while (tempCol < string.length);
-        if (tempChars.length > 0) {
-            selectStopPosition.left += CharSize.calculateStringWidth(tempChars.join(''), editorEl);
-            selectStopPosition.col += tempChars.length;
+                tempCol = cursorPosition.col;
+                tempchar = undefined;
+
+                if (tempCol < string.length) {
+
+                    tempchar = string.at(tempCol);
+
+                    if (editorOptions.discontinuousChars.includes(tempchar)) {
+                        selectStopPosition.left += CharSize.calculateCharWidth(tempchar, editorEl);
+                        selectStopPosition.col += 1;
+                    }
+
+                }
+
+                if (tempchar === undefined && tempCol > 0) {
+
+                    tempchar = string.at(tempCol - 1);
+
+                    if (editorOptions.discontinuousChars.includes(tempchar)) {
+                        selectStartPosition.left -= CharSize.calculateCharWidth(tempchar, editorEl);
+                        selectStartPosition.col -= 1;
+                    }
+
+                }
+
+            }
+
+            cursorPosition = Object.assign({}, selectStopPosition);
+
+        } else {
+            selectStartPosition = Object.assign({}, cursorPosition);
+            selectStopPosition = Object.assign({}, cursorPosition);
         }
 
     } else {

@@ -30,7 +30,7 @@ export default class TextScroller extends Component {
             return;
         }
 
-        const offsetTop = Valid.range(y - 10, 0),
+        const offsetTop = Valid.range(y - 8, 0),
             row = Math.round(offsetTop / editorOptions.lineHeight),
             top = row * editorOptions.lineHeight,
             offsetLeft = Valid.range(x - editorOptions.horizontalPadding + 3, 0),
