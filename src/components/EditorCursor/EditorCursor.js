@@ -17,12 +17,13 @@ export default class EditorCursor extends Component {
         if (cursorPosition) {
             ({left, top} = cursorPosition);
         } else {
-            left = editorOptions.horizontalPadding;
+            left = 0;
             top = 0;
         }
 
         return (
-            <div className="react-editor-cursor-wrapper">
+            <div className="react-editor-cursor-wrapper"
+                 style={{left: editorOptions.horizontalPadding}}>
 
                 <div className="react-editor-cursor"
                      style={{transform: `translate3d(${left}px, ${top}px, 0)`}}></div>

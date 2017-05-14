@@ -43,13 +43,13 @@ function doDelete(props) {
         return doDeleteSelection({
             ...props,
             selectStartPosition: {
-                left: editorOptions.horizontalPadding,
+                left: 0,
                 top: selectStopPosition.top,
                 row: selectStopPosition.row,
                 col: 0
             },
             selectStopPosition: {
-                left: editorOptions.horizontalPadding,
+                left: 0,
                 top: selectStopPosition.top + editorOptions.lineHeight,
                 row: selectStopPosition.row + 1,
                 col: 0

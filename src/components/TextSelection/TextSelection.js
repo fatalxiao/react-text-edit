@@ -20,7 +20,8 @@ export default class TextSelection extends Component {
             selectionLines = isInOneLine ? undefined : new Array(stop.row - start.row + 1).fill('');
 
         return (
-            <div className="react-editor-text-selection">
+            <div className="react-editor-text-selection"
+                 style={{left: editorOptions.horizontalPadding}}>
 
                 {
                     isInOneLine ?

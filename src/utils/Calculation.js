@@ -40,7 +40,7 @@ function calculateCursorPosition(x, y, {editorEl, editorDataArray, editorOptions
         const string = editorDataArray[len - 1];
 
         return {
-            left: CharSize.calculateStringWidth(string, editorEl) + editorOptions.horizontalPadding,
+            left: CharSize.calculateStringWidth(string, editorEl),
             top: (len - 1) * editorOptions.lineHeight,
             row: len - 1,
             col: string.length
@@ -53,7 +53,7 @@ function calculateCursorPosition(x, y, {editorEl, editorDataArray, editorOptions
             {left, col} = CharSize.calculateCursorPosition(editorDataArray[row], offsetLeft, editorEl);
 
         return {
-            left: left + editorOptions.horizontalPadding,
+            left,
             top,
             row,
             col
@@ -77,15 +77,15 @@ function calculateCursorSelectionPosition(props) {
         cursorPosition = calculateCursorPosition(selectStopX, selectStopY, props);
 
         selectStartPosition = Object.assign({}, cursorPosition);
-        selectStartPosition.left = editorOptions.horizontalPadding;
+        selectStartPosition.left = 0;
         selectStartPosition.col = 0;
 
         selectStopPosition = Object.assign({}, cursorPosition);
         if (selectStopPosition.row === editorDataArray.length - 1) { // last line
-            selectStopPosition.left = contentWidth + editorOptions.horizontalPadding * 2 + editorOptions.scrollBarWidth;
+            selectStopPosition.left = contentWidth + editorOptions.horizontalPadding + editorOptions.scrollBarWidth;
             selectStopPosition.col = editorDataArray[cursorPosition.row].length;
         } else {
-            selectStopPosition.left = editorOptions.horizontalPadding;
+            selectStopPosition.left = 0;
             selectStopPosition.col = 0;
             selectStopPosition.top += editorOptions.lineHeight;
             selectStopPosition.row += 1;

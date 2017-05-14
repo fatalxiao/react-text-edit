@@ -120,7 +120,7 @@ export default class Editor extends Component {
              * select stop horizontal offset
              * @type {number}
              */
-            selectStopX: props.editorOptions.horizontalPadding,
+            selectStopX: 0,
 
             /**
              * select stop vertical offset

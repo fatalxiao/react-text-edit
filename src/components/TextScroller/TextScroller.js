@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import TextInput from '../TextInput';
-import TextMarker from '../TextMarker';
+// import TextMarker from '../TextMarker';
+import ActiveLine from '../ActiveLine';
+import TextSelection from '../TextSelection';
 import TextContainer from '../TextContainer';
 import EditorCursor from '../EditorCursor';
 
@@ -39,10 +41,25 @@ export default class TextScroller extends Component {
                            selectStartPosition={selectStartPosition}
                            selectStopPosition={selectStopPosition}/>
 
-                <TextMarker {...this.props}
+                {/*<TextMarker {...this.props}*/}
+                {/*cursorPosition={cursorPosition}*/}
+                {/*selectStartPosition={selectStartPosition}*/}
+                {/*selectStopPosition={selectStopPosition}/>*/}
+
+                <ActiveLine {...this.props}
                             cursorPosition={cursorPosition}
                             selectStartPosition={selectStartPosition}
                             selectStopPosition={selectStopPosition}/>
+
+                {
+                    selectStartPosition && selectStopPosition ?
+                        <TextSelection {...this.props}
+                                       cursorPosition={cursorPosition}
+                                       selectStartPosition={selectStartPosition}
+                                       selectStopPosition={selectStopPosition}/>
+                        :
+                        null
+                }
 
                 <TextContainer {...this.props}
                                displayIndex={displayIndex}/>
