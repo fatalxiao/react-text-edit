@@ -8,7 +8,7 @@
     bottom: 0;
     overflow: hidden;
 
-    .mark-down-html {
+    .markdown-body {
         position: absolute;
         left: 0;
         top: 0;
@@ -26,5 +26,21 @@
         top: 0;
         width: 50%;
         height: 100%;
+    }
+
+    .drag-edge {
+        position: absolute;
+        top: 0;
+        width: 2px;
+        height: 100%;
+        cursor: ew-resize;
+    }
+
+    &.resizing {
+        .markdown-body,
+        .mark-down-editor {
+            user-select: none;
+            cursor: ew-resize;
+        }
     }
 }

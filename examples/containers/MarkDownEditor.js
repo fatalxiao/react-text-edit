@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import markdown from 'markdown';
+import 'github-markdown-css';
 
 import ReactEditor from 'src/ReactEditor';
 
@@ -21,13 +22,18 @@ export default class MarkDownEditor extends Component {
             data: MacDownHelpText,
 
             editorWidth: window.innerWidth / 2,
-            editorHeight: window.innerHeight
+            editorHeight: window.innerHeight,
+
+            isMouseDown: false
 
         };
 
         this.setNextState = this::this.setNextState;
         this.changeHandle = this::this.changeHandle;
         this.resizeHandle = this::this.resizeHandle;
+        this.mouseDownHandle = this::this.mouseDownHandle;
+        this.mouseMoveHandle = this::this.mouseMoveHandle;
+        this.mouseUpHandle = this::this.mouseUpHandle;
 
     }
 
@@ -54,30 +60,75 @@ export default class MarkDownEditor extends Component {
         });
     }
 
+    mouseDownHandle() {
+        this.setNextState({
+            isMouseDown: true
+        });
+    }
+
+    mouseMoveHandle(e) {
+
+        if (!this.state.isMouseDown) {
+            return;
+        }
+
+        this.setNextState({
+            editorWidth: window.innerWidth - e.clientX,
+            editorHeight: window.innerHeight
+        });
+
+    }
+
+    mouseUpHandle() {
+        this.setNextState({
+            isMouseDown: false
+        });
+    }
+
     componentDidMount() {
         Event.addEvent(window, 'resize', this.resizeHandle);
+        Event.addEvent(document, 'mousemove', this.mouseMoveHandle);
+        Event.addEvent(document, 'mouseup', this.mouseUpHandle);
     }
 
     componentWillUnmount() {
         Event.removeEvent(window, 'resize', this.resizeHandle);
+        Event.removeEvent(document, 'mousemove', this.mouseMoveHandle);
+        Event.removeEvent(document, 'mouseup', this.mouseUpHandle);
     }
 
     render() {
 
-        const {data, editorWidth, editorHeight} = this.state,
-            html = {__html: markdown.parse(data)};
+        const {data, editorWidth, editorHeight, isMouseDown} = this.state,
+            html = {__html: markdown.parse(data)},
+            markdownBodyWidth = window.innerWidth - editorWidth,
+            markdownBodyStyle = {
+                width: markdownBodyWidth
+            },
+            markDownEditorStyle = {
+                left: markdownBodyWidth
+            },
+            dragEdgeStyle = {
+                left: markdownBodyWidth - 1
+            };
 
         return (
-            <div className="mark-down-editor-wrapper">
+            <div className={`mark-down-editor-wrapper ${isMouseDown ? 'resizing' : ''}`}>
 
-                <div className="mark-down-html"
+                <div className="markdown-body"
+                     style={markdownBodyStyle}
                      dangerouslySetInnerHTML={html}></div>
 
                 <ReactEditor className="mark-down-editor"
+                             style={markDownEditorStyle}
                              data={data}
                              width={editorWidth}
                              height={editorHeight}
                              onChange={this.changeHandle}/>
+
+                <div className="drag-edge"
+                     style={dragEdgeStyle}
+                     onMouseDown={this.mouseDownHandle}></div>
 
             </div>
         );
