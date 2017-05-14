@@ -18,24 +18,41 @@ function calculateTextDisplayIndex({editorDataArray, scrollTop, editorOptions, e
 
 }
 
-function calculateCursorPosition(x, y, {editorEl, editorDataArray, editorOptions}) {
+function calculateCursorPosition(x, y, {editorEl, editorDataArray, editorOptions, editorHeight}) {
 
     if (isNaN(x) || isNaN(y)) {
         return;
     }
 
-    const offsetTop = Valid.range(y, 0),
-        row = Math.round((offsetTop / editorOptions.lineHeight) - .5),
-        top = row * editorOptions.lineHeight,
-        offsetLeft = Valid.range(x - editorOptions.horizontalPadding, 0),
-        {left, col} = CharSize.calculateCursorPosition(editorDataArray[row], offsetLeft, editorEl);
+    const len = editorDataArray.length,
+        offsetTop = Valid.range(y, 0),
+        row = Math.round((offsetTop / editorOptions.lineHeight) - .5);
 
-    return {
-        left: left + editorOptions.horizontalPadding,
-        top,
-        row,
-        col
-    };
+    if (row >= len) {
+
+        const string = editorDataArray[len - 1];
+
+        return {
+            left: CharSize.calculateStringWidth(string, editorEl) + editorOptions.horizontalPadding,
+            top: (len - 1) * editorOptions.lineHeight,
+            row: len - 1,
+            col: string.length
+        };
+
+    } else {
+
+        const top = row * editorOptions.lineHeight,
+            offsetLeft = Valid.range(x - editorOptions.horizontalPadding, 0),
+            {left, col} = CharSize.calculateCursorPosition(editorDataArray[row], offsetLeft, editorEl);
+
+        return {
+            left: left + editorOptions.horizontalPadding,
+            top,
+            row,
+            col
+        };
+
+    }
 
 }
 
