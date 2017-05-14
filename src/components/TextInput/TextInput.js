@@ -64,12 +64,16 @@ export default class TextInput extends Component {
     }
 
     changeHandle(e) {
-        this.doChange(Command.doInput(e.target.value, this.props));
+        if (e.target.value === '') {
+            this.doChange(Command.doDelete(this.props)); // cut
+        } else {
+            this.doChange(Command.doInput(e.target.value, this.props));
+        }
     }
 
     keyDownHandle(e) {
         switch (e.keyCode) {
-            case 8:
+            case 8: // back space
                 this.doChange(Command.doDelete(this.props));
                 break;
         }

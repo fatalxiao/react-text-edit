@@ -209,7 +209,6 @@ export default class Editor extends Component {
      * @param cursorPosition
      */
     onChange(editorDataArray, cursorPosition) {
-
         this.setState({
             editorDataArray,
             contentWidth: this.calculateContentWidth(editorDataArray),
@@ -217,11 +216,12 @@ export default class Editor extends Component {
             selectStartX: undefined,
             selectStartY: undefined,
             selectStopX: cursorPosition.left,
-            selectStopY: cursorPosition.top
+            selectStopY: cursorPosition.top,
+            isDoubleClick: false,
+            isTripleClick: false
         }, () => {
             this.props.onChange && this.props.onChange(editorDataArray.join('\n'));
         });
-
     }
 
     /**

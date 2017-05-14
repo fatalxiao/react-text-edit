@@ -293,7 +293,7 @@ function deleteSelection(dataArray, start, stop) {
 
     return {
         newDataArray,
-        newPosition: sortPosition(start, stop)[0]
+        newPosition: start
     };
 
 }
