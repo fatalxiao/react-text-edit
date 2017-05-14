@@ -24,10 +24,10 @@ function calculateCursorPosition(x, y, {editorEl, editorDataArray, editorOptions
         return;
     }
 
-    const offsetTop = Valid.range(y - 10, 0),
-        row = Math.round(offsetTop / editorOptions.lineHeight),
+    const offsetTop = Valid.range(y, 0),
+        row = Math.round((offsetTop / editorOptions.lineHeight) - .5),
         top = row * editorOptions.lineHeight,
-        offsetLeft = Valid.range(x - editorOptions.horizontalPadding + 3, 0),
+        offsetLeft = Valid.range(x - editorOptions.horizontalPadding, 0),
         {left, col} = CharSize.calculateCursorPosition(editorDataArray[row], offsetLeft, editorEl);
 
     return {
