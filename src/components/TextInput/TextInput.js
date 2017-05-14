@@ -13,9 +13,9 @@ export default class TextInput extends Component {
 
         super(props);
 
-        this.state = {
-            value: this.calculateValue(props)
-        };
+        // this.state = {
+        //     value: this.calculateValue(props)
+        // };
 
         this.focus = this::this.focus;
         this.calculateValue = this::this.calculateValue;
@@ -52,12 +52,14 @@ export default class TextInput extends Component {
 
         const {newDataArray, newPosition} = result;
 
-        this.setState({
-            value: this.calculateValue()
-        }, () => {
-            this.props.onChange(newDataArray, newPosition);
-            this.focus();
-        });
+        // this.setState({
+        //     value: this.calculateValue()
+        // }, () => {
+
+        // this.refs.textInput.value = this.calculateValue();
+        this.props.onChange(newDataArray, newPosition);
+        this.focus();
+        // });
 
     }
 
@@ -79,18 +81,23 @@ export default class TextInput extends Component {
     }
 
     componentDidMount() {
+
+        // this.refs.textInput.value = this.calculateValue();
+
         this.focus();
+
     }
 
     componentWillReceiveProps(nextProps) {
 
         if (!_.isEqual(nextProps.selectStartPosition, this.props.selectStartPosition)
             || !_.isEqual(nextProps.selectStopPosition, this.props.selectStopPosition)) {
-            this.setState({
-                value: this.calculateValue(nextProps)
-            }, () => {
-                this.focus(nextProps);
-            });
+            // this.setState({
+            //     value: this.calculateValue(nextProps)
+            // }, () => {
+            // this.refs.textInput.value = this.calculateValue(nextProps);
+            this.focus(nextProps);
+            // });
         }
 
         this.focus(nextProps);
@@ -103,12 +110,12 @@ export default class TextInput extends Component {
 
     render() {
 
-        const {value} = this.state;
+        // const {value} = this.state;
 
         return (
             <textarea ref="textInput"
                       className="react-editor-text-input"
-                      value={value}
+                // value={value}
                       onChange={this.changeHandle}
                       onKeyDown={this.keyDownHandle}></textarea>
         );
