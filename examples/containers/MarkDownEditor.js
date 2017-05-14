@@ -24,7 +24,7 @@ export default class MarkDownEditor extends Component {
             editorWidth: window.innerWidth / 2,
             editorHeight: window.innerHeight,
 
-            isMouseDown: false
+            isResizing: false
 
         };
 
@@ -61,14 +61,14 @@ export default class MarkDownEditor extends Component {
     }
 
     mouseDownHandle() {
-        this.setNextState({
-            isMouseDown: true
+        this.setState({
+            isResizing: true
         });
     }
 
     mouseMoveHandle(e) {
 
-        if (!this.state.isMouseDown) {
+        if (!this.state.isResizing) {
             return;
         }
 
@@ -80,8 +80,8 @@ export default class MarkDownEditor extends Component {
     }
 
     mouseUpHandle() {
-        this.setNextState({
-            isMouseDown: false
+        this.setState({
+            isResizing: false
         });
     }
 
@@ -99,7 +99,7 @@ export default class MarkDownEditor extends Component {
 
     render() {
 
-        const {data, editorWidth, editorHeight, isMouseDown} = this.state,
+        const {data, editorWidth, editorHeight, isResizing} = this.state,
             html = {__html: markdown.parse(data)},
             markdownBodyWidth = window.innerWidth - editorWidth,
             markdownBodyStyle = {
@@ -113,7 +113,7 @@ export default class MarkDownEditor extends Component {
             };
 
         return (
-            <div className={`mark-down-editor-wrapper ${isMouseDown ? 'resizing' : ''}`}>
+            <div className={`mark-down-editor-wrapper ${isResizing ? 'resizing' : ''}`}>
 
                 <div className="markdown-body"
                      style={markdownBodyStyle}
