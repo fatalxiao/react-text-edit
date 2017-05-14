@@ -11,7 +11,7 @@ export default class FullScreenEditor extends Component {
         super(props);
 
         this.state = {
-            data: ''
+            data: MacDownHelpText
         };
 
         this.changeHandle = this::this.changeHandle;
