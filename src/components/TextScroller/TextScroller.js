@@ -6,8 +6,6 @@ import TextMarker from '../TextMarker';
 import TextContainer from '../TextContainer';
 import EditorCursor from '../EditorCursor';
 
-import Valid from '../../utils/Valid';
-import CharSize from '../../utils/CharSize';
 import Calculation from '../../utils/Calculation';
 
 import './TextScroller.scss';
@@ -15,34 +13,7 @@ import './TextScroller.scss';
 export default class TextScroller extends Component {
 
     constructor(props) {
-
         super(props);
-
-        this.calculateCursorPosition = this::this.calculateCursorPosition;
-
-    }
-
-    calculateCursorPosition(x, y) {
-
-        const {editorEl, editorDataArray, editorOptions} = this.props;
-
-        if (isNaN(x) || isNaN(y)) {
-            return;
-        }
-
-        const offsetTop = Valid.range(y, 0),
-            row = Math.round(offsetTop / editorOptions.lineHeight),
-            top = row * editorOptions.lineHeight,
-            offsetLeft = Valid.range(x - editorOptions.horizontalPadding, 0),
-            {left, col} = CharSize.calculateCursorPosition(editorDataArray[row], offsetLeft, editorEl);
-
-        return {
-            left: left + editorOptions.horizontalPadding,
-            top,
-            row,
-            col
-        };
-
     }
 
     render() {
