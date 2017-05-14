@@ -53,7 +53,7 @@ export default class TextInput extends Component {
         const {newDataArray, newPosition} = result;
 
         this.setState({
-            value: ''
+            value: this.calculateValue()
         }, () => {
             this.props.onChange(newDataArray, newPosition);
             this.focus();
