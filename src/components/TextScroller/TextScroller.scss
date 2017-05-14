@@ -9,14 +9,7 @@
     bottom: 0;
     user-select: none;
     cursor: text;
-    padding: 0 18px 0 6px;
     box-sizing: border-box;
     min-width: 100%;
     min-height: 100%;
-
-    &.react-editor-text-empty {
-        min-width: 0;
-        min-height: 0;
-        padding-right: 0;
-    }
 }

@@ -19,17 +19,18 @@ export default class TextScroller extends Component {
     render() {
 
         const {isEditorFocused, editorDataArray, editorOptions, contentWidth, scrollTop, scrollLeft} = this.props,
+            {horizontalPadding, scrollBarWidth, lineHeight} = editorOptions,
             scrollerStyle = {
-                width: contentWidth + editorOptions.scrollBarWidth + editorOptions.horizontalPadding * 2,
-                height: editorDataArray.length * editorOptions.lineHeight,
+                width: contentWidth + horizontalPadding * 2 + scrollBarWidth,
+                height: editorDataArray.length * lineHeight,
+                padding: `0 ${horizontalPadding + scrollBarWidth}px 0 ${horizontalPadding}px`,
                 transform: `translate3d(${-scrollLeft}px, ${-scrollTop}px, 0)`
             },
             displayIndex = Calculation.calculateTextDisplayIndex(this.props),
             {selectStartPosition, selectStopPosition, cursorPosition} = Calculation.calculateCursorSelectionPosition(this.props);
 
         return (
-            <div className={'react-editor-text-scroller'
-            + (Calculation.isEmptyTextData(editorDataArray) ? ' react-editor-text-empty' : '')}
+            <div className="react-editor-text-scroller"
                  style={scrollerStyle}>
 
                 <TextInput {...this.props}

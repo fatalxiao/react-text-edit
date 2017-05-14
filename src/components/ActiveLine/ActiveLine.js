@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
+import Calculation from '../../utils/Calculation';
+
 import './ActiveLine.scss';
 
 export default class ActiveLine extends Component {
@@ -11,16 +13,17 @@ export default class ActiveLine extends Component {
 
     render() {
 
-        const {editorOptions, contentWidth, selectStopPosition} = this.props;
-
-        const activeLineStyle = {
-            width: contentWidth + editorOptions.horizontalPadding * 2 + editorOptions.scrollBarWidth,
-            height: editorOptions.lineHeight,
-            top: selectStopPosition.top
-        };
+        const {editorDataArray, editorOptions, contentWidth, selectStopPosition} = this.props,
+            isEmpty = Calculation.isEmptyTextData(editorDataArray),
+            activeLineStyle = {
+                width: contentWidth + editorOptions.horizontalPadding
+                + (isEmpty ? 0 : editorOptions.scrollBarWidth + editorOptions.horizontalPadding),
+                height: editorOptions.lineHeight,
+                top: selectStopPosition.top
+            };
 
         return (
-            <div className="react-editor-active-line"
+            <div className={`react-editor-active-line ${isEmpty ? 'react-editor-active-line-empty' : ''}`}
                  style={activeLineStyle}></div>
         );
 
