@@ -1,6 +1,13 @@
 import CharSize from './CharSize';
 import Valid from './Valid';
 
+function isEmptyTextData(array) {
+    if (!array || array.length === 0 || (array.length === 1 && array[0] === '')) {
+        return true;
+    }
+    return false;
+}
+
 function calculateTextDisplayIndex({editorDataArray, scrollTop, editorOptions, editorHeight}) {
 
     const len = editorDataArray.length;
@@ -18,7 +25,7 @@ function calculateTextDisplayIndex({editorDataArray, scrollTop, editorOptions, e
 
 }
 
-function calculateCursorPosition(x, y, {editorEl, editorDataArray, editorOptions, editorHeight}) {
+function calculateCursorPosition(x, y, {editorEl, editorDataArray, editorOptions}) {
 
     if (isNaN(x) || isNaN(y)) {
         return;
@@ -318,6 +325,7 @@ function insertValue(dataArray, pos, value, lineHeight, editorEl) {
 }
 
 export default {
+    isEmptyTextData,
     calculateTextDisplayIndex,
     calculateCursorPosition,
     calculateCursorSelectionPosition,

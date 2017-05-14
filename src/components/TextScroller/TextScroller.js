@@ -28,7 +28,8 @@ export default class TextScroller extends Component {
             {selectStartPosition, selectStopPosition, cursorPosition} = Calculation.calculateCursorSelectionPosition(this.props);
 
         return (
-            <div className="react-editor-text-scroller"
+            <div className={'react-editor-text-scroller'
+            + (Calculation.isEmptyTextData(editorDataArray) ? ' react-editor-text-empty' : '')}
                  style={scrollerStyle}>
 
                 <TextInput {...this.props}
