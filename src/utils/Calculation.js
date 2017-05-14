@@ -49,8 +49,7 @@ function calculateCursorPosition(x, y, {editorEl, editorDataArray, editorOptions
     } else {
 
         const top = row * editorOptions.lineHeight,
-            offsetLeft = Valid.range(x - editorOptions.horizontalPadding, 0),
-            {left, col} = CharSize.calculateCursorPosition(editorDataArray[row], offsetLeft, editorEl);
+            {left, col} = CharSize.calculateCursorPosition(editorDataArray[row], x, editorEl);
 
         return {
             left,
