@@ -177,9 +177,11 @@ function calculateCursorSelectionPosition(props) {
         }
 
     } else {
+
         selectStartPosition = calculateCursorPosition(selectStartX, selectStartY, props);
         selectStopPosition = calculateCursorPosition(selectStopX, selectStopY, props);
         cursorPosition = Object.assign({}, selectStopPosition);
+
     }
 
     return {selectStartPosition, selectStopPosition, cursorPosition};

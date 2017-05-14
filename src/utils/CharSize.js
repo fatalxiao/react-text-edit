@@ -100,7 +100,7 @@ function calculateCursorPosition(string, left, editorEl) {
 
         widthCount += calculateCharWidth(char, editorEl);
 
-        if (widthCount < left) {
+        if (widthCount <= left) {
             leftValue = widthCount;
             leftIndex = index;
         }
