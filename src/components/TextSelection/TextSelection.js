@@ -51,7 +51,7 @@ export default class TextSelection extends Component {
                                              style={{
                                                  width: stop.left - editorOptions.horizontalPadding,
                                                  height: editorOptions.lineHeight,
-                                                 transform: `translate3d(${editorOptions.horizontalPadding}px, ${stop.top}px, 0)`
+                                                 transform: `translate3d(0, ${stop.top}px, 0)`
                                              }}></div>
                                     );
                                 } else {
@@ -61,7 +61,7 @@ export default class TextSelection extends Component {
                                              style={{
                                                  width: fullWidth,
                                                  height: editorOptions.lineHeight,
-                                                 transform: `translate3d(${editorOptions.horizontalPadding}px, ${start.top + index * editorOptions.lineHeight}px, 0)`
+                                                 transform: `translate3d(0, ${start.top + index * editorOptions.lineHeight}px, 0)`
                                              }}></div>
                                     );
                                 }
