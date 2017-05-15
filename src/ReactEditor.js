@@ -107,6 +107,12 @@ ReactEditor.propTypes = {
      */
     height: PropTypes.number,
 
+    scrollLeft: PropTypes.number,
+    scrollTop: PropTypes.number,
+
+    scrollLeftPerCent: PropTypes.number,
+    scrollTopPerCent: PropTypes.number,
+
     /**
      * editor extra options (see "defaultOptions" for detail)
      */
@@ -142,6 +148,12 @@ ReactEditor.defaultProps = {
     isFullScreen: false,
     width: 500,
     height: 200,
+
+    scrollLeft: 0,
+    scrollTop: 0,
+
+    scrollLeftPerCent: 0,
+    scrollTopPerCent: 0,
 
     options: null
 

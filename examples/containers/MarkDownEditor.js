@@ -25,7 +25,7 @@ export default class MarkDownEditor extends Component {
             editorWidthPerCent: .5,
             editorHeight: window.innerHeight,
 
-            scrollTopPerCent: 0,
+            editorScrollPerCent: 0,
 
             isResizing: false
 
@@ -33,7 +33,8 @@ export default class MarkDownEditor extends Component {
 
         this.setNextState = this::this.setNextState;
         this.changeHandle = this::this.changeHandle;
-        this.scrollHandle = this::this.scrollHandle;
+        this.markdownBodyScrollHandle = this::this.markdownBodyScrollHandle;
+        this.editorScrollHandle = this::this.editorScrollHandle;
         this.resizeHandle = this::this.resizeHandle;
         this.mouseDownHandle = this::this.mouseDownHandle;
         this.mouseMoveHandle = this::this.mouseMoveHandle;
@@ -57,7 +58,18 @@ export default class MarkDownEditor extends Component {
         });
     }
 
-    scrollHandle({topPerCent}) {
+    markdownBodyScrollHandle() {
+
+        const el = this.refs.markdownBody,
+            scrollTop = el.scrollTop;
+
+        this.setState({
+            editorScrollPerCent: scrollTop / (el.scrollHeight - window.innerHeight)
+        });
+
+    }
+
+    editorScrollHandle({topPerCent}) {
         const el = this.refs.markdownBody;
         el.scrollTop = (el.scrollHeight - window.innerHeight) * topPerCent;
     }
@@ -107,7 +119,7 @@ export default class MarkDownEditor extends Component {
 
     render() {
 
-        const {data, editorWidthPerCent, editorHeight, isResizing} = this.state,
+        const {data, editorWidthPerCent, editorHeight, isResizing, editorScrollPerCent} = this.state,
             html = {__html: markdown.parse(data, 'Maruku')},
             markdownBodyWidth = window.innerWidth * (1 - editorWidthPerCent),
             markdownBodyStyle = {
@@ -126,15 +138,17 @@ export default class MarkDownEditor extends Component {
                 <div ref="markdownBody"
                      className="markdown-body"
                      style={markdownBodyStyle}
-                     dangerouslySetInnerHTML={html}></div>
+                     dangerouslySetInnerHTML={html}
+                     onScroll={this.markdownBodyScrollHandle}></div>
 
                 <ReactEditor className="mark-down-editor"
                              style={markDownEditorStyle}
                              data={data}
                              width={window.innerWidth * editorWidthPerCent}
                              height={editorHeight}
+                             scrollTopPerCent={editorScrollPerCent}
                              onChange={this.changeHandle}
-                             onScroll={this.scrollHandle}/>
+                             onScroll={this.editorScrollHandle}/>
 
                 <div className="drag-edge"
                      style={dragEdgeStyle}

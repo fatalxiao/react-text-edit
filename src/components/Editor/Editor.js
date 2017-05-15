@@ -420,23 +420,45 @@ export default class Editor extends Component {
 
         let state = {};
 
+        // update data array
         if (nextProps.data !== this.state.editorDataArray.join('\n')) {
             state.editorDataArray = nextProps.data.split('\n');
         }
 
+        // update width
         if (!nextProps.isFullScreen && nextProps.width !== this.state.editorWidth) {
             state.editorWidth = nextProps.width;
         }
 
+        // update height
         if (!nextProps.isFullScreen && nextProps.height !== this.state.editorHeight) {
             state.editorHeight = nextProps.height;
         }
 
-        if (state.editorDataArray) {
-            state.contentWidth = this.calculateContentWidth(state.editorDataArray);
-            console.log(state.contentWidth);
+        // update text content scroll left
+        if (nextProps.scrollLeft !== this.state.scrollLeft) {
+            state.scrollLeft = nextProps.scrollLeft;
+        }
+        if (nextProps.scrollLeftPerCent !== this.props.scrollLeftPerCent) {
+            state.scrollLeft =
+                Calculation.calculateFullScrollLeft({...nextProps, ...this.state}) * nextProps.scrollLeftPerCent;
         }
 
+        // update text content scroll top
+        if (nextProps.scrollTop !== this.state.scrollTop) {
+            state.scrollTop = nextProps.scrollTop;
+        }
+        if (nextProps.scrollTopPerCent !== this.props.scrollTopPerCent) {
+            state.scrollTop =
+                Calculation.calculateFullScrollTop({...nextProps, ...this.state}) * nextProps.scrollTopPerCent;
+        }
+
+        // update text content width
+        if (state.editorDataArray) {
+            state.contentWidth = this.calculateContentWidth(state.editorDataArray);
+        }
+
+        // update text content height
         if (state.editorDataArray || nextProps.editorOptions) {
             state.contentHeight = this.calculateContentHeight(
                 state.editorDataArray, nextProps.editorOptions.lineHeight
@@ -505,6 +527,12 @@ Editor.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
 
+    scrollLeft: PropTypes.number,
+    scrollTop: PropTypes.number,
+
+    scrollLeftPerCent: PropTypes.number,
+    scrollTopPerCent: PropTypes.number,
+
     editorOptions: PropTypes.object,
 
     onChange: PropTypes.func,
@@ -522,6 +550,12 @@ Editor.defaultProps = {
     isFullScreen: false,
     width: 500,
     height: 200,
+
+    scrollLeft: 0,
+    scrollTop: 0,
+
+    scrollLeftPerCent: 0,
+    scrollTopPerCent: 0,
 
     editorOptions: null
 

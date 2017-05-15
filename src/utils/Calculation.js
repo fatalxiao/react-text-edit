@@ -13,16 +13,24 @@ function calculateHorizontalDisplayWidth(props) {
     return editorWidth - editorOptions.scrollBarWidth - editorOptions.horizontalPadding * 2;
 }
 
+function calculateFullScrollLeft(props) {
+    return props.contentWidth - calculateHorizontalDisplayWidth(props);
+}
+
 function calculateScrollLeftPerCent(scrollLeft, props) {
-    const {contentWidth} = props;
-    const displayWidth = calculateHorizontalDisplayWidth(props),
-        fullWidth = contentWidth - displayWidth;
+    const {contentWidth} = props,
+        displayWidth = calculateHorizontalDisplayWidth(props),
+        fullWidth = calculateFullScrollLeft(props);
     return contentWidth > displayWidth ? scrollLeft / fullWidth : 1;
+}
+
+function calculateFullScrollTop(props) {
+    return props.contentHeight - props.editorOptions.lineHeight;
 }
 
 function calculateScrollTopPerCent(scrollTop, props) {
     const {contentHeight, editorOptions} = props,
-        fullHeight = contentHeight - editorOptions.lineHeight;
+        fullHeight = calculateFullScrollTop(props);
     return contentHeight > editorOptions.lineHeight ? scrollTop / fullHeight : 1;
 }
 
@@ -362,7 +370,9 @@ function insertValue(dataArray, pos, value, lineHeight, editorEl) {
 export default {
     isEmptyTextData,
     calculateHorizontalDisplayWidth,
+    calculateFullScrollLeft,
     calculateScrollLeftPerCent,
+    calculateFullScrollTop,
     calculateScrollTopPerCent,
     calculateTextDisplayIndex,
     calculateCursorPosition,
