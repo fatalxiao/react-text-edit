@@ -12,14 +12,13 @@ export default class VerticalScrollBar extends Component {
 
         super(props);
 
-        this.wrapperHeight = props.editorHeight;
-        this.scrollBarHeight = props.editorOptions.scrollBarMinLength;
-        this.scrollBarTop = 0;
+        this.initial();
 
         this.isWrapperMouseDown = false;
         this.isScrollBarMouseDown = false;
         this.mouseDownPosition = null;
 
+        this.initial = this::this.initial;
         this.calculateScrollBarHeight = this::this.calculateScrollBarHeight;
         this.calculateTop = this::this.calculateTop;
         this.calculateScrollTop = this::this.calculateScrollTop;
@@ -27,6 +26,12 @@ export default class VerticalScrollBar extends Component {
         this.mouseMoveHandle = this::this.mouseMoveHandle;
         this.mouseUpHandle = this::this.mouseUpHandle;
 
+    }
+
+    initial() {
+        this.wrapperHeight = this.props.editorHeight;
+        this.scrollBarHeight = this.calculateScrollBarHeight();
+        this.scrollBarTop = this.calculateTop();
     }
 
     calculateScrollBarHeight() {
@@ -105,8 +110,7 @@ export default class VerticalScrollBar extends Component {
 
     render() {
 
-        this.scrollBarHeight = this.calculateScrollBarHeight();
-        this.scrollBarTop = this.calculateTop();
+        this.initial();
 
         const scrollBarStyle = {
             height: this.scrollBarHeight,
