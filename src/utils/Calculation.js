@@ -247,9 +247,9 @@ function getSelectionValue({editorDataArray, selectStartPosition, selectStopPosi
 
         }
 
-    } else {
-        return editorDataArray[stop.row] + '\n';
     }
+
+    return '';
 
 }
 
