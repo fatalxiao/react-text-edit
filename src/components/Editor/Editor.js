@@ -436,7 +436,7 @@ export default class Editor extends Component {
         }
 
         // update text content scroll left
-        if (nextProps.scrollLeft !== this.state.scrollLeft) {
+        if (nextProps.scrollLeft !== this.props.scrollLeft) {
             state.scrollLeft = nextProps.scrollLeft;
         }
         if (nextProps.scrollLeftPerCent !== this.props.scrollLeftPerCent) {
@@ -445,7 +445,7 @@ export default class Editor extends Component {
         }
 
         // update text content scroll top
-        if (nextProps.scrollTop !== this.state.scrollTop) {
+        if (nextProps.scrollTop !== this.props.scrollTop) {
             state.scrollTop = nextProps.scrollTop;
         }
         if (nextProps.scrollTopPerCent !== this.props.scrollTopPerCent) {
