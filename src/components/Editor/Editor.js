@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {findDOMNode} from 'react-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
@@ -188,9 +189,18 @@ export default class Editor extends Component {
      * @param scrollLeft
      */
     scrollX(scrollLeft) {
+
+        const {onScroll} = this.props;
+
         this.setState({
             scrollLeft
+        }, () => {
+            onScroll && onScroll({
+                left: scrollLeft,
+                top: this.state.scrollTop
+            });
         });
+
     }
 
     /**
@@ -198,9 +208,18 @@ export default class Editor extends Component {
      * @param scrollLeft
      */
     scrollY(scrollTop) {
+
+        const {onScroll} = this.props;
+
         this.setState({
             scrollTop
+        }, () => {
+            onScroll && onScroll({
+                left: this.state.scrollLeft,
+                top: scrollTop
+            });
         });
+
     }
 
     /**
@@ -230,7 +249,7 @@ export default class Editor extends Component {
      */
     wheelHandle(e) {
 
-        const {editorOptions} = this.props,
+        const {editorOptions, onScroll} = this.props,
             {editorDataArray, editorWidth, scrollTop, scrollLeft, contentWidth} = this.state,
             maxScrollLeft = contentWidth
                 - (editorWidth - editorOptions.horizontalPadding * 2 - editorOptions.scrollBarWidth),
@@ -247,10 +266,11 @@ export default class Editor extends Component {
             left = Valid.range(left, 0, maxScrollLeft);
         }
 
-        // this.setNextState({
         this.setState({
             scrollTop: top,
             scrollLeft: left
+        }, () => {
+            onScroll && onScroll({left, top});
         });
 
     }
@@ -309,7 +329,7 @@ export default class Editor extends Component {
      */
     mouseDownHandle(e) {
 
-        if (!Event.isTriggerOnEl(e, this.refs.editor)) {
+        if (!Event.isTriggerOnEl(e, findDOMNode(this.refs.editorText))) {
             this.setState({
                 isEditorFocused: false,
                 isDoubleClick: false,
@@ -441,7 +461,8 @@ export default class Editor extends Component {
                  style={{...editorSize, ...style}}
                  onWheel={this.wheelHandle}>
 
-                <TextScroller {...this.props}
+                <TextScroller ref="editorText"
+                              {...this.props}
                               {...this.state}
                               {...this}/>
 
@@ -474,7 +495,8 @@ Editor.propTypes = {
 
     editorOptions: PropTypes.object,
 
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    onScroll: PropTypes.func
 
 };
 

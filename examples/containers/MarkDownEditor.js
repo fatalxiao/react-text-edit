@@ -30,6 +30,7 @@ export default class MarkDownEditor extends Component {
 
         this.setNextState = this::this.setNextState;
         this.changeHandle = this::this.changeHandle;
+        this.scrollHandle = this::this.scrollHandle;
         this.resizeHandle = this::this.resizeHandle;
         this.mouseDownHandle = this::this.mouseDownHandle;
         this.mouseMoveHandle = this::this.mouseMoveHandle;
@@ -51,6 +52,10 @@ export default class MarkDownEditor extends Component {
         this.setState({
             data
         });
+    }
+
+    scrollHandle({left, top}) {
+
     }
 
     resizeHandle() {
@@ -124,7 +129,8 @@ export default class MarkDownEditor extends Component {
                              data={data}
                              width={editorWidth}
                              height={editorHeight}
-                             onChange={this.changeHandle}/>
+                             onChange={this.changeHandle}
+                             onScroll={this.scrollHandle}/>
 
                 <div className="drag-edge"
                      style={dragEdgeStyle}

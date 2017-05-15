@@ -123,7 +123,12 @@ ReactEditor.propTypes = {
     /**
      * text data change callback
      */
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+
+    /**
+     * scroll change callback
+     */
+    onScroll: PropTypes.func
 
 };
 
