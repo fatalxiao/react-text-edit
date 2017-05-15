@@ -11,6 +11,7 @@ import Valid from '../../utils/Valid';
 import CharSize from '../../utils/CharSize';
 import Event from '../../utils/Event';
 import DomLib from '../../utils/DomLib';
+import Calculation from '../../utils/Calculation';
 
 import './Editor.scss';
 
@@ -191,13 +192,16 @@ export default class Editor extends Component {
     scrollX(scrollLeft) {
 
         const {onScroll} = this.props;
+        const {scrollTop} = this.state;
 
         this.setState({
             scrollLeft
         }, () => {
             onScroll && onScroll({
                 left: scrollLeft,
-                top: this.state.scrollTop
+                top: scrollTop,
+                leftPerCent: Calculation.calculateScrollLeftPerCent(scrollLeft, {...this.props, ...this.state}),
+                topPerCent: Calculation.calculateScrollTopPerCent(scrollTop, {...this.props, ...this.state})
             });
         });
 
@@ -210,13 +214,16 @@ export default class Editor extends Component {
     scrollY(scrollTop) {
 
         const {onScroll} = this.props;
+        const {scrollLeft} = this.state;
 
         this.setState({
             scrollTop
         }, () => {
             onScroll && onScroll({
-                left: this.state.scrollLeft,
-                top: scrollTop
+                left: scrollLeft,
+                top: scrollTop,
+                leftPerCent: Calculation.calculateScrollLeftPerCent(scrollLeft, {...this.props, ...this.state}),
+                topPerCent: Calculation.calculateScrollTopPerCent(scrollTop, {...this.props, ...this.state})
             });
         });
 
@@ -270,7 +277,12 @@ export default class Editor extends Component {
             scrollTop: top,
             scrollLeft: left
         }, () => {
-            onScroll && onScroll({left, top});
+            onScroll && onScroll({
+                left,
+                top,
+                leftPerCent: Calculation.calculateScrollLeftPerCent(left, {...this.props, ...this.state}),
+                topPerCent: Calculation.calculateScrollTopPerCent(top, {...this.props, ...this.state})
+            });
         });
 
     }

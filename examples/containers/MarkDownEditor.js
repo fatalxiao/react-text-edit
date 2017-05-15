@@ -25,6 +25,8 @@ export default class MarkDownEditor extends Component {
             editorWidthPerCent: .5,
             editorHeight: window.innerHeight,
 
+            scrollTopPerCent: 0,
+
             isResizing: false
 
         };
@@ -55,8 +57,9 @@ export default class MarkDownEditor extends Component {
         });
     }
 
-    scrollHandle({left, top}) {
-
+    scrollHandle({topPerCent}) {
+        const el = this.refs.markdownBody;
+        el.scrollTop = (el.scrollHeight - window.innerHeight) * topPerCent;
     }
 
     resizeHandle() {
@@ -120,7 +123,8 @@ export default class MarkDownEditor extends Component {
         return (
             <div className={`mark-down-editor-wrapper ${isResizing ? 'resizing' : ''}`}>
 
-                <div className="markdown-body"
+                <div ref="markdownBody"
+                     className="markdown-body"
                      style={markdownBodyStyle}
                      dangerouslySetInnerHTML={html}></div>
 
