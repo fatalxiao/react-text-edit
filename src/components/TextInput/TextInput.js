@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import Command from '../../utils/Command';
 import Calculation from '../../utils/Calculation';
+import Valid from '../../utils/Valid';
 
 import './TextInput.scss';
 
@@ -13,15 +14,18 @@ export default class TextInput extends Component {
 
         super(props);
 
-        this.state = {
-            value: this.calculateValue(props)
-        };
+        this.isCompositionStart = false;
+
+        // this.state = {
+        //     value: this.calculateValue(props)
+        // };
 
         this.focus = this::this.focus;
         this.calculateValue = this::this.calculateValue;
         this.doChange = this::this.doChange;
         this.changeHandle = this::this.changeHandle;
         this.keyDownHandle = this::this.keyDownHandle;
+        this.compositionHandle = this::this.compositionHandle;
 
     }
 
@@ -52,21 +56,28 @@ export default class TextInput extends Component {
 
         const {newDataArray, newPosition} = result;
 
-        this.setState({
-            value: this.calculateValue()
-        }, () => {
-            this.props.onChange(newDataArray, newPosition);
-            this.focus();
-        });
+        // this.setState({
+        //     value: this.calculateValue()
+        // }, () => {
+        this.refs.textInput.value = this.calculateValue();
+        this.props.onChange(newDataArray, newPosition);
+        this.focus();
+        // });
 
     }
 
     changeHandle(e) {
+
+        if (this.isCompositionStart) {
+            return;
+        }
+
         if (e.target.value === '') {
             this.doChange(Command.doCut(this.props)); // cut
         } else {
             this.doChange(Command.doInput(e.target.value, this.props));
         }
+
     }
 
     keyDownHandle(e) {
@@ -78,7 +89,17 @@ export default class TextInput extends Component {
         }
     }
 
+    compositionHandle(e) {
+        if (e.type === 'compositionend') {
+            this.isCompositionStart = false;
+            Valid.isChrome() && this.changeHandle(e);
+        } else {
+            this.isCompositionStart = true;
+        }
+    }
+
     componentDidMount() {
+        this.refs.textInput.value = this.calculateValue();
         this.focus();
     }
 
@@ -86,11 +107,12 @@ export default class TextInput extends Component {
 
         if (!_.isEqual(nextProps.selectStartPosition, this.props.selectStartPosition)
             || !_.isEqual(nextProps.selectStopPosition, this.props.selectStopPosition)) {
-            this.setState({
-                value: this.calculateValue(nextProps)
-            }, () => {
-                this.focus(nextProps);
-            });
+            // this.setState({
+            //     value: this.calculateValue(nextProps)
+            // }, () => {
+            this.refs.textInput.value = this.calculateValue(nextProps);
+            this.focus(nextProps);
+            // });
         }
 
         this.focus(nextProps);
@@ -103,14 +125,17 @@ export default class TextInput extends Component {
 
     render() {
 
-        const {value} = this.state;
+        // const {value} = this.state;
 
         return (
             <textarea ref="textInput"
                       className="react-editor-text-input"
-                      value={value}
+                // value={value}
                       onChange={this.changeHandle}
-                      onKeyDown={this.keyDownHandle}></textarea>
+                      onKeyDown={this.keyDownHandle}
+                      onCompositionStart={this.compositionHandle}
+                      onCompositionUpdate={this.compositionHandle}
+                      onCompositionEnd={this.compositionHandle}></textarea>
         );
 
     }

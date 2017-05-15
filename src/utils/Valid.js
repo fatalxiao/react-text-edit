@@ -4,6 +4,11 @@ function range(value, min, max) {
     return value;
 }
 
+function isChrome() {
+    return window.navigator.userAgent.includes('Chrome');
+}
+
 export default {
-    range
+    range,
+    isChrome
 };
