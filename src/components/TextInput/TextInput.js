@@ -21,6 +21,7 @@ export default class TextInput extends Component {
         this.cutHandle = this::this.cutHandle;
         this.copyHandle = this::this.copyHandle;
         this.pasteHandle = this::this.pasteHandle;
+        this.selectHandle = this::this.selectHandle;
 
     }
 
@@ -34,7 +35,7 @@ export default class TextInput extends Component {
 
         setTimeout(() => {
             textInput.focus();
-            textInput.setSelectionRange(0, textInput.value.length);
+            textInput.setSelectionRange(0, 0);
         }, 0);
 
     }
@@ -84,6 +85,10 @@ export default class TextInput extends Component {
         this.doChange(Command.doInput(e.target.value, this.props));
     }
 
+    selectHandle(e) {
+        console.log(e.target.selectionStart, e.target.selectionEnd);
+    }
+
     componentDidMount() {
         this.focus();
     }
@@ -104,7 +109,8 @@ export default class TextInput extends Component {
                       onKeyDown={this.keyDownHandle}
                       onCut={this.cutHandle}
                       onCopy={this.copyHandle}
-                      onPaste={this.pasteHandle}></textarea>
+                      onPaste={this.pasteHandle}
+                      onSelect={this.selectHandle}></textarea>
         );
     }
 };

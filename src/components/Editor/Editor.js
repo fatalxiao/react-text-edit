@@ -241,12 +241,10 @@ export default class Editor extends Component {
 
         if (top < 0 || top > maxScrollTop) {
             top = Valid.range(top, 0, maxScrollTop);
-            editorOptions.forbiddenScrollRebound && e.preventDefault();
         }
 
         if (left < 0 || left > maxScrollLeft) {
             left = Valid.range(left, 0, maxScrollLeft);
-            editorOptions.forbiddenScrollRebound && e.preventDefault();
         }
 
         // this.setNextState({
