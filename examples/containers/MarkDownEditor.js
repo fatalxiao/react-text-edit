@@ -21,7 +21,8 @@ export default class MarkDownEditor extends Component {
 
             data: MacDownHelpText,
 
-            editorWidth: window.innerWidth / 2,
+            fullWidth: window.innerWidth,
+            editorWidthPerCent: .5,
             editorHeight: window.innerHeight,
 
             isResizing: false
@@ -60,8 +61,7 @@ export default class MarkDownEditor extends Component {
 
     resizeHandle() {
         this.setNextState({
-            editorWidth: window.innerWidth / 2,
-            editorHeight: window.innerHeight
+            fullWidth: window.innerWidth
         });
     }
 
@@ -78,7 +78,7 @@ export default class MarkDownEditor extends Component {
         }
 
         this.setNextState({
-            editorWidth: window.innerWidth - e.clientX,
+            editorWidthPerCent: (window.innerWidth - e.clientX) / window.innerWidth,
             editorHeight: window.innerHeight
         });
 
@@ -104,9 +104,9 @@ export default class MarkDownEditor extends Component {
 
     render() {
 
-        const {data, editorWidth, editorHeight, isResizing} = this.state,
+        const {data, editorWidthPerCent, editorHeight, isResizing} = this.state,
             html = {__html: markdown.parse(data, 'Maruku')},
-            markdownBodyWidth = window.innerWidth - editorWidth,
+            markdownBodyWidth = window.innerWidth * (1 - editorWidthPerCent),
             markdownBodyStyle = {
                 width: markdownBodyWidth
             },
@@ -127,7 +127,7 @@ export default class MarkDownEditor extends Component {
                 <ReactEditor className="mark-down-editor"
                              style={markDownEditorStyle}
                              data={data}
-                             width={editorWidth}
+                             width={window.innerWidth * editorWidthPerCent}
                              height={editorHeight}
                              onChange={this.changeHandle}
                              onScroll={this.scrollHandle}/>
