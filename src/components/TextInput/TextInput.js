@@ -16,10 +16,6 @@ export default class TextInput extends Component {
 
         this.isCompositionStart = false;
 
-        // this.state = {
-        //     value: this.calculateValue(props)
-        // };
-
         this.focus = this::this.focus;
         this.calculateValue = this::this.calculateValue;
         this.doChange = this::this.doChange;
@@ -56,13 +52,9 @@ export default class TextInput extends Component {
 
         const {newDataArray, newPosition} = result;
 
-        // this.setState({
-        //     value: this.calculateValue()
-        // }, () => {
         this.refs.textInput.value = this.calculateValue();
         this.props.onChange(newDataArray, newPosition);
         this.focus();
-        // });
 
     }
 
@@ -107,12 +99,8 @@ export default class TextInput extends Component {
 
         if (!_.isEqual(nextProps.selectStartPosition, this.props.selectStartPosition)
             || !_.isEqual(nextProps.selectStopPosition, this.props.selectStopPosition)) {
-            // this.setState({
-            //     value: this.calculateValue(nextProps)
-            // }, () => {
             this.refs.textInput.value = this.calculateValue(nextProps);
             this.focus(nextProps);
-            // });
         }
 
         this.focus(nextProps);
@@ -124,20 +112,15 @@ export default class TextInput extends Component {
     }
 
     render() {
-
-        // const {value} = this.state;
-
         return (
             <textarea ref="textInput"
                       className="react-editor-text-input"
-                // value={value}
                       onChange={this.changeHandle}
                       onKeyDown={this.keyDownHandle}
                       onCompositionStart={this.compositionHandle}
                       onCompositionUpdate={this.compositionHandle}
                       onCompositionEnd={this.compositionHandle}></textarea>
         );
-
     }
 };
 
