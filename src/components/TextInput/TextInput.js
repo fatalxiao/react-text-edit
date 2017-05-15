@@ -13,15 +13,14 @@ export default class TextInput extends Component {
 
         super(props);
 
-        // this.state = {
-        //     value: this.calculateValue(props)
-        // };
-
         this.focus = this::this.focus;
         this.calculateValue = this::this.calculateValue;
         this.doChange = this::this.doChange;
         this.changeHandle = this::this.changeHandle;
         this.keyDownHandle = this::this.keyDownHandle;
+        this.cutHandle = this::this.cutHandle;
+        this.copyHandle = this::this.copyHandle;
+        this.pasteHandle = this::this.pasteHandle;
 
     }
 
@@ -52,23 +51,15 @@ export default class TextInput extends Component {
 
         const {newDataArray, newPosition} = result;
 
-        // this.setState({
-        //     value: this.calculateValue()
-        // }, () => {
-
-        // this.refs.textInput.value = this.calculateValue();
         this.props.onChange(newDataArray, newPosition);
+
+        this.refs.textInput.value = '';
         this.focus();
-        // });
 
     }
 
     changeHandle(e) {
-        // if (e.target.value === '') {
-        //     this.doChange(Command.doCut(this.props)); // cut
-        // } else {
         this.doChange(Command.doInput(e.target.value, this.props));
-        // }
     }
 
     keyDownHandle(e) {
@@ -80,28 +71,25 @@ export default class TextInput extends Component {
         }
     }
 
+    cutHandle(e) {
+        e.persist();
+    }
+
+    copyHandle(e) {
+        e.persist();
+    }
+
+    pasteHandle(e) {
+        e.persist();
+        this.doChange(Command.doInput(e.target.value, this.props));
+    }
+
     componentDidMount() {
-
-        // this.refs.textInput.value = this.calculateValue();
-
         this.focus();
-
     }
 
     componentWillReceiveProps(nextProps) {
-
-        if (!_.isEqual(nextProps.selectStartPosition, this.props.selectStartPosition)
-            || !_.isEqual(nextProps.selectStopPosition, this.props.selectStopPosition)) {
-            // this.setState({
-            //     value: this.calculateValue(nextProps)
-            // }, () => {
-            // this.refs.textInput.value = this.calculateValue(nextProps);
-            this.focus(nextProps);
-            // });
-        }
-
         this.focus(nextProps);
-
     }
 
     componentDidUpdate(prevProps) {
@@ -109,17 +97,15 @@ export default class TextInput extends Component {
     }
 
     render() {
-
-        // const {value} = this.state;
-
         return (
             <textarea ref="textInput"
                       className="react-editor-text-input"
-                // value={value}
                       onChange={this.changeHandle}
-                      onKeyDown={this.keyDownHandle}></textarea>
+                      onKeyDown={this.keyDownHandle}
+                      onCut={this.cutHandle}
+                      onCopy={this.copyHandle}
+                      onPaste={this.pasteHandle}></textarea>
         );
-
     }
 };
 
