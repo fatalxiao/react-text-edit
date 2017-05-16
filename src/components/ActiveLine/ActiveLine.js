@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import Calculation from '../../utils/Calculation';
+import Valid from '../../utils/Valid';
 
 import './ActiveLine.scss';
 
@@ -14,7 +14,7 @@ export default class ActiveLine extends Component {
     render() {
 
         const {editorDataArray, editorOptions, contentWidth, cursorPosition} = this.props,
-            isEmpty = Calculation.isEmptyTextData(editorDataArray),
+            isEmpty = Valid.isEmptyTextData(editorDataArray),
             activeLineStyle = {
                 width: contentWidth + editorOptions.horizontalPadding
                 + (isEmpty ? 0 : editorOptions.scrollBarWidth + editorOptions.horizontalPadding),

@@ -28,9 +28,11 @@ export default class TextScroller extends Component {
                 padding: `0 ${horizontalPadding + scrollBarWidth}px 0 ${horizontalPadding}px`,
                 transform: `translate3d(${-scrollLeft}px, ${-scrollTop}px, 0)`
             },
-            displayIndex = Calculation.calculateTextDisplayIndex(this.props),
+            displayIndex = Calculation.textDisplayIndex(this.props),
             {selectStartPosition, selectStopPosition, cursorPosition}
-                = Calculation.calculateCursorSelectionPosition(this.props);
+                = Calculation.cursorSelectionPosition(this.props);
+
+        console.log(selectStartPosition);
 
         return (
             <div className="react-editor-text-scroller"

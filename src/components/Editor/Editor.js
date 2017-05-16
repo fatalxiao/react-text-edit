@@ -200,8 +200,8 @@ export default class Editor extends Component {
             onScroll && onScroll({
                 left: scrollLeft,
                 top: scrollTop,
-                leftPerCent: Calculation.calculateScrollLeftPerCent(scrollLeft, {...this.props, ...this.state}),
-                topPerCent: Calculation.calculateScrollTopPerCent(scrollTop, {...this.props, ...this.state})
+                leftPerCent: Calculation.scrollLeftPerCent(scrollLeft, {...this.props, ...this.state}),
+                topPerCent: Calculation.scrollTopPerCent(scrollTop, {...this.props, ...this.state})
             });
         });
 
@@ -222,8 +222,8 @@ export default class Editor extends Component {
             onScroll && onScroll({
                 left: scrollLeft,
                 top: scrollTop,
-                leftPerCent: Calculation.calculateScrollLeftPerCent(scrollLeft, {...this.props, ...this.state}),
-                topPerCent: Calculation.calculateScrollTopPerCent(scrollTop, {...this.props, ...this.state})
+                leftPerCent: Calculation.scrollLeftPerCent(scrollLeft, {...this.props, ...this.state}),
+                topPerCent: Calculation.scrollTopPerCent(scrollTop, {...this.props, ...this.state})
             });
         });
 
@@ -280,8 +280,8 @@ export default class Editor extends Component {
             onScroll && onScroll({
                 left,
                 top,
-                leftPerCent: Calculation.calculateScrollLeftPerCent(left, {...this.props, ...this.state}),
-                topPerCent: Calculation.calculateScrollTopPerCent(top, {...this.props, ...this.state})
+                leftPerCent: Calculation.scrollLeftPerCent(left, {...this.props, ...this.state}),
+                topPerCent: Calculation.scrollTopPerCent(top, {...this.props, ...this.state})
             });
         });
 
@@ -441,7 +441,7 @@ export default class Editor extends Component {
         }
         if (nextProps.scrollLeftPerCent !== this.props.scrollLeftPerCent) {
             state.scrollLeft =
-                Calculation.calculateFullScrollLeft({...nextProps, ...this.state}) * nextProps.scrollLeftPerCent;
+                Calculation.fullScrollLeft({...nextProps, ...this.state}) * nextProps.scrollLeftPerCent;
         }
 
         // update text content scroll top
@@ -450,7 +450,7 @@ export default class Editor extends Component {
         }
         if (nextProps.scrollTopPerCent !== this.props.scrollTopPerCent) {
             state.scrollTop =
-                Calculation.calculateFullScrollTop({...nextProps, ...this.state}) * nextProps.scrollTopPerCent;
+                Calculation.fullScrollTop({...nextProps, ...this.state}) * nextProps.scrollTopPerCent;
         }
 
         // update text content width

@@ -1,40 +1,33 @@
 import CharSize from './CharSize';
 import Valid from './Valid';
 
-function isEmptyTextData(array) {
-    if (!array || array.length === 0 || (array.length === 1 && array[0] === '')) {
-        return true;
-    }
-    return false;
-}
-
-function calculateHorizontalDisplayWidth(props) {
+function horizontalDisplayWidth(props) {
     const {editorWidth, editorOptions} = props;
     return editorWidth - editorOptions.scrollBarWidth - editorOptions.horizontalPadding * 2;
 }
 
-function calculateFullScrollLeft(props) {
-    return props.contentWidth - calculateHorizontalDisplayWidth(props);
+function fullScrollLeft(props) {
+    return props.contentWidth - horizontalDisplayWidth(props);
 }
 
-function calculateScrollLeftPerCent(scrollLeft, props) {
+function scrollLeftPerCent(scrollLeft, props) {
     const {contentWidth} = props,
-        displayWidth = calculateHorizontalDisplayWidth(props),
-        fullWidth = calculateFullScrollLeft(props);
+        displayWidth = horizontalDisplayWidth(props),
+        fullWidth = fullScrollLeft(props);
     return contentWidth > displayWidth ? scrollLeft / fullWidth : 1;
 }
 
-function calculateFullScrollTop(props) {
+function fullScrollTop(props) {
     return props.contentHeight - props.editorOptions.lineHeight;
 }
 
-function calculateScrollTopPerCent(scrollTop, props) {
+function scrollTopPerCent(scrollTop, props) {
     const {contentHeight, editorOptions} = props,
-        fullHeight = calculateFullScrollTop(props);
+        fullHeight = fullScrollTop(props);
     return contentHeight > editorOptions.lineHeight ? scrollTop / fullHeight : 1;
 }
 
-function calculateTextDisplayIndex({editorDataArray, scrollTop, editorOptions, editorHeight}) {
+function textDisplayIndex({editorDataArray, scrollTop, editorOptions, editorHeight}) {
 
     const len = editorDataArray.length;
 
@@ -51,7 +44,7 @@ function calculateTextDisplayIndex({editorDataArray, scrollTop, editorOptions, e
 
 }
 
-function calculateCursorPosition(x, y, {editorEl, editorDataArray, editorOptions}) {
+function cursorPosition(x, y, {editorEl, editorDataArray, editorOptions}) {
 
     if (isNaN(x) || isNaN(y)) {
         return;
@@ -88,27 +81,27 @@ function calculateCursorPosition(x, y, {editorEl, editorDataArray, editorOptions
 
 }
 
-function calculateCursorSelectionPosition(props) {
+function cursorSelectionPosition(props) {
 
     const {
         editorEl, editorDataArray, editorOptions, contentWidth, isDoubleClick, isTripleClick,
         selectStartX, selectStartY, selectStopX, selectStopY
     } = props;
 
-    let selectStartPosition, selectStopPosition, cursorPosition;
+    let selectStartPosition, selectStopPosition, position;
 
     if (isTripleClick) {
 
-        cursorPosition = calculateCursorPosition(selectStopX, selectStopY, props);
+        position = cursorPosition(selectStopX, selectStopY, props);
 
-        selectStartPosition = Object.assign({}, cursorPosition);
+        selectStartPosition = Object.assign({}, position);
         selectStartPosition.left = 0;
         selectStartPosition.col = 0;
 
-        selectStopPosition = Object.assign({}, cursorPosition);
+        selectStopPosition = Object.assign({}, position);
         if (selectStopPosition.row === editorDataArray.length - 1) { // last line
             selectStopPosition.left = contentWidth + editorOptions.horizontalPadding + editorOptions.scrollBarWidth;
-            selectStopPosition.col = editorDataArray[cursorPosition.row].length;
+            selectStopPosition.col = editorDataArray[position.row].length;
         } else {
             selectStopPosition.left = 0;
             selectStopPosition.col = 0;
@@ -118,17 +111,17 @@ function calculateCursorSelectionPosition(props) {
 
     } else if (isDoubleClick) {
 
-        cursorPosition = calculateCursorPosition(selectStopX, selectStopY, props);
+        position = cursorPosition(selectStopX, selectStopY, props);
 
-        const string = editorDataArray[cursorPosition.row];
+        const string = editorDataArray[position.row];
 
         if (string.length > 0) {
 
             let tempCol, tempchar, tempStartChars = [], tempStopChars = [];
 
             // calculate start position
-            selectStartPosition = Object.assign({}, cursorPosition);
-            tempCol = cursorPosition.col;
+            selectStartPosition = Object.assign({}, position);
+            tempCol = position.col;
             if (tempCol > 0) {
                 do {
 
@@ -150,8 +143,8 @@ function calculateCursorSelectionPosition(props) {
             }
 
             // calculate stop position
-            selectStopPosition = Object.assign({}, cursorPosition);
-            tempCol = cursorPosition.col;
+            selectStopPosition = Object.assign({}, position);
+            tempCol = position.col;
             if (tempCol < string.length) {
                 do {
 
@@ -174,7 +167,7 @@ function calculateCursorSelectionPosition(props) {
 
             if (tempStartChars.length === 0 && tempStopChars.length === 0) {
 
-                tempCol = cursorPosition.col;
+                tempCol = position.col;
                 tempchar = undefined;
 
                 if (tempCol < string.length) {
@@ -201,22 +194,22 @@ function calculateCursorSelectionPosition(props) {
 
             }
 
-            cursorPosition = Object.assign({}, selectStopPosition);
+            position = Object.assign({}, selectStopPosition);
 
         } else {
-            selectStartPosition = Object.assign({}, cursorPosition);
-            selectStopPosition = Object.assign({}, cursorPosition);
+            selectStartPosition = Object.assign({}, position);
+            selectStopPosition = Object.assign({}, position);
         }
 
     } else {
 
-        selectStartPosition = calculateCursorPosition(selectStartX, selectStartY, props);
-        selectStopPosition = calculateCursorPosition(selectStopX, selectStopY, props);
-        cursorPosition = Object.assign({}, selectStopPosition);
+        selectStartPosition = cursorPosition(selectStartX, selectStartY, props);
+        selectStopPosition = cursorPosition(selectStopX, selectStopY, props);
+        position = Object.assign({}, selectStopPosition);
 
     }
 
-    return {selectStartPosition, selectStopPosition, cursorPosition};
+    return {selectStartPosition, selectStopPosition, cursorPosition: position};
 
 }
 
@@ -368,15 +361,14 @@ function insertValue(dataArray, pos, value, lineHeight, editorEl) {
 }
 
 export default {
-    isEmptyTextData,
-    calculateHorizontalDisplayWidth,
-    calculateFullScrollLeft,
-    calculateScrollLeftPerCent,
-    calculateFullScrollTop,
-    calculateScrollTopPerCent,
-    calculateTextDisplayIndex,
-    calculateCursorPosition,
-    calculateCursorSelectionPosition,
+    horizontalDisplayWidth,
+    fullScrollLeft,
+    scrollLeftPerCent,
+    fullScrollTop,
+    scrollTopPerCent,
+    textDisplayIndex,
+    cursorPosition,
+    cursorSelectionPosition,
     sortPosition,
     hasSelection,
     getSelectionValue,
