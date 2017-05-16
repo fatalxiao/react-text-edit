@@ -482,7 +482,7 @@ export default class Editor extends Component {
     render() {
 
         const {className, style, isFullScreen} = this.props;
-        const {editorWidth, editorHeight} = this.state;
+        const {editorInital, editorWidth, editorHeight} = this.state;
 
         const editorSize = {
             width: editorWidth,
@@ -495,10 +495,15 @@ export default class Editor extends Component {
                  style={{...editorSize, ...style}}
                  onWheel={this.wheelHandle}>
 
-                <TextScroller ref="editorText"
-                              {...this.props}
-                              {...this.state}
-                              {...this}/>
+                {
+                    editorInital ?
+                        <TextScroller ref="editorText"
+                                      {...this.props}
+                                      {...this.state}
+                                      {...this}/>
+                        :
+                        null
+                }
 
                 <ScrollBars {...this.props}
                             {...this.state}

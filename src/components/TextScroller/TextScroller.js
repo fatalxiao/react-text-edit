@@ -2,13 +2,13 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import TextInput from '../TextInput';
-// import TextMarker from '../TextMarker';
 import ActiveLine from '../ActiveLine';
 import TextSelection from '../TextSelection';
 import TextContainer from '../TextContainer';
 import EditorCursor from '../EditorCursor';
 
 import Calculation from '../../utils/Calculation';
+import CharSize from '../../utils/CharSize';
 
 import './TextScroller.scss';
 
