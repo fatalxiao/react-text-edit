@@ -155,7 +155,7 @@ export default class TextInput extends Component {
 
                     // chrome cannot trigger change event when composition end
                     // so trigger change event manually here
-                    Valid.isChrome() && e.target.value && this.changeHandle(e);
+                    Valid.isChrome() && this.changeHandle(e);
 
                     onCompositionUpdate('');
 

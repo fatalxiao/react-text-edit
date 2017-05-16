@@ -1,23 +1,6 @@
 let testContainer,
-    charCount,
+    charCount = 100,
     charSize = {};
-
-function calculateCharCount(editorEl) {
-
-    if (!editorEl) {
-        return;
-    }
-
-    let el = editorEl.querySelector('.react-editor-test-char-count'),
-        width = el.getBoundingClientRect().width;
-
-    if (width > 0 && width < 1) {
-        charCount = 50;
-    } else {
-        charCount = 100;
-    }
-
-}
 
 function calculateCharWidth(char, editorEl) {
 
@@ -33,9 +16,6 @@ function calculateCharWidth(char, editorEl) {
         testContainer = editorEl.querySelector('.react-editor-test-container');
     }
 
-    if (!charCount) {
-        calculateCharCount(editorEl);
-    }
     testContainer.innerHTML = char.repeat(charCount);
 
     return charSize[char] = testContainer.getBoundingClientRect().width / charCount;
