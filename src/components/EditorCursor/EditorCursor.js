@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
+import CharSize from '../../utils/CharSize';
+
 import './EditorCursor.scss';
 
 export default class EditorCursor extends Component {
@@ -11,7 +13,7 @@ export default class EditorCursor extends Component {
 
     render() {
 
-        const {editorOptions, cursorPosition} = this.props;
+        const {editorEl, editorOptions, compositionText, cursorPosition} = this.props;
         let left, top;
 
         if (cursorPosition) {
@@ -19,6 +21,10 @@ export default class EditorCursor extends Component {
         } else {
             left = 0;
             top = 0;
+        }
+
+        if (compositionText) {
+            left += CharSize.calculateStringWidth(compositionText, editorEl);
         }
 
         return (
@@ -35,21 +41,29 @@ export default class EditorCursor extends Component {
 };
 
 EditorCursor.propTypes = {
+
     editorEl: PropTypes.object,
     editorDataArray: PropTypes.array,
     editorOptions: PropTypes.object,
     scrollLeft: PropTypes.number,
     scrollTop: PropTypes.number,
     mouseDownPosition: PropTypes.object,
+
+    compositionText: PropTypes.string,
     cursorPosition: PropTypes.object
+
 };
 
 EditorCursor.defaultProps = {
+
     editorEl: null,
     editorDataArray: [],
     editorOptions: null,
     scrollLeft: 0,
     scrollTop: 0,
     mouseDownPosition: null,
+
+    compositionText: '',
     cursorPosition: null
+
 };

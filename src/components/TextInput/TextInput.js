@@ -15,7 +15,8 @@ export default class TextInput extends Component {
         super(props);
 
         this.state = {
-            isComposition: false
+            isComposition: false,
+            compositionText: ''
         };
 
         this.focus = this::this.focus;
@@ -82,18 +83,26 @@ export default class TextInput extends Component {
      */
     changeHandle(e) {
 
+        const value = e.target.value;
+
         if (this.state.isComposition) {
 
-            this.refs.textDisplay.innerHTML = e.target.value;
+            const {onCompositionUpdate} = this.props;
+
+            this.setState({
+                compositionText: value
+            }, () => {
+                onCompositionUpdate(value);
+            });
 
             return;
 
         }
 
-        if (e.target.value === '') {
+        if (value === '') {
             this.doChange(Command.doCut(this.props)); // cut
         } else {
-            this.doChange(Command.doInput(e.target.value, this.props)); // input or paste
+            this.doChange(Command.doInput(value, this.props)); // input or paste
         }
 
     }
@@ -137,13 +146,18 @@ export default class TextInput extends Component {
             }
             case 'compositionend': {
 
+                const {onCompositionUpdate} = this.props;
+
                 this.setState({
-                    isComposition: false
+                    isComposition: false,
+                    compositionText: ''
                 }, () => {
 
                     // chrome cannot trigger change event when composition end
                     // so trigger change event manually here
                     Valid.isChrome() && e.target.value && this.changeHandle(e);
+
+                    onCompositionUpdate('');
 
                 });
 
@@ -178,7 +192,7 @@ export default class TextInput extends Component {
     render() {
 
         const {editorOptions, cursorPosition} = this.props,
-            {isComposition} = this.state,
+            {isComposition, compositionText} = this.state,
             style = {
                 height: editorOptions.lineHeight,
                 lineHeight: `${editorOptions.lineHeight * 1.2}px`,
@@ -192,7 +206,9 @@ export default class TextInput extends Component {
                     isComposition ?
                         <div ref="textDisplay"
                              className="react-editor-text-display"
-                             style={style}></div>
+                             style={style}>
+                            {compositionText}
+                        </div>
                         :
                         null
                 }
@@ -221,7 +237,8 @@ TextInput.propTypes = {
     selectStartPosition: PropTypes.object,
     selectStopPosition: PropTypes.object,
 
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    onCompositionUpdate: PropTypes.func
 
 };
 
