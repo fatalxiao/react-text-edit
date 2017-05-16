@@ -25,6 +25,10 @@ export default class TextInput extends Component {
 
     }
 
+    /**
+     * focus the textarea async
+     * @param props
+     */
     focus(props = this.props) {
 
         if (!props.isEditorFocused) {
@@ -40,10 +44,19 @@ export default class TextInput extends Component {
 
     }
 
+    /**
+     * get the value of textarea should display
+     * @param props
+     * @returns {*}
+     */
     calculateValue(props = this.props) {
         return Calculation.getSelectionValue(props);
     }
 
+    /**
+     * update editor text data and pop
+     * @param result
+     */
     doChange(result) {
 
         if (!result) {
@@ -58,6 +71,10 @@ export default class TextInput extends Component {
 
     }
 
+    /**
+     * textarea change event handle
+     * @param e
+     */
     changeHandle(e) {
 
         if (this.isCompositionStart) {
@@ -67,11 +84,15 @@ export default class TextInput extends Component {
         if (e.target.value === '') {
             this.doChange(Command.doCut(this.props)); // cut
         } else {
-            this.doChange(Command.doInput(e.target.value, this.props));
+            this.doChange(Command.doInput(e.target.value, this.props)); // input or paste
         }
 
     }
 
+    /**
+     * textarea keydown event handle
+     * @param e
+     */
     keyDownHandle(e) {
         switch (e.keyCode) {
             case 8: // back space
@@ -81,10 +102,19 @@ export default class TextInput extends Component {
         }
     }
 
+    /**
+     * textarea composition event handle
+     * @param e
+     */
     compositionHandle(e) {
         if (e.type === 'compositionend') {
+
             this.isCompositionStart = false;
+
+            // chrome cannot trigger change event when composition end
+            // so trigger change event manually here
             Valid.isChrome() && this.changeHandle(e);
+
         } else {
             this.isCompositionStart = true;
         }
@@ -129,6 +159,7 @@ TextInput.propTypes = {
     editorEl: PropTypes.object,
     isEditorFocused: PropTypes.bool,
     editorDataArray: PropTypes.array,
+    cursorPosition: PropTypes.object,
     selectStartPosition: PropTypes.object,
     selectStopPosition: PropTypes.object,
 
@@ -139,6 +170,7 @@ TextInput.propTypes = {
 TextInput.defaultProps = {
     editorEl: null,
     editorDataArray: [],
+    cursorPosition: null,
     selectStartPosition: null,
     selectStopPosition: null
 };

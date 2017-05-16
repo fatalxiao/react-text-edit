@@ -40,11 +40,6 @@ export default class TextScroller extends Component {
                            selectStartPosition={selectStartPosition}
                            selectStopPosition={selectStopPosition}/>
 
-                {/*<TextMarker {...this.props}*/}
-                {/*cursorPosition={cursorPosition}*/}
-                {/*selectStartPosition={selectStartPosition}*/}
-                {/*selectStopPosition={selectStopPosition}/>*/}
-
                 <ActiveLine {...this.props}
                             cursorPosition={cursorPosition}
                             selectStartPosition={selectStartPosition}
