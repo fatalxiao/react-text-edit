@@ -49,7 +49,7 @@ export default class TextSelection extends Component {
                                         <div key={index}
                                              className="react-editor-text-selection-line"
                                              style={{
-                                                 width: stop.left - editorOptions.horizontalPadding,
+                                                 width: stop.left,
                                                  height: editorOptions.lineHeight,
                                                  transform: `translate3d(0, ${stop.top}px, 0)`
                                              }}></div>

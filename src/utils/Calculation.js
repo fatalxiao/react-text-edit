@@ -54,7 +54,7 @@ function cursorPosition(x, y, {editorEl, editorDataArray, editorOptions}) {
         offsetTop = Valid.range(y, 0),
         row = Math.round((offsetTop / editorOptions.lineHeight) - .5);
 
-    if (row >= len) {
+    if (row >= len) { // mouse down blow text content
 
         const string = editorDataArray[len - 1];
 
@@ -65,7 +65,7 @@ function cursorPosition(x, y, {editorEl, editorDataArray, editorOptions}) {
             col: string.length
         };
 
-    } else {
+    } else { // mouse down in text content
 
         const top = row * editorOptions.lineHeight,
             {left, col} = CharSize.calculateCursorPosition(editorDataArray[row], x, editorEl);
@@ -84,15 +84,17 @@ function cursorPosition(x, y, {editorEl, editorDataArray, editorOptions}) {
 function cursorSelectionPosition(props) {
 
     const {
-        editorEl, editorDataArray, editorOptions, contentWidth, isDoubleClick, isTripleClick,
-        selectStartX, selectStartY, selectStopX, selectStopY
-    } = props;
+            editorEl, editorDataArray, editorOptions, contentWidth, isDoubleClick, isTripleClick,
+            selectStartX, selectStartY, selectStopX, selectStopY
+        } = props,
+        finalSelectStartX = selectStartX ? selectStartX - editorOptions.horizontalPadding : selectStartX,
+        finalSelectStopX = selectStopX ? selectStopX - editorOptions.horizontalPadding : selectStopX;
 
     let selectStartPosition, selectStopPosition, position;
 
     if (isTripleClick) {
 
-        position = cursorPosition(selectStopX, selectStopY, props);
+        position = cursorPosition(finalSelectStopX, selectStopY, props);
 
         selectStartPosition = Object.assign({}, position);
         selectStartPosition.left = 0;
@@ -111,7 +113,7 @@ function cursorSelectionPosition(props) {
 
     } else if (isDoubleClick) {
 
-        position = cursorPosition(selectStopX, selectStopY, props);
+        position = cursorPosition(finalSelectStopX, selectStopY, props);
 
         const string = editorDataArray[position.row];
 
@@ -203,8 +205,8 @@ function cursorSelectionPosition(props) {
 
     } else {
 
-        selectStartPosition = cursorPosition(selectStartX, selectStartY, props);
-        selectStopPosition = cursorPosition(selectStopX, selectStopY, props);
+        selectStartPosition = cursorPosition(finalSelectStartX, selectStartY, props);
+        selectStopPosition = cursorPosition(finalSelectStopX, selectStopY, props);
         position = Object.assign({}, selectStopPosition);
 
     }
