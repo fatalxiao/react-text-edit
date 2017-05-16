@@ -65,7 +65,10 @@ export default class TextInput extends Component {
             return;
         }
 
-        const {newDataArray, newPosition} = result;
+        const {editorOptions} = this.props,
+            {newDataArray, newPosition} = result;
+
+        newPosition.left += editorOptions.horizontalPadding;
 
         this.refs.textInput.value = this.calculateValue();
         this.props.onChange(newDataArray, newPosition);
