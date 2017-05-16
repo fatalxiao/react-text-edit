@@ -1,16 +1,33 @@
 @import '../../assets/sass/common.scss';
 
-.react-editor-text-input {
-    position: absolute;
-    z-index: 999;
-    opacity: 0;
-    background: transparent;
-    -webkit-appearance: none;
-    appearance: none;
-    resize: none;
-    outline: none;
-    overflow: hidden;
-    padding: 0;
-    width: 0;
-    height: 0;
+.react-editor-text-input-wrapper {
+    font: inherit;
+
+    .react-editor-text-input {
+        position: absolute;
+        z-index: 999;
+        opacity: 0;
+        font: inherit;
+        border: none;
+        background: transparent;
+        -webkit-appearance: none;
+        appearance: none;
+        resize: none;
+        outline: none;
+        overflow: hidden;
+        padding: 0;
+        width: 0;
+        height: 0;
+        color: inherit;
+        cursor: none;
+    }
+
+    .react-editor-text-display {
+
+        @extend .react-editor-text-input;
+
+        opacity: 1;
+        width: auto;
+        margin-left: 2px;
+    }
 }

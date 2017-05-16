@@ -305,8 +305,8 @@ function deleteChar(dataArray, pos, editorEl) {
     let newDataArray = dataArray.slice(),
         newPosition = Object.assign({}, pos);
 
-    newDataArray[pos.row] = newDataArray[pos.row].slice(0, pos.col - 1) + newDataArray[pos.row].slice(pos.col);
-    newPosition.left -= CharSize.calculateStringWidth(dataArray[pos.row].slice(pos.col - 1, pos.col), editorEl);
+    newDataArray[pos.row] = dataArray[pos.row].slice(0, pos.col - 1) + dataArray[pos.row].slice(pos.col);
+    newPosition.left -= CharSize.calculateStringWidth(dataArray[pos.row].at(pos.col - 1), editorEl);
 
     return {newDataArray, newPosition};
 
