@@ -2,8 +2,9 @@ import CharSize from './CharSize';
 import Valid from './Valid';
 
 function horizontalDisplayWidth(props) {
-    const {editorWidth, editorOptions} = props;
-    return editorWidth - editorOptions.scrollBarWidth - editorOptions.horizontalPadding * 2;
+    const {editorWidth, editorOptions} = props,
+        {scrollBarWidth, horizontalPadding, showLineNumber, gutterWidth} = editorOptions;
+    return editorWidth - scrollBarWidth - horizontalPadding * 2 - (showLineNumber ? gutterWidth : 0);
 }
 
 function fullScrollLeft(props) {
@@ -18,7 +19,8 @@ function scrollLeftPerCent(scrollLeft, props) {
 }
 
 function fullScrollTop(props) {
-    return props.contentHeight - props.editorOptions.lineHeight;
+    const {editorDataArray, editorOptions} = props;
+    return (editorDataArray.length - 1) * editorOptions.lineHeight;
 }
 
 function scrollTopPerCent(scrollTop, props) {
@@ -87,8 +89,13 @@ function cursorSelectionPosition(props) {
             editorEl, editorDataArray, editorOptions, contentWidth, isDoubleClick, isTripleClick,
             selectStartX, selectStartY, selectStopX, selectStopY
         } = props,
-        finalSelectStartX = selectStartX ? selectStartX - editorOptions.horizontalPadding : selectStartX,
-        finalSelectStopX = selectStopX ? selectStopX - editorOptions.horizontalPadding : selectStopX;
+        {
+            horizontalPadding, scrollBarWidth, lineHeight, discontinuousChars,
+            showLineNumber, gutterWidth
+        } = editorOptions,
+        finalGutterWidth = showLineNumber ? gutterWidth : 0,
+        finalSelectStartX = selectStartX ? selectStartX - horizontalPadding - finalGutterWidth : selectStartX,
+        finalSelectStopX = selectStopX ? selectStopX - horizontalPadding - finalGutterWidth : selectStopX;
 
     let selectStartPosition, selectStopPosition, position;
 
@@ -102,12 +109,12 @@ function cursorSelectionPosition(props) {
 
         selectStopPosition = Object.assign({}, position);
         if (selectStopPosition.row === editorDataArray.length - 1) { // last line
-            selectStopPosition.left = contentWidth + editorOptions.horizontalPadding + editorOptions.scrollBarWidth;
+            selectStopPosition.left = contentWidth + horizontalPadding + scrollBarWidth;
             selectStopPosition.col = editorDataArray[position.row].length;
         } else {
             selectStopPosition.left = 0;
             selectStopPosition.col = 0;
-            selectStopPosition.top += editorOptions.lineHeight;
+            selectStopPosition.top += lineHeight;
             selectStopPosition.row += 1;
         }
 
@@ -129,7 +136,7 @@ function cursorSelectionPosition(props) {
 
                     tempchar = string.at(tempCol - 1);
 
-                    if (!editorOptions.discontinuousChars.includes(tempchar)) {
+                    if (!discontinuousChars.includes(tempchar)) {
                         tempStartChars.push(tempchar);
                     } else {
                         break;
@@ -152,7 +159,7 @@ function cursorSelectionPosition(props) {
 
                     tempchar = string.at(tempCol);
 
-                    if (!editorOptions.discontinuousChars.includes(tempchar)) {
+                    if (!discontinuousChars.includes(tempchar)) {
                         tempStopChars.push(tempchar);
                     } else {
                         break;
@@ -176,7 +183,7 @@ function cursorSelectionPosition(props) {
 
                     tempchar = string.at(tempCol);
 
-                    if (editorOptions.discontinuousChars.includes(tempchar)) {
+                    if (discontinuousChars.includes(tempchar)) {
                         selectStopPosition.left += CharSize.calculateCharWidth(tempchar, editorEl);
                         selectStopPosition.col += 1;
                     }
@@ -187,7 +194,7 @@ function cursorSelectionPosition(props) {
 
                     tempchar = string.at(tempCol - 1);
 
-                    if (editorOptions.discontinuousChars.includes(tempchar)) {
+                    if (discontinuousChars.includes(tempchar)) {
                         selectStartPosition.left -= CharSize.calculateCharWidth(tempchar, editorEl);
                         selectStartPosition.col -= 1;
                     }

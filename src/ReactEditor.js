@@ -60,7 +60,18 @@ export default class ReactEditor extends Component {
                 ' ', '"', '\'', '{', '}', '[', ']', ',', '.', '|', '\\',
                 '#', '!', '@', '%', '^', '&', '*', '(', ')', '+', '=',
                 '/', '?', '<', '>', ';', ':', '~', '`', '-'
-            ]
+            ],
+
+            /**
+             * left gutter width
+             */
+            gutterWidth: 50,
+
+            /**
+             * whether show line number
+             * @type {boolean}
+             */
+            showLineNumber: false
 
         };
 
@@ -123,7 +134,8 @@ ReactEditor.propTypes = {
         scrollBarWidth: PropTypes.number,
         scrollBarMinLength: PropTypes.number,
         continuousClickInterval: PropTypes.number,
-        discontinuousChars: PropTypes.array
+        discontinuousChars: PropTypes.array,
+        showLineNumber: PropTypes.bool
     }),
 
     /**

@@ -6,6 +6,7 @@ import _ from 'lodash';
 import EditorLoading from '../EditorLoading';
 import TextScroller from '../TextScroller';
 import ScrollBars from '../ScrollBars';
+import EditorGutter from '../EditorGutter';
 
 import Valid from '../../utils/Valid';
 import CharSize from '../../utils/CharSize';
@@ -130,8 +131,16 @@ export default class Editor extends Component {
              */
             selectStopY: 0,
 
+            /**
+             * whether is double click
+             * @type {bool}
+             */
             isDoubleClick: false,
 
+            /**
+             * whether is triple click
+             * @type {bool}
+             */
             isTripleClick: false
 
         };
@@ -256,11 +265,10 @@ export default class Editor extends Component {
      */
     wheelHandle(e) {
 
-        const {editorOptions, onScroll} = this.props,
-            {editorDataArray, editorWidth, scrollTop, scrollLeft, contentWidth} = this.state,
-            maxScrollLeft = contentWidth
-                - (editorWidth - editorOptions.horizontalPadding * 2 - editorOptions.scrollBarWidth),
-            maxScrollTop = (editorDataArray.length - 1) * editorOptions.lineHeight;
+        const {onScroll} = this.props,
+            {scrollTop, scrollLeft} = this.state,
+            maxScrollLeft = Calculation.fullScrollLeft({...this.props, ...this.state}),
+            maxScrollTop = Calculation.fullScrollTop({...this.props, ...this.state});
 
         let top = scrollTop + e.deltaY,
             left = scrollLeft + e.deltaX;
@@ -481,7 +489,7 @@ export default class Editor extends Component {
 
     render() {
 
-        const {className, style, isFullScreen} = this.props;
+        const {className, style, isFullScreen, editorOptions} = this.props;
         const {editorInital, editorWidth, editorHeight} = this.state;
 
         const editorSize = {
@@ -505,14 +513,25 @@ export default class Editor extends Component {
                         null
                 }
 
+                {
+                    editorInital && editorOptions.showLineNumber ?
+                        <EditorGutter {...this.props}
+                                      {...this.state}
+                                      {...this}/>
+                        :
+                        null
+                }
 
-                <ScrollBars {...this.props}
-                            {...this.state}
-                            {...this}/>
+                {
+                    editorInital ?
+                        <ScrollBars {...this.props}
+                                    {...this.state}
+                                    {...this}/>
+                        :
+                        null
+                }
 
                 <EditorLoading {...this.state}/>
-
-                <div className="react-editor-test-char-count"></div>
 
                 <div className="react-editor-test-container"></div>
 

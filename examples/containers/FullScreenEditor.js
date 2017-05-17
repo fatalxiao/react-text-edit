@@ -29,6 +29,9 @@ export default class FullScreenEditor extends Component {
             <ReactEditor className="full-screen-editor"
                          data={this.state.data}
                          isFullScreen={true}
+                         options={{
+                             showLineNumber: true
+                         }}
                          onChange={this.changeHandle}/>
         );
     }

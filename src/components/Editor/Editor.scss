@@ -29,31 +29,16 @@
         border-radius: 0;
     }
 
-    .react-editor-test-char-count {
-        width: 0.2px;
-        left: 0px;
-        visibility: hidden;
-        position: absolute;
-        whiteSpace: pre;
-        font: inherit;
-        overflow: visible;
-    }
-
     .react-editor-test-container {
-        height: auto;
-        width: auto;
+        position: absolute;
         top: 0px;
         left: 0px;
+        height: auto;
+        width: auto;
         visibility: hidden;
-        position: absolute;
         white-space: pre;
-        font-style: inherit;
-        font-variant: inherit;
-        font-weight: inherit;
-        font-stretch: inherit;
-        font-size: inherit;
+        font: inherit;
         line-height: inherit;
-        font-family: inherit;
         overflow: visible;
     }
 }

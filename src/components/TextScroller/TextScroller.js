@@ -8,7 +8,6 @@ import TextContainer from '../TextContainer';
 import EditorCursor from '../EditorCursor';
 
 import Calculation from '../../utils/Calculation';
-import CharSize from '../../utils/CharSize';
 
 import './TextScroller.scss';
 
@@ -36,15 +35,17 @@ export default class TextScroller extends Component {
 
         const {isEditorFocused, editorDataArray, editorOptions, contentWidth, scrollTop, scrollLeft} = this.props,
             {compositionText} = this.state,
-            {horizontalPadding, scrollBarWidth, lineHeight} = editorOptions,
+            {horizontalPadding, scrollBarWidth, lineHeight, showLineNumber, gutterWidth} = editorOptions,
             scrollerStyle = {
-                width: contentWidth + horizontalPadding * 2 + scrollBarWidth,
+                width: contentWidth + horizontalPadding * 2 + scrollBarWidth + (showLineNumber ? gutterWidth : 0),
                 height: editorDataArray.length * lineHeight,
-                padding: `0 ${horizontalPadding + scrollBarWidth}px 0 ${horizontalPadding}px`,
+                padding: `0 ${horizontalPadding + scrollBarWidth}px 0 ${horizontalPadding + (showLineNumber ? gutterWidth : 0)}px`,
                 transform: `translate3d(${-scrollLeft}px, ${-scrollTop}px, 0)`
             },
             displayIndex = Calculation.textDisplayIndex(this.props),
             {selectStartPosition, selectStopPosition, cursorPosition} = Calculation.cursorSelectionPosition(this.props);
+
+        console.log(contentWidth);
 
         return (
             <div className="react-editor-text-scroller"
