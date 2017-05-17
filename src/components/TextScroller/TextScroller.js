@@ -45,8 +45,6 @@ export default class TextScroller extends Component {
             displayIndex = Calculation.textDisplayIndex(this.props),
             {selectStartPosition, selectStopPosition, cursorPosition} = Calculation.cursorSelectionPosition(this.props);
 
-        console.log(contentWidth);
-
         return (
             <div className="react-editor-text-scroller"
                  style={scrollerStyle}>

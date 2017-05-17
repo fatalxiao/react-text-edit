@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import 'string.prototype.at';
 
 import Editor from './components/Editor';
+import EditorLoading from './components/EditorLoading';
+
+import './assets/fonts/font.css';
 
 export default class ReactEditor extends Component {
 
@@ -75,12 +78,47 @@ export default class ReactEditor extends Component {
 
         };
 
+        this.state = {
+
+            /**
+             * editor inital flag
+             * @type {boolean}
+             */
+            editorInital: false
+
+        };
+
+    }
+
+    componentDidMount() {
+
+        // font loaded
+        document.fonts.load('1em Consolas').then(() => {
+            this.setState({
+                editorInital: true
+            });
+        });
+
     }
 
     render() {
+
+        const {editorInital} = this.state;
+
         return (
-            <Editor {...this.props}
-                    editorOptions={Object.assign(this.defaultOptions, this.props.options)}/>
+            <div>
+
+                {
+                    editorInital ?
+                        <Editor {...this.props}
+                                editorOptions={Object.assign(this.defaultOptions, this.props.options)}/>
+                        :
+                        null
+                }
+
+                <EditorLoading editorInital={editorInital}/>
+
+            </div>
         );
     }
 

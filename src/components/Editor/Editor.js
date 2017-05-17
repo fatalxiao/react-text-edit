@@ -3,7 +3,6 @@ import {findDOMNode} from 'react-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import EditorLoading from '../EditorLoading';
 import TextScroller from '../TextScroller';
 import ScrollBars from '../ScrollBars';
 import EditorGutter from '../EditorGutter';
@@ -46,12 +45,6 @@ export default class Editor extends Component {
         }
 
         this.state = {
-
-            /**
-             * editor inital flag
-             * @type {boolean}
-             */
-            editorInital: false,
 
             /**
              * editor element
@@ -405,6 +398,10 @@ export default class Editor extends Component {
         // set editorEl in state for children components
         this.setState({
             editorEl: this.refs.editor
+        }, () => {
+            this.setState({
+                contentWidth: this.calculateContentWidth()
+            });
         });
 
         // add global events
@@ -413,14 +410,6 @@ export default class Editor extends Component {
         Event.addEvent(document, 'mousemove', this.mouseMoveHandle);
         Event.addEvent(document, 'mouseup', this.mouseUpHandle);
         this.props.isFullScreen && Event.addEvent(window, 'resize', this.resizeHandle);
-
-        // asyn calculate content width and start editor
-        setTimeout(() => {
-            this.setState({
-                contentWidth: this.calculateContentWidth(),
-                editorInital: true
-            });
-        }, 0);
 
     }
 
@@ -461,13 +450,9 @@ export default class Editor extends Component {
                 Calculation.fullScrollTop({...nextProps, ...this.state}) * nextProps.scrollTopPerCent;
         }
 
-        // update text content width
+        // update text content width and height
         if (state.editorDataArray) {
             state.contentWidth = this.calculateContentWidth(state.editorDataArray);
-        }
-
-        // update text content height
-        if (state.editorDataArray || nextProps.editorOptions) {
             state.contentHeight = this.calculateContentHeight(
                 state.editorDataArray, nextProps.editorOptions.lineHeight
             );
@@ -490,7 +475,7 @@ export default class Editor extends Component {
     render() {
 
         const {className, style, isFullScreen, editorOptions} = this.props;
-        const {editorInital, editorWidth, editorHeight} = this.state;
+        const {editorWidth, editorHeight} = this.state;
 
         const editorSize = {
             width: editorWidth,
@@ -503,18 +488,13 @@ export default class Editor extends Component {
                  style={{...editorSize, ...style}}
                  onWheel={this.wheelHandle}>
 
-                {
-                    editorInital ?
-                        <TextScroller ref="editorText"
-                                      {...this.props}
-                                      {...this.state}
-                                      {...this}/>
-                        :
-                        null
-                }
+                <TextScroller ref="editorText"
+                              {...this.props}
+                              {...this.state}
+                              {...this}/>
 
                 {
-                    editorInital && editorOptions.showLineNumber ?
+                    editorOptions.showLineNumber ?
                         <EditorGutter {...this.props}
                                       {...this.state}
                                       {...this}/>
@@ -522,16 +502,9 @@ export default class Editor extends Component {
                         null
                 }
 
-                {
-                    editorInital ?
-                        <ScrollBars {...this.props}
-                                    {...this.state}
-                                    {...this}/>
-                        :
-                        null
-                }
-
-                <EditorLoading {...this.state}/>
+                <ScrollBars {...this.props}
+                            {...this.state}
+                            {...this}/>
 
                 <div className="react-editor-test-container"></div>
 
