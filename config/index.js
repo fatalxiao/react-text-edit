@@ -5,7 +5,7 @@ module.exports = {
     dev: {
 
         env: require('./dev.env'),
-        port: 3000,
+        port: 4000,
         autoOpenBrowser: true,
         srcRoot: path.resolve(__dirname, '../examples'),
         index: path.resolve(__dirname, '../examples/index.html'),
@@ -33,7 +33,7 @@ module.exports = {
 
     demo: {
 
-        port: 3002
+        port: 4001
 
     }
 

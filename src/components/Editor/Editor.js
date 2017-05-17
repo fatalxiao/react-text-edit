@@ -408,7 +408,7 @@ export default class Editor extends Component {
 
         // asyn calculate content width and start editor
         setTimeout(() => {
-            this.setNextState({
+            this.setState({
                 contentWidth: this.calculateContentWidth(),
                 editorInital: true
             });
@@ -504,6 +504,7 @@ export default class Editor extends Component {
                         :
                         null
                 }
+
 
                 <ScrollBars {...this.props}
                             {...this.state}

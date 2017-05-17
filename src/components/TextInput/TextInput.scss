@@ -27,6 +27,7 @@
         @extend .react-editor-text-input;
 
         opacity: 1;
+        z-index: 1;
         box-sizing: border-box;
         width: auto;
         color: $theme-text;
