@@ -397,11 +397,8 @@ export default class Editor extends Component {
 
         // set editorEl in state for children components
         this.setState({
-            editorEl: this.refs.editor
-        }, () => {
-            this.setState({
-                contentWidth: this.calculateContentWidth()
-            });
+            editorEl: this.refs.editor,
+            contentWidth: this.calculateContentWidth()
         });
 
         // add global events
