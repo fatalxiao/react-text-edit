@@ -14,21 +14,25 @@ export default class TextSelection extends Component {
     render() {
 
         const {editorOptions, contentWidth, selectStartPosition, selectStopPosition} = this.props,
-            fullWidth = contentWidth + editorOptions.horizontalPadding + editorOptions.scrollBarWidth,
+            {horizontalPadding, scrollBarWidth, lineHeight, showLineNumber, gutterWidth} = editorOptions,
+            selectionStyle = {
+                left: horizontalPadding + (showLineNumber ? gutterWidth : 0)
+            },
+            fullWidth = contentWidth + horizontalPadding + scrollBarWidth,
             isInOneLine = selectStartPosition.row === selectStopPosition.row,
             [start, stop] = Calculation.sortPosition(selectStartPosition, selectStopPosition),
             selectionLines = isInOneLine ? undefined : new Array(stop.row - start.row + 1).fill('');
 
         return (
             <div className="react-editor-text-selection"
-                 style={{left: editorOptions.horizontalPadding}}>
+                 style={selectionStyle}>
 
                 {
                     isInOneLine ?
                         <div className="react-editor-text-selection-line"
                              style={{
                                  width: stop.left - start.left,
-                                 height: editorOptions.lineHeight,
+                                 height: lineHeight,
                                  transform: `translate3d(${start.left}px, ${start.top}px, 0)`
                              }}></div>
                         :
@@ -39,8 +43,8 @@ export default class TextSelection extends Component {
                                         <div key={index}
                                              className="react-editor-text-selection-line"
                                              style={{
-                                                 width: fullWidth - start.left + editorOptions.horizontalPadding,
-                                                 height: editorOptions.lineHeight,
+                                                 width: fullWidth - start.left + horizontalPadding,
+                                                 height: lineHeight,
                                                  transform: `translate3d(${start.left}px, ${start.top}px, 0)`
                                              }}></div>
                                     );
@@ -50,7 +54,7 @@ export default class TextSelection extends Component {
                                              className="react-editor-text-selection-line"
                                              style={{
                                                  width: stop.left,
-                                                 height: editorOptions.lineHeight,
+                                                 height: lineHeight,
                                                  transform: `translate3d(0, ${stop.top}px, 0)`
                                              }}></div>
                                     );
@@ -60,8 +64,8 @@ export default class TextSelection extends Component {
                                              className="react-editor-text-selection-line"
                                              style={{
                                                  width: fullWidth,
-                                                 height: editorOptions.lineHeight,
-                                                 transform: `translate3d(0, ${start.top + index * editorOptions.lineHeight}px, 0)`
+                                                 height: lineHeight,
+                                                 transform: `translate3d(0, ${start.top + index * lineHeight}px, 0)`
                                              }}></div>
                                     );
                                 }
