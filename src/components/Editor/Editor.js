@@ -342,16 +342,21 @@ export default class Editor extends Component {
      */
     mouseDownHandle(e) {
 
-        if (!Event.isTriggerOnEl(e, findDOMNode(this.refs.editorText))) {
+        if (!Event.isTriggerOnEl(e, findDOMNode(this.refs.editor))) {
+
             this.setState({
                 isEditorFocused: false,
                 isDoubleClick: false,
                 isTripleClick: false
             });
+
             return;
+
         }
 
-        this.editorMouseDownHandle(e);
+        if (Event.isTriggerOnEl(e, findDOMNode(this.refs.editorText))) {
+            this.editorMouseDownHandle(e);
+        }
 
     }
 
