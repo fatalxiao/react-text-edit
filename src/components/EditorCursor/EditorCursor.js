@@ -37,18 +37,13 @@ export default class EditorCursor extends Component {
 
     render() {
 
-        const {horizontalPadding, showLineNumber, gutterWidth} = this.props.editorOptions,
-            {left, top} = this.calculateCursorPosition(),
-            wrapperStyle = {
-                left: horizontalPadding + (showLineNumber ? gutterWidth : 0)
-            },
+        const {left, top} = this.calculateCursorPosition(),
             cursorStyle = {
                 transform: `translate3d(${left}px, ${top}px, 0)`
             };
 
         return (
-            <div className="react-editor-cursor-wrapper"
-                 style={wrapperStyle}>
+            <div className="react-editor-cursor-wrapper">
 
                 <div className="react-editor-cursor"
                      style={cursorStyle}></div>

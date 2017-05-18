@@ -19,6 +19,7 @@ export default class ActiveLine extends Component {
                 width: contentWidth + editorOptions.horizontalPadding
                 + (isEmpty ? 0 : editorOptions.scrollBarWidth + editorOptions.horizontalPadding),
                 height: editorOptions.lineHeight,
+                left: -editorOptions.horizontalPadding,
                 top: cursorPosition.top
             };
 
