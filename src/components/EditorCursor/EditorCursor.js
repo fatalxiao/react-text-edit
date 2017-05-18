@@ -8,12 +8,16 @@ import './EditorCursor.scss';
 export default class EditorCursor extends Component {
 
     constructor(props) {
+
         super(props);
+
+        this.calculateCursorPosition = this::this.calculateCursorPosition;
+
     }
 
-    render() {
+    calculateCursorPosition() {
 
-        const {editorEl, editorOptions, compositionText, cursorPosition} = this.props;
+        const {editorEl, compositionText, cursorPosition} = this.props;
         let left, top;
 
         if (cursorPosition) {
@@ -27,12 +31,27 @@ export default class EditorCursor extends Component {
             left += CharSize.calculateStringWidth(compositionText, editorEl);
         }
 
+        return {left, top};
+
+    }
+
+    render() {
+
+        const {horizontalPadding, showLineNumber, gutterWidth} = this.props.editorOptions,
+            {left, top} = this.calculateCursorPosition(),
+            wrapperStyle = {
+                left: horizontalPadding + (showLineNumber ? gutterWidth : 0)
+            },
+            cursorStyle = {
+                transform: `translate3d(${left}px, ${top}px, 0)`
+            };
+
         return (
             <div className="react-editor-cursor-wrapper"
-                 style={{left: editorOptions.horizontalPadding}}>
+                 style={wrapperStyle}>
 
                 <div className="react-editor-cursor"
-                     style={{transform: `translate3d(${left}px, ${top}px, 0)`}}></div>
+                     style={cursorStyle}></div>
 
             </div>
         );
