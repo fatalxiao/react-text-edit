@@ -5,7 +5,7 @@ import 'github-markdown-css';
 import ReactEditor from 'src/ReactEditor';
 
 import Event from 'utils/Event';
-import MacDownHelpText from 'assets/files/MacDownHelp.txt';
+import MacDownHelpText from 'assets/files/MacDownHelp.md';
 
 import 'assets/sass/MarkDownEditor.scss';
 

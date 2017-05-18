@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import ReactEditor from 'src/ReactEditor';
 
-import MacDownHelpText from 'assets/files/MacDownHelp.txt';
+import MacDownHelpText from 'assets/files/MacDownHelp.md';
 
 export default class FullScreenEditor extends Component {
 
