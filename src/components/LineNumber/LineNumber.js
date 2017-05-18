@@ -15,12 +15,9 @@ export default class LineNumber extends Component {
     render() {
 
         const {editorEl, editorDataArray, editorOptions} = this.props,
-            {lineHeight} = editorOptions,
+            {lineHeight, horizontalPadding} = editorOptions,
             len = editorDataArray.length,
             width = CharSize.calculateStringWidth('' + len, editorEl),
-            wrapperStyle = {
-                width
-            },
             {start, stop} = Calculation.textDisplayIndex(this.props);
 
         let numbers = [], style;
@@ -29,6 +26,7 @@ export default class LineNumber extends Component {
             style = {
                 width,
                 lineHeight: `${lineHeight}px`,
+                left: horizontalPadding,
                 top: lineHeight * i
             };
 
@@ -42,8 +40,7 @@ export default class LineNumber extends Component {
         }
 
         return (
-            <div className="react-editor-line-number"
-                 style={wrapperStyle}>
+            <div className="react-editor-line-number">
 
                 {numbers}
 

@@ -14,11 +14,10 @@ export default class EditorGutter extends Component {
     render() {
 
         const {editorHeight, contentHeight, editorOptions, gutterWidth, scrollTop, scrollLeft} = this.props,
-            {lineHeight, horizontalPadding} = editorOptions,
+            {lineHeight} = editorOptions,
             style = {
                 width: gutterWidth,
                 height: editorHeight + contentHeight - lineHeight,
-                padding: `0 ${horizontalPadding}px`,
                 transform: `translate3d(${-scrollLeft}px, ${-scrollTop}px, 0)`
             };
 

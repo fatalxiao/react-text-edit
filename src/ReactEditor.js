@@ -66,11 +66,6 @@ export default class ReactEditor extends Component {
             ],
 
             /**
-             * left gutter width
-             */
-            gutterWidth: 50,
-
-            /**
              * whether show line number
              * @type {boolean}
              */

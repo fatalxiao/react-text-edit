@@ -134,13 +134,19 @@ export default class Editor extends Component {
              * whether is triple click
              * @type {bool}
              */
-            isTripleClick: false
+            isTripleClick: false,
+
+            /**
+             * left gutter width
+             */
+            gutterWidth: 0
 
         };
 
         this.setNextState = this::this.setNextState;
         this.calculateContentWidth = this::this.calculateContentWidth;
         this.calculateContentHeight = this::this.calculateContentHeight;
+        this.calculateGutterWidth = this::this.calculateGutterWidth;
         this.scrollX = this::this.scrollX;
         this.scrollY = this::this.scrollY;
         this.onChange = this::this.onChange;
@@ -185,6 +191,11 @@ export default class Editor extends Component {
     calculateContentHeight(editorDataArray = this.state.editorDataArray,
                            lineHeight = this.props.editorOptions.lineHeight) {
         return editorDataArray.length * lineHeight;
+    }
+
+    calculateGutterWidth(editorDataArray = this.state.editorDataArray,
+                         horizontalPadding = this.props.editorOptions.horizontalPadding) {
+        return CharSize.calculateStringWidth('' + editorDataArray.length, this.refs.editor) + horizontalPadding * 2 + 2;
     }
 
     /**
@@ -403,7 +414,8 @@ export default class Editor extends Component {
         // set editorEl in state for children components
         this.setState({
             editorEl: this.refs.editor,
-            contentWidth: this.calculateContentWidth()
+            contentWidth: this.calculateContentWidth(),
+            gutterWidth: this.calculateGutterWidth()
         });
 
         // add global events
@@ -457,6 +469,9 @@ export default class Editor extends Component {
             state.contentWidth = this.calculateContentWidth(state.editorDataArray);
             state.contentHeight = this.calculateContentHeight(
                 state.editorDataArray, nextProps.editorOptions.lineHeight
+            );
+            state.gutterWidth = this.calculateGutterWidth(
+                state.editorDataArray, nextProps.editorOptions.horizontalPadding
             );
         }
 

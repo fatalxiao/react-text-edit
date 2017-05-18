@@ -36,8 +36,8 @@ export default class HorizontalScrollBar extends Component {
     }
 
     calculateWrapperWidth() {
-        const {editorWidth, editorOptions} = this.props,
-            {scrollBarWidth, horizontalPadding, showLineNumber, gutterWidth} = editorOptions;
+        const {editorWidth, editorOptions, gutterWidth} = this.props,
+            {scrollBarWidth, horizontalPadding, showLineNumber} = editorOptions;
         return editorWidth - scrollBarWidth - horizontalPadding * 2 - (showLineNumber ? gutterWidth : 0);
     }
 
@@ -89,8 +89,8 @@ export default class HorizontalScrollBar extends Component {
 
         e.stopPropagation();
 
-        const {editorOptions, scrollX} = this.props,
-            {horizontalPadding, showLineNumber, gutterWidth} = editorOptions;
+        const {editorOptions, scrollX, gutterWidth} = this.props,
+            {horizontalPadding, showLineNumber} = editorOptions;
 
         // move scroll bar when wrapper mouse up
         if (this.isWrapperMouseDown
@@ -125,8 +125,8 @@ export default class HorizontalScrollBar extends Component {
 
         this.initial();
 
-        const {editorOptions} = this.props,
-            {horizontalPadding, scrollBarWidth, showLineNumber, gutterWidth} = editorOptions,
+        const {editorOptions, gutterWidth} = this.props,
+            {horizontalPadding, scrollBarWidth, showLineNumber} = editorOptions,
             wrapperStyle = {
                 height: scrollBarWidth,
                 left: horizontalPadding + (showLineNumber ? gutterWidth : 0)

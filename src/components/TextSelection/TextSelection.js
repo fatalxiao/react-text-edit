@@ -14,7 +14,7 @@ export default class TextSelection extends Component {
     render() {
 
         const {editorOptions, contentWidth, selectStartPosition, selectStopPosition} = this.props,
-            {horizontalPadding, scrollBarWidth, lineHeight, showLineNumber, gutterWidth} = editorOptions,
+            {horizontalPadding, scrollBarWidth, lineHeight} = editorOptions,
             fullWidth = contentWidth + horizontalPadding + scrollBarWidth,
             isInOneLine = selectStartPosition.row === selectStopPosition.row,
             [start, stop] = Calculation.sortPosition(selectStartPosition, selectStopPosition),

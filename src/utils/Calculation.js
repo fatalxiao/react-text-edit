@@ -2,8 +2,8 @@ import CharSize from './CharSize';
 import Valid from './Valid';
 
 function horizontalDisplayWidth(props) {
-    const {editorWidth, editorOptions} = props,
-        {scrollBarWidth, horizontalPadding, showLineNumber, gutterWidth} = editorOptions;
+    const {editorWidth, editorOptions, gutterWidth} = props,
+        {scrollBarWidth, horizontalPadding, showLineNumber} = editorOptions;
     return editorWidth - scrollBarWidth - horizontalPadding * 2 - (showLineNumber ? gutterWidth : 0);
 }
 
@@ -87,12 +87,9 @@ function cursorSelectionPosition(props) {
 
     const {
             editorEl, editorDataArray, editorOptions, contentWidth, isDoubleClick, isTripleClick,
-            selectStartX, selectStartY, selectStopX, selectStopY
+            selectStartX, selectStartY, selectStopX, selectStopY, gutterWidth
         } = props,
-        {
-            horizontalPadding, scrollBarWidth, lineHeight, discontinuousChars,
-            showLineNumber, gutterWidth
-        } = editorOptions,
+        {horizontalPadding, scrollBarWidth, lineHeight, discontinuousChars, showLineNumber} = editorOptions,
         finalGutterWidth = showLineNumber ? gutterWidth : 0,
         finalSelectStartX = selectStartX ? selectStartX - horizontalPadding - finalGutterWidth : selectStartX,
         finalSelectStopX = selectStopX ? selectStopX - horizontalPadding - finalGutterWidth : selectStopX;
