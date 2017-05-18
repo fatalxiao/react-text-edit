@@ -13,8 +13,8 @@
         position: absolute;
         width: 2px;
         height: 20px;
-        animation: blink 1s ease-in-out infinite;
         background: $theme-cursor;
+        opacity: 1;
     }
 }
 

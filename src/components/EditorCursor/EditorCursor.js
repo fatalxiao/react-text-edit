@@ -11,7 +11,10 @@ export default class EditorCursor extends Component {
 
         super(props);
 
+        this.delayAnimation = null;
+
         this.calculateCursorPosition = this::this.calculateCursorPosition;
+        this.delayAnimate = this::this.delayAnimate;
 
     }
 
@@ -35,6 +38,27 @@ export default class EditorCursor extends Component {
 
     }
 
+    delayAnimate() {
+
+        if (this.delayAnimation) {
+            clearTimeout(this.delayAnimation);
+            this.refs.cursor.style.animation = 'none';
+        }
+
+        this.delayAnimation = setTimeout(() => {
+            this.refs.cursor.style.animation = 'blink 1s ease-in-out infinite';
+        }, 250);
+
+    }
+
+    componentDidMount() {
+        this.delayAnimate();
+    }
+
+    componentDidUpdate() {
+        this.delayAnimate();
+    }
+
     render() {
 
         const {left, top} = this.calculateCursorPosition(),
@@ -45,7 +69,8 @@ export default class EditorCursor extends Component {
         return (
             <div className="react-editor-cursor-wrapper">
 
-                <div className="react-editor-cursor"
+                <div ref="cursor"
+                     className="react-editor-cursor"
                      style={cursorStyle}></div>
 
             </div>

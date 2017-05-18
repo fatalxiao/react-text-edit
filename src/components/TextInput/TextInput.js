@@ -121,12 +121,6 @@ export default class TextInput extends Component {
             return;
         }
 
-        console.log({
-            ...result,
-            col,
-            row
-        });
-
         this.doChange({
             newDataArray: editorDataArray,
             newPosition: {
