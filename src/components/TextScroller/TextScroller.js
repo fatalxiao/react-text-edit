@@ -47,6 +47,8 @@ export default class TextScroller extends Component {
             displayIndex = Calculation.textDisplayIndex(this.props),
             {selectStartPosition, selectStopPosition, cursorPosition} = Calculation.cursorSelectionPosition(this.props);
 
+        console.log(selectStopPosition);
+
         return (
             <div className="react-editor-text-scroller"
                  style={scrollerStyle}>
@@ -101,7 +103,8 @@ TextScroller.propTypes = {
     selectStartX: PropTypes.number,
     selectStartY: PropTypes.number,
     selectStopX: PropTypes.number,
-    selectStopY: PropTypes.number
+    selectStopY: PropTypes.number,
+    gutterWidth: PropTypes.number
 };
 
 TextScroller.defaultProps = {
@@ -114,5 +117,6 @@ TextScroller.defaultProps = {
     selectStartX: undefined,
     selectStartY: undefined,
     selectStopX: undefined,
-    selectStopY: undefined
+    selectStopY: undefined,
+    gutterWidth: 0
 };

@@ -366,6 +366,31 @@ function insertValue(dataArray, pos, value, lineHeight, editorEl) {
 
 }
 
+function rowColToLeftTop(row, col, props) {
+
+    if (isNaN(row) || isNaN(col)) {
+        return;
+    }
+
+    const {editorDataArray} = props,
+        len = editorDataArray.length;
+
+    if (row < 0 || row >= len || col < 0) {
+        return;
+    }
+
+    col = Valid.range(col, undefined, editorDataArray[row].length);
+
+    const {editorEl, editorOptions} = props,
+        {lineHeight} = editorOptions;
+
+    return {
+        top: row * lineHeight,
+        left: CharSize.calculateStringWidth(editorDataArray[row].slice(0, col), editorEl)
+    };
+
+}
+
 export default {
     horizontalDisplayWidth,
     fullScrollLeft,
@@ -381,5 +406,6 @@ export default {
     deleteLine,
     deleteChar,
     deleteSelection,
-    insertValue
+    insertValue,
+    rowColToLeftTop
 };

@@ -67,10 +67,11 @@ export default class TextInput extends Component {
             return;
         }
 
-        const {editorOptions} = this.props,
+        const {editorOptions, gutterWidth} = this.props,
+            {horizontalPadding, showLineNumber} = editorOptions,
             {newDataArray, newPosition} = result;
 
-        newPosition.left += editorOptions.horizontalPadding;
+        newPosition.left = newPosition.left + horizontalPadding + (showLineNumber ? gutterWidth : 0);
 
         this.refs.textInput.value = this.calculateValue();
         this.props.onChange(newDataArray, newPosition);
@@ -108,19 +109,32 @@ export default class TextInput extends Component {
 
     }
 
-    cursorMoveHandle(left, top) {
+    cursorMoveHandle(colOffset, rowOffset) {
 
         const {editorDataArray, cursorPosition} = this.props,
-            finalCol = cursorPosition.col + left,
-            finalRow = cursorPosition.row + top;
+            row = cursorPosition.row + rowOffset,
+            col = cursorPosition.col + colOffset;
 
-        if (finalCol < 0 || finalCol > editorDataArray[cursorPosition.row].length
-            || finalRow < 0 || finalRow >= editorDataArray.length) {
+        const result = Calculation.rowColToLeftTop(row, col, this.props);
+
+        if (!result) {
             return;
         }
 
+        console.log({
+            ...result,
+            col,
+            row
+        });
 
-
+        this.doChange({
+            newDataArray: editorDataArray,
+            newPosition: {
+                ...result,
+                col,
+                row
+            }
+        });
 
     }
 
@@ -129,8 +143,6 @@ export default class TextInput extends Component {
      * @param e
      */
     keyDownHandle(e) {
-
-        console.log(e.keyCode);
 
         if (this.state.isComposition) {
             return;
