@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import TextInput from '../TextInput';
-import ActiveLine from '../ActiveLine';
+import TextActiveLine from '../TextActiveLine';
 import TextSelection from '../TextSelection';
 import TextContainer from '../TextContainer';
 import EditorCursor from '../EditorCursor';
@@ -57,10 +57,10 @@ export default class TextScroller extends Component {
                            selectStopPosition={selectStopPosition}
                            onCompositionUpdate={this.compositionUpdateHandle}/>
 
-                <ActiveLine {...this.props}
-                            cursorPosition={cursorPosition}
-                            selectStartPosition={selectStartPosition}
-                            selectStopPosition={selectStopPosition}/>
+                <TextActiveLine {...this.props}
+                                cursorPosition={cursorPosition}
+                                selectStartPosition={selectStartPosition}
+                                selectStopPosition={selectStopPosition}/>
 
                 {
                     selectStartPosition && selectStopPosition ?

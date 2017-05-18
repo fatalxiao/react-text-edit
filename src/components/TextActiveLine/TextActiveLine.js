@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import Valid from '../../utils/Valid';
 
-import './ActiveLine.scss';
+import './TextActiveLine.scss';
 
-export default class ActiveLine extends Component {
+export default class TextActiveLine extends Component {
 
     constructor(props) {
         super(props);
@@ -24,20 +24,20 @@ export default class ActiveLine extends Component {
             };
 
         return (
-            <div className={`react-editor-active-line ${isEmpty ? 'react-editor-active-line-empty' : ''}`}
+            <div className={`react-editor-text-active-line ${isEmpty ? 'react-editor-text-active-line-empty' : ''}`}
                  style={activeLineStyle}></div>
         );
 
     }
 };
 
-ActiveLine.propTypes = {
+TextActiveLine.propTypes = {
     editorOptions: PropTypes.object,
     contentWidth: PropTypes.number,
     cursorPosition: PropTypes.object
 };
 
-ActiveLine.defaultProps = {
+TextActiveLine.defaultProps = {
     editorOptions: null,
     contentWidth: 0,
     cursorPosition: null

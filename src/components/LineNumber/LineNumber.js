@@ -50,6 +50,14 @@ export default class LineNumber extends Component {
     }
 };
 
-LineNumber.propTypes = {};
+LineNumber.propTypes = {
+    editorEl: PropTypes.object,
+    editorDataArray: PropTypes.array,
+    editorOptions: PropTypes.object
+};
 
-LineNumber.defaultProps = {};
+LineNumber.defaultProps = {
+    editorEl: null,
+    editorDataArray: [],
+    editorOptions: null
+};

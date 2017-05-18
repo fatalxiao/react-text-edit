@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import LineNumber from '../LineNumber';
+import GutterActiveLine from '../GutterActiveLine';
 
 import './EditorGutter.scss';
 
@@ -18,12 +19,14 @@ export default class EditorGutter extends Component {
             style = {
                 width: gutterWidth,
                 height: editorHeight + contentHeight - lineHeight,
-                transform: `translate3d(${-scrollLeft}px, ${-scrollTop}px, 0)`
+                transform: `translate3d(0, ${-scrollTop}px, 0)`
             };
 
         return (
             <div className="react-editor-gutter"
                  style={style}>
+
+                <GutterActiveLine {...this.props}/>
 
                 <LineNumber {...this.props}/>
 
@@ -34,9 +37,19 @@ export default class EditorGutter extends Component {
 };
 
 EditorGutter.propTypes = {
+    editorHeight: PropTypes.number,
+    contentHeight: PropTypes.number,
+    editorOptions: PropTypes.object,
+    scrollLeft: PropTypes.number,
+    scrollTop: PropTypes.number,
     gutterWidth: PropTypes.number
 };
 
 EditorGutter.defaultProps = {
-    gutterWidth: 50
+    editorHeight: 0,
+    contentHeight: 0,
+    editorOptions: null,
+    scrollLeft: 0,
+    scrollTop: 0,
+    gutterWidth: 0
 };

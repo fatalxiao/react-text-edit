@@ -195,7 +195,7 @@ export default class TextInput extends Component {
             {isComposition, compositionText} = this.state,
             style = {
                 height: editorOptions.lineHeight,
-                lineHeight: `${editorOptions.lineHeight * 1.2}px`,
+                lineHeight: `${editorOptions.lineHeight * 1.1}px`,
                 transform: `translate3d(${cursorPosition.left}px, ${cursorPosition.top}px, 0)`
             };
 

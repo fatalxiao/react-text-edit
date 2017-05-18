@@ -14,7 +14,7 @@ export default class TextLine extends Component {
         const {style, data, editorOptions} = this.props,
             lineStyle = {
                 height: editorOptions.lineHeight,
-                lineHeight: `${Math.round(editorOptions.lineHeight * 1.2)}px`
+                lineHeight: `${Math.round(editorOptions.lineHeight * 1.1)}px`
             };
 
         return (
