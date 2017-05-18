@@ -14,7 +14,7 @@ export default class EditorGutter extends Component {
 
     render() {
 
-        const {editorHeight, contentHeight, editorOptions, gutterWidth, scrollTop, scrollLeft} = this.props,
+        const {editorHeight, contentHeight, editorOptions, gutterWidth, scrollTop} = this.props,
             {lineHeight} = editorOptions,
             style = {
                 width: gutterWidth,

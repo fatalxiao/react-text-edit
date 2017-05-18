@@ -32,12 +32,10 @@ export default class GutterActiveLine extends Component {
 
 GutterActiveLine.propTypes = {
     editorOptions: PropTypes.object,
-    contentWidth: PropTypes.number,
-    cursorPosition: PropTypes.object
+    gutterWidth: PropTypes.number
 };
 
 GutterActiveLine.defaultProps = {
     editorOptions: null,
-    contentWidth: 0,
-    cursorPosition: null
+    gutterWidth: 0
 };
