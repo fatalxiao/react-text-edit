@@ -23,6 +23,7 @@ export default class TextInput extends Component {
         this.calculateValue = this::this.calculateValue;
         this.doChange = this::this.doChange;
         this.changeHandle = this::this.changeHandle;
+        this.cursorMoveHandle = this::this.cursorMoveHandle;
         this.keyDownHandle = this::this.keyDownHandle;
         this.compositionHandle = this::this.compositionHandle;
 
@@ -107,11 +108,29 @@ export default class TextInput extends Component {
 
     }
 
+    cursorMoveHandle(left, top) {
+
+        const {editorDataArray, cursorPosition} = this.props,
+            finalCol = cursorPosition.col + left,
+            finalRow = cursorPosition.row + top;
+
+        if (finalCol < 0 || finalCol > editorDataArray[cursorPosition.row].length
+            || finalRow < 0 || finalRow >= editorDataArray.length) {
+            return;
+        }
+
+
+
+
+    }
+
     /**
      * textarea keydown event handle
      * @param e
      */
     keyDownHandle(e) {
+
+        console.log(e.keyCode);
 
         if (this.state.isComposition) {
             return;
@@ -121,6 +140,18 @@ export default class TextInput extends Component {
             case 8: // back space
                 e.preventDefault();
                 this.doChange(Command.doDelete(this.props));
+                break;
+            case 37: // left
+                this.cursorMoveHandle(-1, 0);
+                break;
+            case 38: // up
+                this.cursorMoveHandle(0, -1);
+                break;
+            case 39: // right
+                this.cursorMoveHandle(1, 0);
+                break;
+            case 40: // down
+                this.cursorMoveHandle(0, 1);
                 break;
         }
 

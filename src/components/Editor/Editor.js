@@ -195,7 +195,7 @@ export default class Editor extends Component {
 
     calculateGutterWidth(editorDataArray = this.state.editorDataArray,
                          horizontalPadding = this.props.editorOptions.horizontalPadding) {
-        return CharSize.calculateStringWidth('' + editorDataArray.length, this.refs.editor) + horizontalPadding * 2 + 2;
+        return CharSize.calculateStringWidth('' + editorDataArray.length, this.refs.editor) + horizontalPadding * 2 + 4;
     }
 
     /**
