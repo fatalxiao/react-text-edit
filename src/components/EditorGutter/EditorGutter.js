@@ -14,7 +14,9 @@ export default class EditorGutter extends Component {
 
     render() {
 
-        const {editorHeight, contentHeight, editorOptions, gutterWidth, scrollTop, cursorPosition} = this.props,
+        const {
+                editorHeight, contentHeight, editorOptions, gutterWidth, scrollTop, cursorPosition, displayIndex
+            } = this.props,
             {lineHeight} = editorOptions,
             style = {
                 width: gutterWidth,
@@ -33,7 +35,12 @@ export default class EditorGutter extends Component {
                         null
                 }
 
-                <LineNumber {...this.props}/>
+                {
+                    displayIndex ?
+                        <LineNumber {...this.props}/>
+                        :
+                        null
+                }
 
             </div>
         );
@@ -48,7 +55,8 @@ EditorGutter.propTypes = {
     scrollLeft: PropTypes.number,
     scrollTop: PropTypes.number,
     gutterWidth: PropTypes.number,
-    cursorPosition: PropTypes.object
+    cursorPosition: PropTypes.object,
+    displayIndex: PropTypes.object
 };
 
 EditorGutter.defaultProps = {
@@ -58,5 +66,6 @@ EditorGutter.defaultProps = {
     scrollLeft: 0,
     scrollTop: 0,
     gutterWidth: 0,
-    cursorPosition: null
+    cursorPosition: null,
+    displayIndex: null
 };

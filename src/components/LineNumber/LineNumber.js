@@ -14,11 +14,11 @@ export default class LineNumber extends Component {
 
     render() {
 
-        const {editorEl, editorDataArray, editorOptions} = this.props,
+        const {editorEl, editorDataArray, editorOptions, displayIndex} = this.props,
+            {start, stop} = displayIndex,
             {lineHeight, horizontalPadding} = editorOptions,
             len = editorDataArray.length,
-            width = CharSize.calculateStringWidth('' + len, editorEl),
-            {start, stop} = Calculation.textDisplayIndex(this.props);
+            width = CharSize.calculateStringWidth('' + len, editorEl);
 
         let numbers = [], style;
         for (let i = start; i < stop; i++) {
@@ -53,11 +53,13 @@ export default class LineNumber extends Component {
 LineNumber.propTypes = {
     editorEl: PropTypes.object,
     editorDataArray: PropTypes.array,
-    editorOptions: PropTypes.object
+    editorOptions: PropTypes.object,
+    displayIndex: PropTypes.object
 };
 
 LineNumber.defaultProps = {
     editorEl: null,
     editorDataArray: [],
-    editorOptions: null
+    editorOptions: null,
+    displayIndex: null
 };

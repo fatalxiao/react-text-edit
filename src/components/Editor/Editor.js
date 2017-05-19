@@ -143,7 +143,13 @@ export default class Editor extends Component {
 
             selectStartPosition: null,
             selectStopPosition: null,
-            cursorPosition: null
+            cursorPosition: null,
+            displayIndex: Calculation.textDisplayIndex({
+                editorDataArray,
+                scrollTop: 0,
+                editorOptions: props.editorOptions,
+                editorHeight
+            })
 
         };
 
@@ -230,12 +236,15 @@ export default class Editor extends Component {
      */
     scrollY(scrollTop) {
 
-        const {onScroll} = this.props;
-        const {scrollLeft} = this.state;
+        const {onScroll} = this.props,
+            {scrollLeft} = this.state;
 
-        this.setState({
-            scrollTop
-        }, () => {
+        const state = {
+            scrollTop,
+            displayIndex: Calculation.textDisplayIndex({...this.props, ...this.state, scrollTop})
+        };
+
+        this.setState(state, () => {
             onScroll && onScroll({
                 left: scrollLeft,
                 top: scrollTop,
@@ -289,10 +298,13 @@ export default class Editor extends Component {
             left = Valid.range(left, 0, maxScrollLeft);
         }
 
-        this.setState({
+        const state = {
             scrollTop: top,
-            scrollLeft: left
-        }, () => {
+            scrollLeft: left,
+            displayIndex: Calculation.textDisplayIndex({...this.props, ...this.state, scrollTop: top})
+        };
+
+        this.setState(state, () => {
             onScroll && onScroll({
                 left,
                 top,

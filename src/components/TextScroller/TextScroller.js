@@ -44,8 +44,7 @@ export default class TextScroller extends Component {
                 width: contentWidth,
                 height: editorDataArray.length * lineHeight,
                 transform: `translate3d(${initOffsetLeft - scrollLeft}px, ${-scrollTop}px, 0)`
-            },
-            displayIndex = Calculation.textDisplayIndex(this.props);
+            };
 
         return (
             <div className="react-editor-text-scroller"
@@ -73,8 +72,7 @@ export default class TextScroller extends Component {
                         null
                 }
 
-                <TextContainer {...this.props}
-                               displayIndex={displayIndex}/>
+                <TextContainer {...this.props}/>
 
                 {
                     cursorPosition && isEditorFocused ?
