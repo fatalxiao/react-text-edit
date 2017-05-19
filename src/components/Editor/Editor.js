@@ -260,18 +260,31 @@ export default class Editor extends Component {
      * @param editorDataArray
      * @param cursorPosition
      */
-    onChange(editorDataArray, cursorPosition) {
-        this.setState({
+    onChange(editorDataArray, newPosition) {
+
+        let state = {
             editorDataArray,
             contentWidth: this.calculateContentWidth(editorDataArray),
             contentHeight: this.calculateContentHeight(editorDataArray),
             selectStartX: undefined,
             selectStartY: undefined,
-            selectStopX: cursorPosition.left,
-            selectStopY: cursorPosition.top,
+            selectStopX: newPosition.left,
+            selectStopY: newPosition.top,
             isDoubleClick: false,
             isTripleClick: false
-        }, () => {
+        };
+
+        let {
+            selectStartPosition,
+            selectStopPosition,
+            cursorPosition
+        } = Calculation.cursorSelectionPosition({...this.props, ...this.state, ...state});
+
+        state.selectStartPosition = selectStartPosition;
+        state.selectStopPosition = selectStopPosition;
+        state.cursorPosition = cursorPosition;
+
+        this.setState(state, () => {
             this.props.onChange && this.props.onChange(editorDataArray.join('\n'));
         });
     }
