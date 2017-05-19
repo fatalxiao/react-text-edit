@@ -34,7 +34,8 @@ export default class TextScroller extends Component {
     render() {
 
         const {
-                isEditorFocused, editorDataArray, editorOptions, contentWidth, scrollTop, scrollLeft, gutterWidth
+                isEditorFocused, editorDataArray, editorOptions, contentWidth, scrollTop, scrollLeft, gutterWidth,
+                selectStartPosition, selectStopPosition, cursorPosition
             } = this.props,
             {compositionText} = this.state,
             {horizontalPadding, lineHeight, showLineNumber} = editorOptions,
@@ -44,30 +45,30 @@ export default class TextScroller extends Component {
                 height: editorDataArray.length * lineHeight,
                 transform: `translate3d(${initOffsetLeft - scrollLeft}px, ${-scrollTop}px, 0)`
             },
-            displayIndex = Calculation.textDisplayIndex(this.props),
-            {selectStartPosition, selectStopPosition, cursorPosition} = Calculation.cursorSelectionPosition(this.props);
+            displayIndex = Calculation.textDisplayIndex(this.props);
 
         return (
             <div className="react-editor-text-scroller"
                  style={scrollerStyle}>
 
-                <TextInput {...this.props}
-                           cursorPosition={cursorPosition}
-                           selectStartPosition={selectStartPosition}
-                           selectStopPosition={selectStopPosition}
-                           onCompositionUpdate={this.compositionUpdateHandle}/>
+                {
+                    cursorPosition ?
+                        <TextInput {...this.props}
+                                   onCompositionUpdate={this.compositionUpdateHandle}/>
+                        :
+                        null
+                }
 
-                <TextActiveLine {...this.props}
-                                cursorPosition={cursorPosition}
-                                selectStartPosition={selectStartPosition}
-                                selectStopPosition={selectStopPosition}/>
+                {
+                    cursorPosition ?
+                        <TextActiveLine {...this.props}/>
+                        :
+                        null
+                }
 
                 {
                     selectStartPosition && selectStopPosition ?
-                        <TextSelection {...this.props}
-                                       cursorPosition={cursorPosition}
-                                       selectStartPosition={selectStartPosition}
-                                       selectStopPosition={selectStopPosition}/>
+                        <TextSelection {...this.props}/>
                         :
                         null
                 }
@@ -76,10 +77,9 @@ export default class TextScroller extends Component {
                                displayIndex={displayIndex}/>
 
                 {
-                    isEditorFocused ?
+                    cursorPosition && isEditorFocused ?
                         <EditorCursor {...this.props}
-                                      compositionText={compositionText}
-                                      cursorPosition={cursorPosition}/>
+                                      compositionText={compositionText}/>
                         :
                         null
                 }
@@ -102,7 +102,10 @@ TextScroller.propTypes = {
     selectStartY: PropTypes.number,
     selectStopX: PropTypes.number,
     selectStopY: PropTypes.number,
-    gutterWidth: PropTypes.number
+    gutterWidth: PropTypes.number,
+    selectStartPosition: PropTypes.object,
+    selectStopPosition: PropTypes.object,
+    cursorPosition: PropTypes.object
 };
 
 TextScroller.defaultProps = {
@@ -116,5 +119,8 @@ TextScroller.defaultProps = {
     selectStartY: undefined,
     selectStopX: undefined,
     selectStopY: undefined,
-    gutterWidth: 0
+    gutterWidth: 0,
+    selectStartPosition: null,
+    selectStopPosition: null,
+    cursorPosition: null
 };

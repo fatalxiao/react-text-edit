@@ -139,7 +139,11 @@ export default class Editor extends Component {
             /**
              * left gutter width
              */
-            gutterWidth: 0
+            gutterWidth: 0,
+
+            selectStartPosition: null,
+            selectStopPosition: null,
+            cursorPosition: null
 
         };
 
@@ -342,6 +346,16 @@ export default class Editor extends Component {
             state.isTripleClick = false;
         }
 
+        const {
+            selectStartPosition,
+            selectStopPosition,
+            cursorPosition
+        } = Calculation.cursorSelectionPosition({...this.props, ...this.state, ...state});
+
+        state.selectStartPosition = selectStartPosition;
+        state.selectStopPosition = selectStopPosition;
+        state.cursorPosition = cursorPosition;
+
         this.lastMouseDownTimeStamp = e.timeStamp;
         this.setState(state);
 
@@ -397,6 +411,16 @@ export default class Editor extends Component {
         if (!this.state.selectStartY) {
             state.selectStartY = this.state.selectStopY;
         }
+
+        const {
+            selectStartPosition,
+            selectStopPosition,
+            cursorPosition
+        } = Calculation.cursorSelectionPosition({...this.props, ...this.state, ...state});
+
+        state.selectStartPosition = selectStartPosition;
+        state.selectStopPosition = selectStopPosition;
+        state.cursorPosition = cursorPosition;
 
         this.setState(state);
 
