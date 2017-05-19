@@ -13,8 +13,7 @@ export default class GutterActiveLine extends Component {
 
     render() {
 
-        const {editorOptions, gutterWidth} = this.props,
-            {cursorPosition} = Calculation.cursorSelectionPosition(this.props),
+        const {editorOptions, gutterWidth, cursorPosition} = this.props,
             activeLineStyle = {
                 width: gutterWidth - 1,
                 height: editorOptions.lineHeight,
@@ -32,10 +31,12 @@ export default class GutterActiveLine extends Component {
 
 GutterActiveLine.propTypes = {
     editorOptions: PropTypes.object,
-    gutterWidth: PropTypes.number
+    gutterWidth: PropTypes.number,
+    cursorPosition: PropTypes.object
 };
 
 GutterActiveLine.defaultProps = {
     editorOptions: null,
-    gutterWidth: 0
+    gutterWidth: 0,
+    cursorPosition: null
 };
