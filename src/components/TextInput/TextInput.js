@@ -25,6 +25,7 @@ export default class TextInput extends Component {
         this.changeHandle = this::this.changeHandle;
         this.directionKeyHandle = this::this.directionKeyHandle;
         this.keyDownHandle = this::this.keyDownHandle;
+        this.selectHandle = this::this.selectHandle;
         this.compositionHandle = this::this.compositionHandle;
 
     }
@@ -43,7 +44,7 @@ export default class TextInput extends Component {
 
         setTimeout(() => {
             textInput.focus();
-            textInput.setSelectionRange(0, textInput.value.length);
+            textInput.setSelectionRange(0, textInput.value.length - 1);
         }, 0);
 
     }
@@ -70,7 +71,7 @@ export default class TextInput extends Component {
         const {newDataArray, newPosition} = result;
 
         this.refs.textInput.value = this.calculateValue();
-        this.props.onChange(newDataArray, newPosition);
+        this.props.onChange(newDataArray, null, newPosition, newPosition);
         this.focus();
 
     }
@@ -160,6 +161,17 @@ export default class TextInput extends Component {
             case 40: // down
                 this.directionKeyHandle(0, 1);
                 break;
+        }
+
+    }
+
+    selectHandle(e) {
+
+        const textarea = e.target;
+
+        // select all
+        if (textarea.selectionStart === 0 && textarea.selectionEnd === textarea.value.length) {
+
         }
 
     }
@@ -261,7 +273,8 @@ export default class TextInput extends Component {
                           onKeyDown={this.keyDownHandle}
                           onCompositionStart={this.compositionHandle}
                           onCompositionUpdate={this.compositionHandle}
-                          onCompositionEnd={this.compositionHandle}></textarea>
+                          onCompositionEnd={this.compositionHandle}
+                          onSelect={this.selectHandle}></textarea>
 
             </div>
         );

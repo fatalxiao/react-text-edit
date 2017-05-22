@@ -249,7 +249,7 @@ function hasSelection(start, stop) {
 function getSelectionValue({editorDataArray, selectStartPosition, selectStopPosition}) {
 
     if (!editorDataArray || !selectStopPosition) {
-        return '';
+        return ' ';
     }
 
     let [start, stop] = sortPosition(selectStartPosition, selectStopPosition);
@@ -257,7 +257,7 @@ function getSelectionValue({editorDataArray, selectStartPosition, selectStopPosi
     if (hasSelection(start, stop)) {
 
         if (start.row === stop.row) { // in one line
-            return editorDataArray[start.row].slice(start.col, stop.col);
+            return editorDataArray[start.row].slice(start.col, stop.col) + ' ';
         } else {
 
             let result = [];
@@ -268,13 +268,13 @@ function getSelectionValue({editorDataArray, selectStartPosition, selectStopPosi
             }
             result.push(editorDataArray[stop.row].slice(0, stop.col));
 
-            return result.join('\n');
+            return result.join('\n') + ' ';
 
         }
 
     }
 
-    return '';
+    return ' ';
 
 }
 
