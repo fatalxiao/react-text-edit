@@ -277,19 +277,10 @@ export default class Editor extends Component {
             cursorPosition: newPosition
         };
 
-        // let {
-        //     selectStartPosition,
-        //     selectStopPosition,
-        //     cursorPosition
-        // } = Calculation.cursorSelectionPosition({...this.props, ...this.state, ...state});
-
-        // state.selectStartPosition = selectStartPosition;
-        // state.selectStopPosition = selectStopPosition;
-        // state.cursorPosition = cursorPosition;
-
         this.setState(state, () => {
             this.props.onChange && this.props.onChange(editorDataArray.join('\n'));
         });
+
     }
 
     /**
