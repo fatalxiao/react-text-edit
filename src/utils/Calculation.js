@@ -273,9 +273,6 @@ function getSelectionValue({editorDataArray, selectStartPosition, selectStopPosi
         }
 
     }
-    // else {
-    //     return editorDataArray[stop.row] + '\n';
-    // }
 
     return '';
 
@@ -288,10 +285,13 @@ function deleteLine(dataArray, pos, lineHeight, editorEl) {
     }
 
     let newDataArray = dataArray.slice(),
-        newPosition = Object.assign({}, pos);
+        newPosition = Object.assign({}, pos),
+        lastLine = dataArray[pos.row - 1];
 
-    newPosition.left = CharSize.calculateStringWidth(dataArray[pos.row - 1], editorEl);
+    newPosition.left = CharSize.calculateStringWidth(lastLine, editorEl);
     newPosition.top -= lineHeight;
+    newPosition.row -= 1;
+    newPosition.col = lastLine.length;
 
     newDataArray[pos.row - 1] = newDataArray[pos.row - 1] + newDataArray[pos.row];
     newDataArray.splice(pos.row, 1);
@@ -311,6 +311,7 @@ function deleteChar(dataArray, pos, editorEl) {
 
     newDataArray[pos.row] = dataArray[pos.row].slice(0, pos.col - 1) + dataArray[pos.row].slice(pos.col);
     newPosition.left -= CharSize.calculateStringWidth(dataArray[pos.row].at(pos.col - 1), editorEl);
+    newPosition.col -= 1;
 
     return {newDataArray, newPosition};
 
@@ -351,13 +352,19 @@ function insertValue(dataArray, pos, value, lineHeight, editorEl) {
     temp.splice(pos.col, 0, value);
     newDataArray[pos.row] = temp.join('');
 
-    const valueArray = value.split('\n');
-    if (valueArray.length > 1) {
+    const valueArray = value.split('\n'),
+        len = valueArray.length,
+        lastLine = valueArray[valueArray.length - 1];
+
+    if (len > 1) {
         newPosition.top += (valueArray.length - 1) * lineHeight;
-        newPosition.left = CharSize.calculateStringWidth(valueArray[valueArray.length - 1], editorEl);
+        newPosition.left = CharSize.calculateStringWidth(lastLine, editorEl);
+        newPosition.col = lastLine.length;
     } else {
         newPosition.left += CharSize.calculateStringWidth(value, editorEl);
+        newPosition.col += value.length;
     }
+    newPosition.row += len - 1;
 
     return {
         newDataArray: newDataArray.join('\n').split('\n'),

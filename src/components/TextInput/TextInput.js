@@ -67,11 +67,7 @@ export default class TextInput extends Component {
             return;
         }
 
-        const {editorOptions, gutterWidth} = this.props,
-            {horizontalPadding, showLineNumber} = editorOptions,
-            {newDataArray, newPosition} = result;
-
-        newPosition.left = newPosition.left + horizontalPadding + (showLineNumber ? gutterWidth : 0);
+        const {newDataArray, newPosition} = result;
 
         this.refs.textInput.value = this.calculateValue();
         this.props.onChange(newDataArray, newPosition);
