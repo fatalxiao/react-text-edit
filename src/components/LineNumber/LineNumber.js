@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import CharSize from '../../utils/CharSize';
-import Calculation from '../../utils/Calculation';
 
 import './LineNumber.scss';
 
@@ -15,9 +14,10 @@ export default class LineNumber extends Component {
     render() {
 
         const {editorEl, editorDataArray, editorOptions, displayIndex} = this.props,
-            {start, stop} = displayIndex,
-            {lineHeight, horizontalPadding} = editorOptions,
             len = editorDataArray.length,
+            start = Math.max(displayIndex.start, 0),
+            stop = Math.min(displayIndex.stop, len),
+            {lineHeight, horizontalPadding} = editorOptions,
             width = CharSize.calculateStringWidth('' + len, editorEl);
 
         let numbers = [], style;
@@ -37,6 +37,7 @@ export default class LineNumber extends Component {
                     {i + 1}
                 </div>
             );
+
         }
 
         return (
