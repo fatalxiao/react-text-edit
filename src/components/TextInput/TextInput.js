@@ -130,6 +130,8 @@ export default class TextInput extends Component {
      */
     keyDownHandle(e) {
 
+        // console.log(e.keyCode);
+
         if (this.state.isComposition) {
             return;
         }
@@ -150,6 +152,15 @@ export default class TextInput extends Component {
                 break;
             case 40: // down
                 this.directionKeyHandle(0, 1);
+                break;
+            case 90: // z
+                if (e.shiftKey && (Valid.isMac() && e.metaKey) || (Valid.isWindows() && e.ctrlKey)) {
+                    e.preventDefault();
+                    this.props.goHistory(1);
+                } else if ((Valid.isMac() && e.metaKey) || (Valid.isWindows() && e.ctrlKey)) {
+                    e.preventDefault();
+                    this.props.goHistory(-1);
+                }
                 break;
         }
 

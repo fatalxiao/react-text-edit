@@ -33,7 +33,18 @@ export default class Editor extends Component {
          */
         this.isMouseDown = false;
 
+        /**
+         * for double click or triple click calculation
+         * @type {null}
+         */
         this.lastMouseDownTimeStamp = null;
+
+        /**
+         * history record
+         * @type {Array}
+         */
+        this.editorHistory = [];
+        this.historyPoint = -1;
 
         let editorDataArray = props.data.split('\n');
 
@@ -167,6 +178,7 @@ export default class Editor extends Component {
         this.mouseDownHandle = this::this.mouseDownHandle;
         this.mouseMoveHandle = this::this.mouseMoveHandle;
         this.mouseUpHandle = this::this.mouseUpHandle;
+        this.goHistory = this::this.goHistory;
 
     }
 
@@ -267,17 +279,19 @@ export default class Editor extends Component {
             editorDataArray,
             contentWidth: this.calculateContentWidth(editorDataArray),
             contentHeight: this.calculateContentHeight(editorDataArray),
-            // selectStartX: newStartPosition ? newStartPosition.left : undefined,
-            // selectStartY: newStartPosition ? newStartPosition.top : undefined,
-            // selectStopX: newStopPosition ? newStopPosition.left : undefined,
-            // selectStopY: newStopPosition ? newStopPosition.top : undefined,
             isDoubleClick: false,
             isTripleClick: false,
             selectStartPosition: newStartPosition,
             selectStopPosition: newStopPosition,
             cursorPosition: newCursorPosition
         }, () => {
+
             this.props.onChange && this.props.onChange(editorDataArray.join('\n'));
+
+            this.editorHistory.splice(this.historyPoint + 1,
+                this.editorHistory.length - 1 - this.historyPoint, _.cloneDeep(this.state));
+            this.historyPoint++;
+
         });
 
     }
@@ -381,7 +395,11 @@ export default class Editor extends Component {
         state.cursorPosition = cursorPosition;
 
         this.lastMouseDownTimeStamp = e.timeStamp;
-        this.setState(state);
+        this.setState(state, () => {
+            this.editorHistory.splice(this.historyPoint + 1,
+                this.editorHistory.length - 1 - this.historyPoint, _.cloneDeep(this.state));
+            this.historyPoint++;
+        });
 
     }
 
@@ -462,14 +480,12 @@ export default class Editor extends Component {
         this.isMouseDown = false;
     }
 
-    componentDidMount() {
+    goHistory(offset) {
+        this.historyPoint = Valid.range(this.historyPoint + offset, 0, this.editorHistory.length - 1);
+        this.setState(this.editorHistory[this.historyPoint]);
+    }
 
-        // set editorEl in state for children components
-        this.setState({
-            editorEl: this.refs.editor,
-            contentWidth: this.calculateContentWidth(),
-            gutterWidth: this.calculateGutterWidth()
-        });
+    componentDidMount() {
 
         // add global events
         Event.addEvent(document, 'dragstart', Event.preventEvent);
@@ -477,6 +493,16 @@ export default class Editor extends Component {
         Event.addEvent(document, 'mousemove', this.mouseMoveHandle);
         Event.addEvent(document, 'mouseup', this.mouseUpHandle);
         this.props.isFullScreen && Event.addEvent(window, 'resize', this.resizeHandle);
+
+        // set editorEl in state for children components
+        this.setState({
+            editorEl: this.refs.editor,
+            contentWidth: this.calculateContentWidth(),
+            gutterWidth: this.calculateGutterWidth()
+        }, () => {
+            this.editorHistory.push(_.cloneDeep(this.state));
+            this.historyPoint = 0;
+        });
 
     }
 
@@ -528,7 +554,7 @@ export default class Editor extends Component {
             );
         }
 
-        if (!(_.isEmpty(state))) {
+        if (!_.isEmpty(state)) {
             this.setState(state);
         }
 

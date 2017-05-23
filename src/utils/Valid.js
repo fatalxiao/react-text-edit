@@ -5,8 +5,16 @@ function range(value, min, max) {
 }
 
 function isChrome() {
-    return window.navigator.userAgent.includes('Chrome');
+    return /chrome/i.test(navigator.userAgent);
 }
+
+function isMac() {
+    return /macintosh|mac os x/i.test(navigator.userAgent);
+}
+
+function isWindows() {
+    return /windows|win32/i.test(navigator.userAgent);
+};
 
 function isEmptyTextData(array) {
     if (!array || array.length === 0 || (array.length === 1 && array[0] === '')) {
@@ -18,5 +26,7 @@ function isEmptyTextData(array) {
 export default {
     range,
     isChrome,
+    isMac,
+    isWindows,
     isEmptyTextData
 };
