@@ -14,18 +14,15 @@ export default class TextInput extends Component {
         super(props);
 
         this.state = {
-            isComposition: false,
-            compositionText: ''
+            isComposition: false
         };
 
         this.focus = this::this.focus;
-        this.getTextAreaValue = this::this.getTextAreaValue;
         this.doChange = this::this.doChange;
         this.blurHandle = this::this.blurHandle;
         this.changeHandle = this::this.changeHandle;
         this.directionKeyHandle = this::this.directionKeyHandle;
         this.keyDownHandle = this::this.keyDownHandle;
-        this.selectHandle = this::this.selectHandle;
         this.compositionHandle = this::this.compositionHandle;
 
     }
@@ -44,13 +41,9 @@ export default class TextInput extends Component {
 
         setTimeout(() => {
             textInput.focus();
-            textInput.setSelectionRange(0, textInput.value.length - 1);
+            textInput.setSelectionRange(0, textInput.value.length);
         }, 0);
 
-    }
-
-    getTextAreaValue(props = this.props) {
-        return Calculation.getSelectionValue(props) + ' ';
     }
 
     /**
@@ -83,23 +76,14 @@ export default class TextInput extends Component {
         const value = e.target.value;
 
         if (this.state.isComposition) {
-
-            const {onCompositionUpdate} = this.props;
-
-            this.setState({
-                compositionText: value
-            }, () => {
-                onCompositionUpdate(value);
-            });
-
+            this.props.onCompositionUpdate(value);
             return;
-
         }
 
-        if (value === ' ') {
+        if (value === '') {
             this.doChange(Command.doCut(this.props)); // cut
         } else {
-            this.doChange(Command.doInput(value.slice(0, value.length - 1), this.props)); // input or paste
+            this.doChange(Command.doInput(value, this.props)); // input or paste
         }
 
     }
@@ -163,28 +147,13 @@ export default class TextInput extends Component {
 
     }
 
-    selectHandle(e) {
-
-        const {editorDataArray, cursorPosition, onChange} = this.props,
-            textarea = e.target;
-
-        // select all
-        if (textarea.selectionStart === 0 && textarea.selectionEnd === textarea.value.length) {
-
-            const {newStartPosition, newStopPosition} = Command.doSelectAll(this.props);
-
-            onChange(editorDataArray, newStartPosition, newStopPosition, cursorPosition);
-            this.focus();
-
-        }
-
-    }
-
     /**
      * textarea composition event handle
      * @param e
      */
     compositionHandle(e) {
+
+        console.log(e.type);
 
         e.persist();
 
@@ -203,8 +172,7 @@ export default class TextInput extends Component {
                 const {onCompositionUpdate} = this.props;
 
                 this.setState({
-                    isComposition: false,
-                    compositionText: ''
+                    isComposition: false
                 }, () => {
 
                     // chrome cannot trigger change event when composition end
@@ -225,7 +193,7 @@ export default class TextInput extends Component {
     componentDidMount() {
 
         // initial text input value
-        this.refs.textInput.value = this.getTextAreaValue();
+        this.refs.textInput.value = Calculation.getSelectionValue(this.props);
 
         // focus at the begin
         this.focus();
@@ -233,7 +201,7 @@ export default class TextInput extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.refs.textInput.value = this.getTextAreaValue(nextProps);
+        this.refs.textInput.value = Calculation.getSelectionValue(nextProps);
         this.focus(nextProps);
     }
 
@@ -243,8 +211,8 @@ export default class TextInput extends Component {
 
     render() {
 
-        const {editorOptions, cursorPosition} = this.props,
-            {isComposition, compositionText} = this.state,
+        const {editorOptions, cursorPosition, compositionText} = this.props,
+            {isComposition} = this.state,
             style = {
                 height: editorOptions.lineHeight,
                 lineHeight: `${editorOptions.lineHeight * 1.1}px`,
@@ -272,8 +240,7 @@ export default class TextInput extends Component {
                           onKeyDown={this.keyDownHandle}
                           onCompositionStart={this.compositionHandle}
                           onCompositionUpdate={this.compositionHandle}
-                          onCompositionEnd={this.compositionHandle}
-                          onSelect={this.selectHandle}></textarea>
+                          onCompositionEnd={this.compositionHandle}></textarea>
 
             </div>
         );
@@ -291,16 +258,22 @@ TextInput.propTypes = {
     selectStartPosition: PropTypes.object,
     selectStopPosition: PropTypes.object,
 
+    compositionText: PropTypes.string,
+
     onChange: PropTypes.func,
     onCompositionUpdate: PropTypes.func
 
 };
 
 TextInput.defaultProps = {
+
     editorEl: null,
     editorOptions: null,
     editorDataArray: [],
     cursorPosition: null,
     selectStartPosition: null,
-    selectStopPosition: null
+    selectStopPosition: null,
+
+    compositionText: ''
+
 };

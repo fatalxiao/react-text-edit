@@ -53,6 +53,7 @@ export default class TextScroller extends Component {
                 {
                     cursorPosition ?
                         <TextInput {...this.props}
+                                   compositionText={compositionText}
                                    onCompositionUpdate={this.compositionUpdateHandle}/>
                         :
                         null
