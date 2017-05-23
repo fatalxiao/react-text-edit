@@ -8,4 +8,9 @@
     bottom: 0;
     background: $theme-bg;
     padding: 50px;
+    overflow: auto;
+
+    .example:last-child {
+        margin-bottom: 0;
+    }
 }

@@ -1,10 +1,11 @@
 @import './common.scss';
 
 .example {
-    margin-bottom: 50px;
+    margin-bottom: 40px;
 
     h1 {
         color: $theme-highlight;
+        margin: 8px 0;
     }
 
 }
