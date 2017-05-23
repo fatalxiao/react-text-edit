@@ -160,6 +160,7 @@ export default class Editor extends Component {
         this.scrollX = this::this.scrollX;
         this.scrollY = this::this.scrollY;
         this.onChange = this::this.onChange;
+        this.lostFocusHandle = this::this.lostFocusHandle;
         this.wheelHandle = this::this.wheelHandle;
         this.resizeHandle = this::this.resizeHandle;
         this.editorMouseDownHandle = this::this.editorMouseDownHandle;
@@ -281,6 +282,12 @@ export default class Editor extends Component {
 
     }
 
+    lostFocusHandle() {
+        this.setState({
+            isEditorFocused: false
+        });
+    }
+
     /**
      * handle wheel event, reset text content offset
      * @param e
@@ -397,7 +404,12 @@ export default class Editor extends Component {
         }
 
         if (Event.isTriggerOnEl(e, findDOMNode(this.refs.editorText))) {
-            this.editorMouseDownHandle(e);
+
+            // trigger after textarea blur event
+            setTimeout(() => {
+                this.editorMouseDownHandle(e);
+            }, 0);
+
         }
 
     }

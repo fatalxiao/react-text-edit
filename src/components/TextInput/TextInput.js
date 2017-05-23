@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 
 import Command from '../../utils/Command';
 import Calculation from '../../utils/Calculation';
@@ -21,6 +20,7 @@ export default class TextInput extends Component {
 
         this.focus = this::this.focus;
         this.doChange = this::this.doChange;
+        this.blurHandle = this::this.blurHandle;
         this.changeHandle = this::this.changeHandle;
         this.directionKeyHandle = this::this.directionKeyHandle;
         this.keyDownHandle = this::this.keyDownHandle;
@@ -63,6 +63,10 @@ export default class TextInput extends Component {
         this.props.onChange(newDataArray, null, newPosition, newPosition);
         this.focus();
 
+    }
+
+    blurHandle() {
+        this.props.lostFocusHandle();
     }
 
     /**
@@ -258,6 +262,7 @@ export default class TextInput extends Component {
 
                 <textarea ref="textInput"
                           className="react-editor-text-input"
+                          onBlur={this.blurHandle}
                           onChange={this.changeHandle}
                           onKeyDown={this.keyDownHandle}
                           onCompositionStart={this.compositionHandle}

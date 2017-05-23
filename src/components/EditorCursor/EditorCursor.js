@@ -59,6 +59,10 @@ export default class EditorCursor extends Component {
         this.delayAnimate();
     }
 
+    componentWillUnmount() {
+        this.delayAnimation && clearTimeout(this.delayAnimation);
+    }
+
     render() {
 
         const {left, top} = this.calculateCursorPosition(),
