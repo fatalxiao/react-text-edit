@@ -223,15 +223,15 @@ export default class TextInput extends Component {
 
     componentWillReceiveProps(nextProps) {
 
-        // setTimeout(() => {
+        setTimeout(() => {
 
-        if (!this.state.isComposition) {
-            this.refs.textInput.value = this.getTextAreaValue(nextProps);
-        }
+            if (!this.state.isComposition) {
+                this.refs.textInput.value = this.getTextAreaValue(nextProps);
+            }
 
-        this.focus(nextProps);
+            this.focus(nextProps);
 
-        // }, 0);
+        }, 0);
 
     }
 
