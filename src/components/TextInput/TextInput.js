@@ -154,12 +154,9 @@ export default class TextInput extends Component {
                 this.directionKeyHandle(0, 1);
                 break;
             case 90: // z
-                if (e.shiftKey && (Valid.isMac() && e.metaKey) || (Valid.isWindows() && e.ctrlKey)) {
+                if ((Valid.isMac() && e.metaKey) || (Valid.isWindows() && e.ctrlKey)) {
                     e.preventDefault();
-                    this.props.goHistory(1);
-                } else if ((Valid.isMac() && e.metaKey) || (Valid.isWindows() && e.ctrlKey)) {
-                    e.preventDefault();
-                    this.props.goHistory(-1);
+                    this.props.goHistory(e.shiftKey ? 1 : -1);
                 }
                 break;
         }

@@ -67,7 +67,7 @@ export default class Editor extends Component {
              * whether this editor is focused
              * @type {boolean}
              */
-            isEditorFocused: false,
+            isEditorFocused: true,
 
             /**
              * editor data
@@ -149,12 +149,64 @@ export default class Editor extends Component {
 
             /**
              * left gutter width
+             * @type {number}
              */
             gutterWidth: 0,
 
+            /**
+             * select start position
+             *
+             * structure:
+             *  {
+             *      left {number}
+             *      top {number}
+             *      row {number}
+             *      col {number}
+             *  }
+             *
+             * @type {object}
+             */
             selectStartPosition: null,
-            selectStopPosition: null,
-            cursorPosition: null,
+
+            /**
+             * select stop position
+             *
+             * structure: same as selectStartPosition
+             *
+             * @type {object}
+             */
+            selectStopPosition: {
+                left: 0,
+                top: 0,
+                row: 0,
+                col: 0
+            },
+
+            /**
+             * cursor position
+             *
+             * structure: same as selectStartPosition
+             *
+             * @type {object}
+             */
+            cursorPosition: {
+                left: 0,
+                top: 0,
+                row: 0,
+                col: 0
+            },
+
+            /**
+             * text display index range
+             *
+             * structure:
+             *  {
+             *      start {number}
+             *      stop {number}
+             *  }
+             *
+             * @type {object}
+             */
             displayIndex: Calculation.textDisplayIndex({
                 editorDataArray,
                 scrollTop: 0,
@@ -179,6 +231,7 @@ export default class Editor extends Component {
         this.mouseMoveHandle = this::this.mouseMoveHandle;
         this.mouseUpHandle = this::this.mouseUpHandle;
         this.goHistory = this::this.goHistory;
+        this.updateHistory = this::this.updateHistory;
 
     }
 
@@ -288,14 +341,15 @@ export default class Editor extends Component {
 
             this.props.onChange && this.props.onChange(editorDataArray.join('\n'));
 
-            this.editorHistory.splice(this.historyPoint + 1,
-                this.editorHistory.length - 1 - this.historyPoint, _.cloneDeep(this.state));
-            this.historyPoint++;
+            this.updateHistory();
 
         });
 
     }
 
+    /**
+     * when text area blur
+     */
     lostFocusHandle() {
         this.setState({
             isEditorFocused: false
@@ -395,11 +449,7 @@ export default class Editor extends Component {
         state.cursorPosition = cursorPosition;
 
         this.lastMouseDownTimeStamp = e.timeStamp;
-        this.setState(state, () => {
-            this.editorHistory.splice(this.historyPoint + 1,
-                this.editorHistory.length - 1 - this.historyPoint, _.cloneDeep(this.state));
-            this.historyPoint++;
-        });
+        this.setState(state);
 
     }
 
@@ -480,6 +530,25 @@ export default class Editor extends Component {
         this.isMouseDown = false;
     }
 
+    /**
+     * destroy part of history and update
+     */
+    updateHistory() {
+
+        this.editorHistory.splice(
+            this.historyPoint + 1,
+            this.editorHistory.length - 1 - this.historyPoint,
+            _.cloneDeep(this.state)
+        );
+
+        this.historyPoint++;
+
+    }
+
+    /**
+     * go to one of history
+     * @param offset
+     */
     goHistory(offset) {
         this.historyPoint = Valid.range(this.historyPoint + offset, 0, this.editorHistory.length - 1);
         this.setState(this.editorHistory[this.historyPoint]);
