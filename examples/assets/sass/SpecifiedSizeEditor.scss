@@ -1,5 +1,11 @@
 @import './common.scss';
 
 .specified-size-editor-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: $theme-bg;
     padding: 50px;
 }
