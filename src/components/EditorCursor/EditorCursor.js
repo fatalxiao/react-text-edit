@@ -30,8 +30,8 @@ export default class EditorCursor extends Component {
             top = 0;
         }
 
-        if (compositionText) {
-            left += CharSize.calculateStringWidth(compositionText, editorEl);
+        if (compositionText && compositionText.length > 0) {
+            left += CharSize.calculateStringWidth(compositionText.slice(0, compositionText.length - 1), editorEl);
         }
 
         return {left, top};

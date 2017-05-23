@@ -7,8 +7,6 @@ import TextSelection from '../TextSelection';
 import TextContainer from '../TextContainer';
 import EditorCursor from '../EditorCursor';
 
-import Calculation from '../../utils/Calculation';
-
 import './TextScroller.scss';
 
 export default class TextScroller extends Component {

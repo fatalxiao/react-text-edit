@@ -18,11 +18,13 @@ export default class TextInput extends Component {
         };
 
         this.focus = this::this.focus;
+        this.getTextAreaValue = this::this.getTextAreaValue;
         this.doChange = this::this.doChange;
         this.blurHandle = this::this.blurHandle;
         this.changeHandle = this::this.changeHandle;
         this.directionKeyHandle = this::this.directionKeyHandle;
         this.keyDownHandle = this::this.keyDownHandle;
+        this.selectHandle = this::this.selectHandle;
         this.compositionHandle = this::this.compositionHandle;
 
     }
@@ -41,9 +43,13 @@ export default class TextInput extends Component {
 
         setTimeout(() => {
             textInput.focus();
-            textInput.setSelectionRange(0, textInput.value.length);
+            textInput.setSelectionRange(0, textInput.value.length - 1);
         }, 0);
 
+    }
+
+    getTextAreaValue(props = this.props) {
+        return Calculation.getSelectionValue(props) + ' ';
     }
 
     /**
@@ -80,10 +86,10 @@ export default class TextInput extends Component {
             return;
         }
 
-        if (value === '') {
+        if (value === ' ') {
             this.doChange(Command.doCut(this.props)); // cut
         } else {
-            this.doChange(Command.doInput(value, this.props)); // input or paste
+            this.doChange(Command.doInput(value.slice(0, value.length - 1), this.props)); // input or paste
         }
 
     }
@@ -147,13 +153,28 @@ export default class TextInput extends Component {
 
     }
 
+    selectHandle(e) {
+
+        const {editorDataArray, cursorPosition, onChange} = this.props,
+            textarea = e.target;
+
+        // select all
+        if (textarea.selectionStart === 0 && textarea.selectionEnd === textarea.value.length) {
+
+            const {newStartPosition, newStopPosition} = Command.doSelectAll(this.props);
+
+            onChange(editorDataArray, newStartPosition, newStopPosition, cursorPosition);
+            this.focus();
+
+        }
+
+    }
+
     /**
      * textarea composition event handle
      * @param e
      */
     compositionHandle(e) {
-
-        console.log(e.type);
 
         e.persist();
 
@@ -169,8 +190,6 @@ export default class TextInput extends Component {
             }
             case 'compositionend': {
 
-                const {onCompositionUpdate} = this.props;
-
                 this.setState({
                     isComposition: false
                 }, () => {
@@ -179,7 +198,7 @@ export default class TextInput extends Component {
                     // so trigger change event manually here
                     Valid.isChrome() && this.changeHandle(e);
 
-                    onCompositionUpdate('');
+                    this.props.onCompositionUpdate('');
 
                 });
 
@@ -193,7 +212,7 @@ export default class TextInput extends Component {
     componentDidMount() {
 
         // initial text input value
-        this.refs.textInput.value = Calculation.getSelectionValue(this.props);
+        this.refs.textInput.value = this.getTextAreaValue();
 
         // focus at the begin
         this.focus();
@@ -201,8 +220,13 @@ export default class TextInput extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.refs.textInput.value = Calculation.getSelectionValue(nextProps);
+
+        if (!this.state.isComposition) {
+            this.refs.textInput.value = Calculation.getSelectionValue(nextProps);
+        }
+
         this.focus(nextProps);
+
     }
 
     componentDidUpdate(prevProps) {
@@ -240,7 +264,8 @@ export default class TextInput extends Component {
                           onKeyDown={this.keyDownHandle}
                           onCompositionStart={this.compositionHandle}
                           onCompositionUpdate={this.compositionHandle}
-                          onCompositionEnd={this.compositionHandle}></textarea>
+                          onCompositionEnd={this.compositionHandle}
+                          onSelect={this.selectHandle}></textarea>
 
             </div>
         );
