@@ -20,7 +20,6 @@ export default class TextInput extends Component {
         };
 
         this.focus = this::this.focus;
-        this.calculateValue = this::this.calculateValue;
         this.doChange = this::this.doChange;
         this.changeHandle = this::this.changeHandle;
         this.directionKeyHandle = this::this.directionKeyHandle;
@@ -50,15 +49,6 @@ export default class TextInput extends Component {
     }
 
     /**
-     * get the value of textarea should display
-     * @param props
-     * @returns {*}
-     */
-    calculateValue(props = this.props) {
-        return Calculation.getSelectionValue(props);
-    }
-
-    /**
      * update editor text data and pop
      * @param result
      */
@@ -70,7 +60,6 @@ export default class TextInput extends Component {
 
         const {newDataArray, newPosition} = result;
 
-        this.refs.textInput.value = this.calculateValue();
         this.props.onChange(newDataArray, null, newPosition, newPosition);
         this.focus();
 
@@ -167,10 +156,16 @@ export default class TextInput extends Component {
 
     selectHandle(e) {
 
-        const textarea = e.target;
+        const {editorDataArray, cursorPosition, onChange} = this.props,
+            textarea = e.target;
 
         // select all
         if (textarea.selectionStart === 0 && textarea.selectionEnd === textarea.value.length) {
+
+            const {newStartPosition, newStopPosition} = Command.doSelectAll(this.props);
+
+            onChange(editorDataArray, newStartPosition, newStopPosition, cursorPosition);
+            this.focus();
 
         }
 
@@ -221,7 +216,7 @@ export default class TextInput extends Component {
     componentDidMount() {
 
         // initial text input value
-        this.refs.textInput.value = this.calculateValue();
+        this.refs.textInput.value = Calculation.getSelectionValue(this.props);
 
         // focus at the begin
         this.focus();
@@ -232,7 +227,7 @@ export default class TextInput extends Component {
 
         if (!_.isEqual(nextProps.selectStartPosition, this.props.selectStartPosition)
             || !_.isEqual(nextProps.selectStopPosition, this.props.selectStopPosition)) {
-            this.refs.textInput.value = this.calculateValue(nextProps);
+            this.refs.textInput.value = Calculation.getSelectionValue(nextProps);
         }
 
         this.focus(nextProps);

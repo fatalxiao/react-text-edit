@@ -12,6 +12,7 @@
     overflow: hidden;
     position: relative;
     border-radius: $border-radius;
+    user-select: none;
 
     &.react-editor-full-screen {
         position: absolute;

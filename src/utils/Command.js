@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import Calculation from './Calculation';
+import CharSize from './CharSize';
 
 function doDeleteLine(props) {
     const {editorEl, editorDataArray, editorOptions, selectStopPosition} = props;
@@ -97,6 +98,29 @@ function doInput(e, props) {
 
 }
 
+function doSelectAll(props) {
+
+    const {editorEl, editorDataArray, editorOptions} = props,
+        {lineHeight} = editorOptions,
+        newStartPosition = {
+            left: 0,
+            top: 0,
+            row: 0,
+            col: 0
+        },
+        len = editorDataArray.length,
+        lastLine = editorDataArray[len - 1],
+        newStopPosition = {
+            left: CharSize.calculateStringWidth(lastLine, editorEl),
+            top: (len - 1) * lineHeight,
+            row: len - 1,
+            col: lastLine.length
+        };
+
+    return {newStartPosition, newStopPosition};
+
+}
+
 export default {
     doDeleteLine,
     doDeleteChar,
@@ -106,5 +130,6 @@ export default {
     doCut,
     doInsert,
     doReplace,
-    doInput
+    doInput,
+    doSelectAll
 };
