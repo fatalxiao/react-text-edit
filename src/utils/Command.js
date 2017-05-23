@@ -86,14 +86,14 @@ function doReplace(value, props) {
     return doInsert(value, {...props, editorDataArray: newDataArray, selectStopPosition: newPosition});
 }
 
-function doInput(e, props) {
+function doInput(value, props) {
 
     const {selectStartPosition, selectStopPosition} = props;
 
     if (Calculation.hasSelection(selectStartPosition, selectStopPosition)) {
-        return doReplace(e, props);
+        return doReplace(value, props);
     } else {
-        return doInsert(e, props);
+        return doInsert(value, props);
     }
 
 }

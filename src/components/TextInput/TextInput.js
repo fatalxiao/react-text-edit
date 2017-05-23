@@ -19,6 +19,7 @@ export default class TextInput extends Component {
         };
 
         this.focus = this::this.focus;
+        this.getTextAreaValue = this::this.getTextAreaValue;
         this.doChange = this::this.doChange;
         this.blurHandle = this::this.blurHandle;
         this.changeHandle = this::this.changeHandle;
@@ -46,6 +47,10 @@ export default class TextInput extends Component {
             textInput.setSelectionRange(0, textInput.value.length - 1);
         }, 0);
 
+    }
+
+    getTextAreaValue(props = this.props) {
+        return Calculation.getSelectionValue(props) + ' ';
     }
 
     /**
@@ -94,7 +99,7 @@ export default class TextInput extends Component {
         if (value === ' ') {
             this.doChange(Command.doCut(this.props)); // cut
         } else {
-            this.doChange(Command.doInput(value, this.props)); // input or paste
+            this.doChange(Command.doInput(value.slice(0, value.length - 1), this.props)); // input or paste
         }
 
     }
@@ -220,7 +225,7 @@ export default class TextInput extends Component {
     componentDidMount() {
 
         // initial text input value
-        this.refs.textInput.value = Calculation.getSelectionValue(this.props);
+        this.refs.textInput.value = this.getTextAreaValue();
 
         // focus at the begin
         this.focus();
@@ -228,7 +233,7 @@ export default class TextInput extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.refs.textInput.value = Calculation.getSelectionValue(nextProps);
+        this.refs.textInput.value = this.getTextAreaValue(nextProps);
         this.focus(nextProps);
     }
 
