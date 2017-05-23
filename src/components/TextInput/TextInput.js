@@ -77,7 +77,7 @@ export default class TextInput extends Component {
      * textarea change event handle
      * @param e
      */
-    changeHandle(e) {
+    changeHandle(e, isCompositionEnd) {
 
         const value = e.target.value;
 
@@ -87,7 +87,9 @@ export default class TextInput extends Component {
         }
 
         if (value === ' ') {
-            this.doChange(Command.doCut(this.props)); // cut
+            if (!isCompositionEnd) {
+                this.doChange(Command.doCut(this.props)); // cut
+            }
         } else {
             this.doChange(Command.doInput(value.slice(0, value.length - 1), this.props)); // input or paste
         }
@@ -196,7 +198,7 @@ export default class TextInput extends Component {
 
                     // chrome cannot trigger change event when composition end
                     // so trigger change event manually here
-                    Valid.isChrome() && this.changeHandle(e);
+                    Valid.isChrome() && this.changeHandle(e, true);
 
                     this.props.onCompositionUpdate('');
 
@@ -221,9 +223,9 @@ export default class TextInput extends Component {
 
     componentWillReceiveProps(nextProps) {
 
-        if (!this.state.isComposition) {
-            this.refs.textInput.value = Calculation.getSelectionValue(nextProps);
-        }
+        // if (!this.state.isComposition) {
+        //     this.refs.textInput.value = Calculation.getSelectionValue(nextProps);
+        // }
 
         this.focus(nextProps);
 
@@ -259,6 +261,7 @@ export default class TextInput extends Component {
 
                 <textarea ref="textInput"
                           className="react-editor-text-input"
+                          style={style}
                           onBlur={this.blurHandle}
                           onChange={this.changeHandle}
                           onKeyDown={this.keyDownHandle}
