@@ -5,10 +5,10 @@
 
     .react-editor-text-input {
         position: absolute;
-        z-index: -1;
-        opacity: 0;
         font: inherit;
         background: transparent;
+        z-index: -1;
+        opacity: 0;
         -webkit-appearance: none;
         appearance: none;
         resize: none;

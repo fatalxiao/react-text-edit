@@ -268,7 +268,7 @@ function getSelectionValue({editorDataArray, selectStartPosition, selectStopPosi
             }
             result.push(editorDataArray[stop.row].slice(0, stop.col));
 
-            return result.join('\n') + '';
+            return result.join('\n');
 
         }
 
