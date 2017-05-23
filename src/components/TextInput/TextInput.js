@@ -87,7 +87,7 @@ export default class TextInput extends Component {
 
         }
 
-        if (value === '') {
+        if (value === ' ') {
             this.doChange(Command.doCut(this.props)); // cut
         } else {
             this.doChange(Command.doInput(value, this.props)); // input or paste
@@ -224,14 +224,8 @@ export default class TextInput extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-
-        if (!_.isEqual(nextProps.selectStartPosition, this.props.selectStartPosition)
-            || !_.isEqual(nextProps.selectStopPosition, this.props.selectStopPosition)) {
-            this.refs.textInput.value = Calculation.getSelectionValue(nextProps);
-        }
-
+        this.refs.textInput.value = Calculation.getSelectionValue(nextProps);
         this.focus(nextProps);
-
     }
 
     componentDidUpdate(prevProps) {
