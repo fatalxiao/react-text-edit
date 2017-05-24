@@ -382,20 +382,32 @@ function rowColToLeftTop(row, col, props) {
     }
 
     const {editorDataArray} = props,
-        len = editorDataArray.length;
+        len = editorDataArray.length,
+        lineLen = editorDataArray[row].length;
 
-    if (row < 0 || row >= len || col < 0) {
+    if (row < 0 || row >= len) {
         return;
     }
 
-    col = Valid.range(col, undefined, editorDataArray[row].length);
-
     const {editorEl, editorOptions} = props,
         {lineHeight} = editorOptions;
+    let string = editorDataArray[row].slice(0, col);
+
+    if (col < 0 && row > 0) {
+        row--;
+        col = editorDataArray[row].length + col + 1;
+        string = editorDataArray[row].slice(0, col);
+    } else if (col > lineLen && row < len - 1) {
+        row++;
+        col = col - lineLen - 1;
+        string = editorDataArray[row].slice(0, col);
+    }
 
     return {
+        left: CharSize.calculateStringWidth(string, editorEl),
         top: row * lineHeight,
-        left: CharSize.calculateStringWidth(editorDataArray[row].slice(0, col), editorEl)
+        row,
+        col
     };
 
 }

@@ -107,19 +107,15 @@ export default class TextInput extends Component {
             row = cursorPosition.row + rowOffset,
             col = cursorPosition.col + colOffset;
 
-        const result = Calculation.rowColToLeftTop(row, col, this.props);
+        const newPosition = Calculation.rowColToLeftTop(row, col, this.props);
 
-        if (!result) {
+        if (!newPosition) {
             return;
         }
 
         this.doChange({
             newDataArray: editorDataArray,
-            newPosition: {
-                ...result,
-                col,
-                row
-            }
+            newPosition
         });
 
     }
@@ -137,28 +133,41 @@ export default class TextInput extends Component {
         }
 
         switch (e.keyCode) {
-            case 8: // back space
+
+            // back space
+            case 8: {
                 e.preventDefault();
                 this.doChange(Command.doDelete(this.props));
                 break;
-            case 37: // left
+            }
+
+            // direction
+            case 37: { // left
                 this.directionKeyHandle(-1, 0);
                 break;
-            case 38: // up
+            }
+            case 38: { // up
                 this.directionKeyHandle(0, -1);
                 break;
-            case 39: // right
+            }
+            case 39: { // right
                 this.directionKeyHandle(1, 0);
                 break;
-            case 40: // down
+            }
+            case 40: { // down
                 this.directionKeyHandle(0, 1);
                 break;
-            case 90: // z
+            }
+
+            // z
+            case 90: {
                 if ((Valid.isMac() && e.metaKey) || (Valid.isWindows() && e.ctrlKey)) {
                     e.preventDefault();
                     this.props.goHistory(e.shiftKey ? 1 : -1);
                 }
                 break;
+            }
+
         }
 
     }
