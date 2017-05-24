@@ -385,8 +385,13 @@ function directionChange(rowOffset, colOffset, props) {
 
     let row = cursorPosition.row + rowOffset,
         col = cursorPosition.col + colOffset,
-        len = editorDataArray.length,
-        line = editorDataArray[row],
+        len = editorDataArray.length;
+
+    if (row < 0 || row >= len) {
+        return;
+    }
+
+    const line = editorDataArray[row],
         lineLen = line.length;
 
     if (colOffset < 0 && row > 0) {
@@ -412,6 +417,25 @@ function directionChange(rowOffset, colOffset, props) {
 
 }
 
+function scrollOnChange(props) {
+
+    const {editorHeight, editorOptions, cursorPosition} = props,
+        {lineHeight} = editorOptions;
+    let {scrollLeft, scrollTop} = props;
+
+    if (cursorPosition.top - scrollTop < lineHeight) { // top
+        scrollTop = Valid.range(cursorPosition.top - lineHeight, 0, fullScrollTop(props));
+    } else if (editorHeight - (cursorPosition.top - scrollTop + lineHeight) < lineHeight) { // bottom
+        scrollTop = lineHeight * 2 - editorHeight + cursorPosition.top;
+    }
+
+    return {
+        scrollLeft,
+        scrollTop
+    };
+
+}
+
 export default {
     horizontalDisplayWidth,
     fullScrollLeft,
@@ -428,5 +452,6 @@ export default {
     deleteChar,
     deleteSelection,
     insertValue,
-    directionChange
+    directionChange,
+    scrollOnChange
 };

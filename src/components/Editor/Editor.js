@@ -333,7 +333,7 @@ export default class Editor extends Component {
      */
     onChange(editorDataArray, newStartPosition, newStopPosition, newCursorPosition) {
 
-        this.setState({
+        const state = {
             editorDataArray,
             contentWidth: this.calculateContentWidth(editorDataArray),
             contentHeight: this.calculateContentHeight(editorDataArray),
@@ -342,7 +342,18 @@ export default class Editor extends Component {
             selectStartPosition: newStartPosition,
             selectStopPosition: newStopPosition,
             cursorPosition: newCursorPosition
-        }, () => {
+        };
+
+        const {scrollLeft, scrollTop} = Calculation.scrollOnChange({...this.props, ...this.state, ...state});
+        if (scrollLeft !== this.state.scrollLeft) {
+            state.scrollLeft = scrollLeft;
+        }
+        if (scrollTop !== this.state.scrollTop) {
+            state.scrollTop = scrollTop;
+            state.displayIndex = Calculation.textDisplayIndex({...this.props, ...this.state, ...state});
+        }
+
+        this.setState(state, () => {
 
             this.props.onChange && this.props.onChange(editorDataArray.join('\n'));
 
