@@ -83,11 +83,10 @@ function cursorPosition(x, y, {editorEl, editorDataArray, editorOptions}) {
 
 }
 
-function cursorSelectionPosition(props) {
+function cursorSelectionPosition(selectStartX, selectStartY, selectStopX, selectStopY, props) {
 
     const {
-            editorEl, editorDataArray, editorOptions, contentWidth, isDoubleClick, isTripleClick,
-            selectStartX, selectStartY, selectStopX, selectStopY, gutterWidth
+            editorEl, editorDataArray, editorOptions, contentWidth, isDoubleClick, isTripleClick, gutterWidth
         } = props,
         {horizontalPadding, scrollBarWidth, lineHeight, discontinuousChars, showLineNumber} = editorOptions,
         finalGutterWidth = showLineNumber ? gutterWidth : 0,

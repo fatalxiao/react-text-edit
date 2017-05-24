@@ -124,7 +124,7 @@ export default class TextInput extends Component {
      */
     keyDownHandle(e) {
 
-        console.log(e.keyCode);
+        // console.log(e.keyCode);
 
         if (this.state.isComposition) {
             return;

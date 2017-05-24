@@ -28,6 +28,30 @@ export default class Editor extends Component {
         this.nextStateAnimationFrameId = null;
 
         /**
+         * select start horizontal offset
+         * @type {number}
+         */
+        this.selectStartX = undefined;
+
+        /**
+         * select start vertical offset
+         * @type {number}
+         */
+        this.selectStartY = undefined;
+
+        /**
+         * select stop horizontal offset
+         * @type {number}
+         */
+        this.selectStopX = 0;
+
+        /**
+         * select stop vertical offset
+         * @type {number}
+         */
+        this.selectStopY = 0;
+
+        /**
          * mouse down flag
          * @type {boolean}
          */
@@ -43,8 +67,13 @@ export default class Editor extends Component {
          * history record
          * @type {Array}
          */
-        this.editorHistory = [];
-        this.historyPoint = -1;
+        this.editorHistories = [];
+
+        /**
+         * point to current history in editor histories
+         * @type {number}
+         */
+        this.historyPointer = -1;
 
         let editorDataArray = props.data.split('\n');
 
@@ -110,30 +139,6 @@ export default class Editor extends Component {
              * @type {number}
              */
             scrollTop: 0,
-
-            /**
-             * select start horizontal offset
-             * @type {number}
-             */
-            selectStartX: undefined,
-
-            /**
-             * select start vertical offset
-             * @type {number}
-             */
-            selectStartY: undefined,
-
-            /**
-             * select stop horizontal offset
-             * @type {number}
-             */
-            selectStopX: 0,
-
-            /**
-             * select stop vertical offset
-             * @type {number}
-             */
-            selectStopY: 0,
 
             /**
              * whether is double click
@@ -417,12 +422,13 @@ export default class Editor extends Component {
             {scrollLeft, scrollTop, isDoubleClick, isTripleClick} = this.state,
             editorOffset = DomLib.getOffset(this.refs.editor);
 
+        this.selectStartX = undefined;
+        this.selectStartY = undefined;
+        this.selectStopX = e.clientX - editorOffset.left + scrollLeft;
+        this.selectStopY = e.clientY - editorOffset.top + scrollTop;
+
         let state = {
-            isEditorFocused: true,
-            selectStartX: undefined,
-            selectStartY: undefined,
-            selectStopX: e.clientX - editorOffset.left + scrollLeft,
-            selectStopY: e.clientY - editorOffset.top + scrollTop
+            isEditorFocused: true
         };
 
         if (!isTripleClick && isDoubleClick && this.lastMouseDownTimeStamp
@@ -442,7 +448,10 @@ export default class Editor extends Component {
             selectStartPosition,
             selectStopPosition,
             cursorPosition
-        } = Calculation.cursorSelectionPosition({...this.props, ...this.state, ...state});
+        } = Calculation.cursorSelectionPosition(
+            this.selectStartX, this.selectStartY, this.selectStopX, this.selectStopY,
+            {...this.props, ...this.state, ...state}
+        );
 
         state.selectStartPosition = selectStartPosition;
         state.selectStopPosition = selectStopPosition;
@@ -495,25 +504,29 @@ export default class Editor extends Component {
         const {scrollLeft, scrollTop} = this.state,
             editorOffset = DomLib.getOffset(this.refs.editor);
 
+        this.selectStopX = e.clientX - editorOffset.left + scrollLeft;
+        this.selectStopY = e.clientY - editorOffset.top + scrollTop;
+
         let state = {
-            isEditorFocused: true,
-            selectStopX: e.clientX - editorOffset.left + scrollLeft,
-            selectStopY: e.clientY - editorOffset.top + scrollTop
+            isEditorFocused: true
         };
 
-        if (!this.state.selectStartX) {
-            state.selectStartX = this.state.selectStopX;
+        if (!this.selectStartX) {
+            this.selectStartX = this.selectStopX;
         }
 
-        if (!this.state.selectStartY) {
-            state.selectStartY = this.state.selectStopY;
+        if (!this.selectStartY) {
+            this.selectStartY = this.selectStopY;
         }
 
         const {
             selectStartPosition,
             selectStopPosition,
             cursorPosition
-        } = Calculation.cursorSelectionPosition({...this.props, ...this.state, ...state});
+        } = Calculation.cursorSelectionPosition(
+            this.selectStartX, this.selectStartY, this.selectStopX, this.selectStopY,
+            {...this.props, ...this.state, ...state}
+        );
 
         state.selectStartPosition = selectStartPosition;
         state.selectStopPosition = selectStopPosition;
@@ -535,13 +548,13 @@ export default class Editor extends Component {
      */
     updateHistory() {
 
-        this.editorHistory.splice(
-            this.historyPoint + 1,
-            this.editorHistory.length - 1 - this.historyPoint,
+        this.editorHistories.splice(
+            this.historyPointer + 1,
+            this.editorHistories.length - 1 - this.historyPointer,
             _.cloneDeep(this.state)
         );
 
-        this.historyPoint++;
+        this.historyPointer++;
 
     }
 
@@ -550,8 +563,8 @@ export default class Editor extends Component {
      * @param offset
      */
     goHistory(offset) {
-        this.historyPoint = Valid.range(this.historyPoint + offset, 0, this.editorHistory.length - 1);
-        this.setState(this.editorHistory[this.historyPoint]);
+        this.historyPointer = Valid.range(this.historyPointer + offset, 0, this.editorHistories.length - 1);
+        this.setState(this.editorHistories[this.historyPointer]);
     }
 
     componentDidMount() {
@@ -569,8 +582,8 @@ export default class Editor extends Component {
             contentWidth: this.calculateContentWidth(),
             gutterWidth: this.calculateGutterWidth()
         }, () => {
-            this.editorHistory.push(_.cloneDeep(this.state));
-            this.historyPoint = 0;
+            this.editorHistories.push(_.cloneDeep(this.state));
+            this.historyPointer = 0;
         });
 
     }

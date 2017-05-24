@@ -90,15 +90,10 @@ export default class TextScroller extends Component {
 TextScroller.propTypes = {
     isEditorFocused: PropTypes.bool,
     editorDataArray: PropTypes.array,
-    editorHeight: PropTypes.number,
     editorOptions: PropTypes.object,
     contentWidth: PropTypes.number,
     scrollTop: PropTypes.number,
     scrollLeft: PropTypes.number,
-    selectStartX: PropTypes.number,
-    selectStartY: PropTypes.number,
-    selectStopX: PropTypes.number,
-    selectStopY: PropTypes.number,
     gutterWidth: PropTypes.number,
     selectStartPosition: PropTypes.object,
     selectStopPosition: PropTypes.object,
@@ -106,18 +101,24 @@ TextScroller.propTypes = {
 };
 
 TextScroller.defaultProps = {
+    isEditorFocused: false,
     editorDataArray: [],
-    editorHeight: 200,
     editorOptions: null,
     contentWidth: 0,
     scrollTop: 0,
     scrollLeft: 0,
-    selectStartX: undefined,
-    selectStartY: undefined,
-    selectStopX: undefined,
-    selectStopY: undefined,
     gutterWidth: 0,
     selectStartPosition: null,
-    selectStopPosition: null,
-    cursorPosition: null
+    selectStopPosition: {
+        left: 0,
+        top: 0,
+        row: 0,
+        col: 0
+    },
+    cursorPosition: {
+        left: 0,
+        top: 0,
+        row: 0,
+        col: 0
+    }
 };
