@@ -103,11 +103,9 @@ export default class TextInput extends Component {
      */
     directionKeyHandle(colOffset, rowOffset) {
 
-        const {editorDataArray, cursorPosition} = this.props,
-            row = cursorPosition.row + rowOffset,
-            col = cursorPosition.col + colOffset;
+        const {editorDataArray} = this.props;
 
-        const newPosition = Calculation.rowColToLeftTop(row, col, this.props);
+        const newPosition = Calculation.directionChange(rowOffset, colOffset, this.props);
 
         if (!newPosition) {
             return;

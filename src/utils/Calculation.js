@@ -375,36 +375,49 @@ function insertValue(dataArray, pos, value, lineHeight, editorEl) {
 
 }
 
-function rowColToLeftTop(row, col, props) {
+function directionChange(rowOffset, colOffset, props) {
 
-    if (isNaN(row) || isNaN(col)) {
+    if (isNaN(rowOffset) || isNaN(colOffset)) {
         return;
     }
 
-    const {editorDataArray} = props,
-        len = editorDataArray.length,
-        lineLen = editorDataArray[row].length;
-
-    if (row < 0 || row >= len) {
-        return;
-    }
-
-    const {editorEl, editorOptions} = props,
+    const {editorEl, editorDataArray, cursorPosition, editorOptions} = props,
         {lineHeight} = editorOptions;
-    let string = editorDataArray[row].slice(0, col);
 
-    if (col < 0 && row > 0) {
-        row--;
-        col = editorDataArray[row].length + col + 1;
-        string = editorDataArray[row].slice(0, col);
-    } else if (col > lineLen && row < len - 1) {
+    let row = cursorPosition.row + rowOffset,
+        col = cursorPosition.col + colOffset,
+        len = editorDataArray.length,
+        line = editorDataArray[row],
+        lineLen = line.length;
+
+    // if (row === 19 && rowOffset === 0) {
+    //     debugger;
+    // }
+
+    if (colOffset < 0 && row > 0) {
+
+        if (col < 0 || lineLen === 0) {
+
+            row--;
+            col = editorDataArray[row].length + col + 1;
+
+        } else if (col > lineLen) {
+
+            // console.log('col > lineLen');
+
+            col = lineLen + colOffset;
+
+        }
+
+    } else if (colOffset > 0 && row < len - 1 && (col > lineLen)) {
         row++;
-        col = col - lineLen - 1;
-        string = editorDataArray[row].slice(0, col);
+        col = colOffset - 1;
     }
+
+    // console.log(row, col);
 
     return {
-        left: CharSize.calculateStringWidth(string, editorEl),
+        left: CharSize.calculateStringWidth(editorDataArray[row].slice(0, col), editorEl),
         top: row * lineHeight,
         row,
         col
@@ -428,5 +441,5 @@ export default {
     deleteChar,
     deleteSelection,
     insertValue,
-    rowColToLeftTop
+    directionChange
 };
