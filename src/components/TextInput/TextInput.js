@@ -20,11 +20,11 @@ export default class TextInput extends Component {
         this.focus = this::this.focus;
         this.getTextAreaValue = this::this.getTextAreaValue;
         this.doChange = this::this.doChange;
+        this.doSelectAll = this::this.doSelectAll;
         this.blurHandle = this::this.blurHandle;
         this.changeHandle = this::this.changeHandle;
         this.directionKeyHandle = this::this.directionKeyHandle;
         this.keyDownHandle = this::this.keyDownHandle;
-        this.selectHandle = this::this.selectHandle;
         this.compositionHandle = this::this.compositionHandle;
 
     }
@@ -43,13 +43,13 @@ export default class TextInput extends Component {
 
         setTimeout(() => {
             textInput.focus();
-            textInput.setSelectionRange(0, textInput.value.length - 1);
+            textInput.setSelectionRange(0, textInput.value.length);
         }, 0);
 
     }
 
     getTextAreaValue(props = this.props) {
-        return Calculation.getSelectionValue(props) + ' ';
+        return Calculation.getSelectionValue(props);
     }
 
     /**
@@ -65,6 +65,17 @@ export default class TextInput extends Component {
         const {newDataArray, newPosition} = result;
 
         this.props.onChange(newDataArray, null, newPosition, newPosition);
+        this.focus();
+
+    }
+
+    doSelectAll() {
+
+        const {editorDataArray, cursorPosition, onChange} = this.props,
+            {newStartPosition, newStopPosition} = Command.doSelectAll(this.props);
+
+        onChange(editorDataArray, newStartPosition, newStopPosition, cursorPosition);
+
         this.focus();
 
     }
@@ -86,12 +97,12 @@ export default class TextInput extends Component {
             return;
         }
 
-        if (value === ' ') {
+        if (value === '') {
             if (!isCompositionEnd) {
                 this.doChange(Command.doCut(this.props)); // cut
             }
         } else {
-            this.doChange(Command.doInput(value.slice(0, value.length - 1), this.props)); // input or paste
+            this.doChange(Command.doInput(value, this.props)); // input or paste
         }
 
     }
@@ -124,7 +135,7 @@ export default class TextInput extends Component {
      */
     keyDownHandle(e) {
 
-        // console.log(e.keyCode);
+        console.log(e.keyCode);
 
         if (this.state.isComposition) {
             return;
@@ -164,31 +175,23 @@ export default class TextInput extends Component {
                 break;
             }
 
-            // z
-            case 90: {
+            // a
+            case 65: {
                 if ((Valid.isMac() && e.metaKey) || (Valid.isWindows() && e.ctrlKey)) {
                     e.preventDefault();
-                    this.props.goHistory(e.shiftKey ? 1 : -1);
+                    this.doSelectAll(); // select all
                 }
                 break;
             }
 
-        }
-
-    }
-
-    selectHandle(e) {
-
-        const {editorDataArray, cursorPosition, onChange} = this.props,
-            textarea = e.target;
-
-        // select all
-        if (textarea.selectionStart === 0 && textarea.selectionEnd === textarea.value.length) {
-
-            const {newStartPosition, newStopPosition} = Command.doSelectAll(this.props);
-
-            onChange(editorDataArray, newStartPosition, newStopPosition, cursorPosition);
-            this.focus();
+            // z
+            case 90: {
+                if ((Valid.isMac() && e.metaKey) || (Valid.isWindows() && e.ctrlKey)) {
+                    e.preventDefault();
+                    this.props.goHistory(e.shiftKey ? 1 : -1); // undo or redo
+                }
+                break;
+            }
 
         }
 
@@ -293,8 +296,7 @@ export default class TextInput extends Component {
                           onKeyDown={this.keyDownHandle}
                           onCompositionStart={this.compositionHandle}
                           onCompositionUpdate={this.compositionHandle}
-                          onCompositionEnd={this.compositionHandle}
-                          onSelect={this.selectHandle}></textarea>
+                          onCompositionEnd={this.compositionHandle}></textarea>
 
             </div>
         );
