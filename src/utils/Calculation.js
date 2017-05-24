@@ -390,31 +390,19 @@ function directionChange(rowOffset, colOffset, props) {
         line = editorDataArray[row],
         lineLen = line.length;
 
-    // if (row === 19 && rowOffset === 0) {
-    //     debugger;
-    // }
-
     if (colOffset < 0 && row > 0) {
 
         if (col < 0 || lineLen === 0) {
-
             row--;
             col = editorDataArray[row].length + col + 1;
-
         } else if (col > lineLen) {
-
-            // console.log('col > lineLen');
-
             col = lineLen + colOffset;
-
         }
 
     } else if (colOffset > 0 && row < len - 1 && (col > lineLen)) {
         row++;
         col = colOffset - 1;
     }
-
-    // console.log(row, col);
 
     return {
         left: CharSize.calculateStringWidth(editorDataArray[row].slice(0, col), editorEl),

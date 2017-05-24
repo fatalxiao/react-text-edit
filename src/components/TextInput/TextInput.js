@@ -124,7 +124,7 @@ export default class TextInput extends Component {
      */
     keyDownHandle(e) {
 
-        // console.log(e.keyCode);
+        console.log(e.keyCode);
 
         if (this.state.isComposition) {
             return;
@@ -136,6 +136,13 @@ export default class TextInput extends Component {
             case 8: {
                 e.preventDefault();
                 this.doChange(Command.doDelete(this.props));
+                break;
+            }
+
+            // tab
+            case 9: {
+                e.preventDefault();
+                this.doChange(Command.doInput('    ', this.props)); // input 4 space
                 break;
             }
 
