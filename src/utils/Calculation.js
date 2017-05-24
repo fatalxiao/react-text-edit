@@ -419,14 +419,38 @@ function directionChange(rowOffset, colOffset, props) {
 
 function scrollOnChange(props) {
 
-    const {editorHeight, editorOptions, cursorPosition} = props,
+    const {editorEl, editorDataArray, editorHeight, editorOptions, cursorPosition} = props,
+        {left, top, row, col} = cursorPosition,
         {lineHeight} = editorOptions;
     let {scrollLeft, scrollTop} = props;
 
-    if (cursorPosition.top - scrollTop < lineHeight) { // top
-        scrollTop = Valid.range(cursorPosition.top - lineHeight, 0, fullScrollTop(props));
-    } else if (editorHeight - (cursorPosition.top - scrollTop + lineHeight) < lineHeight) { // bottom
-        scrollTop = lineHeight * 2 - editorHeight + cursorPosition.top;
+    // top
+    if (top - scrollTop < lineHeight) {
+        scrollTop = Valid.range(top - lineHeight, 0, fullScrollTop(props));
+    }
+
+    // bottom
+    if (editorHeight - (top - scrollTop + lineHeight) < lineHeight) {
+        scrollTop = lineHeight * 2 - editorHeight + top;
+    }
+
+    // left
+    if (left < scrollLeft) {
+        const line = editorDataArray[row],
+            start = Valid.range(col - 4, 0),
+            string = line.slice(start, col),
+            width = CharSize.calculateStringWidth(string, editorEl);
+        scrollLeft = left - width;
+    }
+
+    // right
+    const fullWidth = horizontalDisplayWidth(props);
+    if (left > fullWidth + scrollLeft) {
+        const line = editorDataArray[row],
+            stop = Valid.range(col + 4, 0, line.length),
+            string = line.slice(col, stop),
+            width = CharSize.calculateStringWidth(string, editorEl);
+        scrollLeft = left + width - fullWidth;
     }
 
     return {
