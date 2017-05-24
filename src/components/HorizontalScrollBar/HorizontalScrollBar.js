@@ -17,6 +17,11 @@ export default class HorizontalScrollBar extends Component {
         this.isWrapperMouseDown = false;
         this.isScrollBarMouseDown = false;
         this.mouseDownPosition = null;
+        this.hiddenTimeout = null;
+
+        this.state = {
+            hidden: true
+        };
 
         this.initial = this::this.initial;
         this.calculateWrapperWidth = this::this.calculateWrapperWidth;
@@ -26,6 +31,7 @@ export default class HorizontalScrollBar extends Component {
         this.mouseDownHandle = this::this.mouseDownHandle;
         this.mouseMoveHandle = this::this.mouseMoveHandle;
         this.mouseUpHandle = this::this.mouseUpHandle;
+        this.mouseEnterHandle = this::this.mouseEnterHandle;
 
     }
 
@@ -109,6 +115,18 @@ export default class HorizontalScrollBar extends Component {
         this.isScrollBarMouseDown = false;
         this.mouseDownPosition = null;
 
+        this.hiddenTimeout = setTimeout(() => {
+            this.hiddenTimeout = null;
+            this.setState({
+                hidden: true
+            });
+        }, 2000);
+
+    }
+
+    mouseEnterHandle() {
+        this.hiddenTimeout && clearTimeout(this.hiddenTimeout);
+        this.hiddenTimeout = null;
     }
 
     componentDidMount() {
@@ -116,9 +134,34 @@ export default class HorizontalScrollBar extends Component {
         Event.addEvent(document, 'mouseup', this.mouseUpHandle);
     }
 
+    componentWillReceiveProps(nextProps) {
+
+        if (nextProps.scrollLeft !== this.props.scrollLeft) {
+
+            this.hiddenTimeout && clearTimeout(this.hiddenTimeout);
+
+            this.setState({
+                hidden: false
+            }, () => {
+                this.hiddenTimeout = setTimeout(() => {
+                    this.hiddenTimeout = null;
+                    this.setState({
+                        hidden: true
+                    });
+                }, 2000);
+            });
+
+        }
+
+    }
+
     componentWillUnmount() {
+
         Event.removeEvent(document, 'mousemove', this.mouseMoveHandle);
         Event.removeEvent(document, 'mouseup', this.mouseUpHandle);
+
+        this.hiddenTimeout && clearTimeout(this.hiddenTimeout);
+
     }
 
     render() {
@@ -126,6 +169,7 @@ export default class HorizontalScrollBar extends Component {
         this.initial();
 
         const {editorOptions, gutterWidth} = this.props,
+            {hidden} = this.state,
             {horizontalPadding, scrollBarWidth, showLineNumber} = editorOptions,
             wrapperStyle = {
                 height: scrollBarWidth,
@@ -137,17 +181,19 @@ export default class HorizontalScrollBar extends Component {
             };
 
         return (
-            <div className="react-editor-horizontal-scroll-bar-wrapper"
+            <div className={`react-editor-horizontal-scroll-bar-wrapper ${hidden ? 'hidden' : ''}`}
                  style={wrapperStyle}
                  onMouseDown={(e) => {
                      this.mouseDownHandle(e, true);
-                 }}>
+                 }}
+                 onMouseEnter={this.mouseEnterHandle}>
 
                 <div className="react-editor-horizontal-scroll-bar"
                      style={scrollBarStyle}
                      onMouseDown={(e) => {
                          this.mouseDownHandle(e, false);
-                     }}>
+                     }}
+                     onMouseEnter={this.mouseEnterHandle}>
                     <div className="react-editor-horizontal-scroll-bar-inner"></div>
                 </div>
 
