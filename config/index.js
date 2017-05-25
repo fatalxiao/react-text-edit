@@ -31,6 +31,15 @@ module.exports = {
 
     },
 
+    minify: {
+
+        env: require('./prod.env'),
+        assetsRoot: path.resolve(__dirname, '../dist'),
+        assetsSubDirectory: 'dist',
+        assetsPublicPath: '/'
+
+    },
+
     demo: {
 
         port: 4001
