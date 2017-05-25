@@ -380,40 +380,122 @@ function directionChange(rowOffset, colOffset, props) {
         return;
     }
 
-    const {editorEl, editorDataArray, cursorPosition, editorOptions} = props,
-        {lineHeight} = editorOptions;
+    const {editorEl, editorDataArray, editorOptions, cursorPosition} = props,
+        {lineHeight} = editorOptions,
+        lastLineIndex = editorDataArray.length - 1,
+        lastLine = editorDataArray[lastLineIndex],
+        lastLineLength = lastLine.length;
 
-    let row = cursorPosition.row + rowOffset,
-        col = cursorPosition.col + colOffset,
-        len = editorDataArray.length;
+    let {left, top, row, col} = cursorPosition;
 
-    if (row < 0 || row >= len) {
+    if ((row === 0 && col === 0 && (rowOffset < 0 || colOffset < 0))
+        || (row === lastLineIndex && col === lastLineLength && (rowOffset > 0 || colOffset > 0))) {
         return;
     }
 
-    const line = editorDataArray[row],
-        lineLen = line.length;
+    if (rowOffset !== 0) {
 
-    if (colOffset < 0 && row > 0) {
+        row += rowOffset;
 
-        if (col < 0 || lineLen === 0) {
-            row--;
-            col = editorDataArray[row].length + col + 1;
-        } else if (col > lineLen) {
-            col = lineLen + colOffset;
+        if (row < 0) {
+
+            row = 0;
+            left = 0;
+            col = 0;
+
+        } else if (row > lastLineIndex) {
+
+            row = lastLineIndex;
+
+            const line = editorDataArray[row];
+
+            left = CharSize.calculateStringWidth(line, editorEl);
+            col = line.length;
+
+        } else {
+            top = Valid.range(top + lineHeight * rowOffset, 0, lastLineIndex * lineHeight);
+            left = CharSize.calculateStringWidth(editorDataArray[row].slice(0, col), editorEl);
         }
 
-    } else if (colOffset > 0 && row < len - 1 && (col > lineLen)) {
-        row++;
-        col = colOffset - 1;
     }
 
-    return {
-        left: CharSize.calculateStringWidth(editorDataArray[row].slice(0, col), editorEl),
-        top: row * lineHeight,
-        row,
-        col
-    };
+    if (colOffset !== 0) {
+
+        col += colOffset;
+        const currentLine = editorDataArray[row],
+            currentLineLength = currentLine.length;
+
+        if (col < 0) {
+
+            let offset = col, line;
+            while (offset < 0) {
+
+                if (row === 0) {
+                    return {
+                        left: 0,
+                        top: 0,
+                        row: 0,
+                        col: 0
+                    };
+                }
+
+                row--;
+                top -= lineHeight;
+                offset++;
+                line = editorDataArray[row];
+
+                if (-offset > line.length) {
+                    offset += line.length;
+                } else {
+                    return {
+                        left: CharSize.calculateStringWidth(line.slice(0, col), editorEl),
+                        top,
+                        row,
+                        col: offset + line.length
+                    };
+                }
+
+            }
+
+        } else if (col > currentLineLength) {
+
+            let offset = col - currentLineLength, line;
+            while (offset > 0) {
+
+                if (row === lastLineIndex) {
+                    return {
+                        left: CharSize.calculateStringWidth(lastLine, editorEl),
+                        top: lastLineIndex * lineHeight,
+                        row: lastLineIndex,
+                        col: lastLineLength
+                    };
+                }
+
+                row++;
+                top += lineHeight;
+                offset--;
+                line = editorDataArray[row];
+
+                if (offset > line.length) {
+                    offset -= line.length;
+                } else {
+                    return {
+                        left: CharSize.calculateStringWidth(line.slice(0, col), editorEl),
+                        top,
+                        row,
+                        col: offset
+                    };
+                }
+
+            }
+
+        } else {
+            left = CharSize.calculateStringWidth(currentLine.slice(0, col), editorEl);
+        }
+
+    }
+
+    return {left, top, row, col};
 
 }
 

@@ -83,11 +83,15 @@ export default class TextInput extends Component {
 
     doSelectText(colOffset, rowOffset) {
 
-        const {editorDataArray, onChange} = this.props,
-            {newStartPosition, newStopPosition} = Command.doSelectText(rowOffset, colOffset, this.props);
+        const {editorDataArray, selectStartPosition, selectStopPosition, onChange} = this.props;
 
-        onChange(editorDataArray, newStartPosition, newStopPosition, newStopPosition);
+        const newPosition = Calculation.directionChange(rowOffset, colOffset, this.props);
 
+        if (!newPosition) {
+            return;
+        }
+
+        onChange(editorDataArray, selectStartPosition || selectStopPosition, newPosition, newPosition);
         this.focus();
 
     }
