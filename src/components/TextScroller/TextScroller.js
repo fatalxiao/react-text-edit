@@ -32,15 +32,15 @@ export default class TextScroller extends Component {
     render() {
 
         const {
-                isEditorFocused, editorDataArray, editorOptions, contentWidth, scrollTop, scrollLeft, gutterWidth,
-                selectStartPosition, selectStopPosition, cursorPosition
+                isEditorFocused, editorHeight, editorDataArray, editorOptions, contentWidth, scrollTop, scrollLeft,
+                gutterWidth, selectStartPosition, selectStopPosition, cursorPosition
             } = this.props,
             {compositionText} = this.state,
             {horizontalPadding, lineHeight, showLineNumber} = editorOptions,
             initOffsetLeft = horizontalPadding + (showLineNumber ? gutterWidth : 0),
             scrollerStyle = {
                 width: contentWidth,
-                height: editorDataArray.length * lineHeight,
+                height: (editorDataArray.length - 1) * lineHeight + editorHeight,
                 transform: `translate3d(${initOffsetLeft - scrollLeft}px, ${-scrollTop}px, 0)`
             };
 
