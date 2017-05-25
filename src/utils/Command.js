@@ -123,6 +123,31 @@ function doSelectAll(props) {
 
 function doSelectText(rowOffset, colOffset, props) {
 
+    console.log(rowOffset, colOffset);
+
+    const {editorEl, editorDataArray, selectStartPosition, cursorPosition} = props;
+    let newStartPosition = Object.assign({}, selectStartPosition ? selectStartPosition : cursorPosition),
+        newStopPosition = Object.assign({}, cursorPosition);
+
+    if (rowOffset === 0) { // in one line
+
+        newStopPosition.col += colOffset;
+
+        const line = editorDataArray[newStopPosition.row];
+        if (colOffset < 0) {
+            const string = line.slice(newStopPosition.col, cursorPosition.col);
+            newStopPosition.left -= CharSize.calculateStringWidth(string, editorEl);
+        } else if (colOffset > 0) {
+            const string = line.slice(cursorPosition.col, newStopPosition.col);
+            newStopPosition.left += CharSize.calculateStringWidth(string, editorEl);
+        }
+
+    }
+
+    return {
+        newStartPosition,
+        newStopPosition
+    };
 
 }
 
