@@ -21,6 +21,7 @@ export default class TextInput extends Component {
         this.getTextAreaValue = this::this.getTextAreaValue;
         this.doChange = this::this.doChange;
         this.doSelectAll = this::this.doSelectAll;
+        this.doSelectText = this::this.doSelectText;
         this.blurHandle = this::this.blurHandle;
         this.changeHandle = this::this.changeHandle;
         this.directionKeyHandle = this::this.directionKeyHandle;
@@ -75,6 +76,17 @@ export default class TextInput extends Component {
             {newStartPosition, newStopPosition} = Command.doSelectAll(this.props);
 
         onChange(editorDataArray, newStartPosition, newStopPosition, cursorPosition);
+
+        this.focus();
+
+    }
+
+    doSelectText(colOffset, rowOffset) {
+
+        const {editorDataArray, onChange} = this.props,
+            {newStartPosition, newStopPosition} = Command.doSelectText(rowOffset, colOffset, this.props);
+
+        onChange(editorDataArray, newStartPosition, newStopPosition, newStopPosition);
 
         this.focus();
 
@@ -159,19 +171,35 @@ export default class TextInput extends Component {
 
             // direction
             case 37: { // left
-                this.directionKeyHandle(-1, 0);
+                if (e.shiftKey) {
+                    this.doSelectText(-1, 0);
+                } else {
+                    this.directionKeyHandle(-1, 0);
+                }
                 break;
             }
             case 38: { // up
-                this.directionKeyHandle(0, -1);
+                if (e.shiftKey) {
+                    this.doSelectText(0, -1);
+                } else {
+                    this.directionKeyHandle(0, -1);
+                }
                 break;
             }
             case 39: { // right
-                this.directionKeyHandle(1, 0);
+                if (e.shiftKey) {
+                    this.doSelectText(1, 0);
+                } else {
+                    this.directionKeyHandle(1, 0);
+                }
                 break;
             }
             case 40: { // down
-                this.directionKeyHandle(0, 1);
+                if (e.shiftKey) {
+                    this.doSelectText(0, 1);
+                } else {
+                    this.directionKeyHandle(0, 1);
+                }
                 break;
             }
 

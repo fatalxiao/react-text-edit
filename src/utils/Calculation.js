@@ -99,19 +99,19 @@ function cursorSelectionPosition(selectStartX, selectStartY, selectStopX, select
 
         position = cursorPosition(finalSelectStopX, selectStopY, props);
 
-        selectStartPosition = Object.assign({}, position);
-        selectStartPosition.left = 0;
-        selectStartPosition.col = 0;
-
         selectStopPosition = Object.assign({}, position);
-        if (selectStopPosition.row === editorDataArray.length - 1) { // last line
-            selectStopPosition.left = contentWidth + horizontalPadding + scrollBarWidth;
-            selectStopPosition.col = editorDataArray[position.row].length;
+        selectStopPosition.left = 0;
+        selectStopPosition.col = 0;
+
+        selectStartPosition = Object.assign({}, position);
+        if (selectStartPosition.row === editorDataArray.length - 1) { // last line
+            selectStartPosition.left = contentWidth + horizontalPadding + scrollBarWidth;
+            selectStartPosition.col = editorDataArray[position.row].length;
         } else {
-            selectStopPosition.left = 0;
-            selectStopPosition.col = 0;
-            selectStopPosition.top += lineHeight;
-            selectStopPosition.row += 1;
+            selectStartPosition.left = 0;
+            selectStartPosition.col = 0;
+            selectStartPosition.top += lineHeight;
+            selectStartPosition.row += 1;
         }
 
     } else if (isDoubleClick) {

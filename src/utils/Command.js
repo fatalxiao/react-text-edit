@@ -102,7 +102,7 @@ function doSelectAll(props) {
 
     const {editorEl, editorDataArray, editorOptions} = props,
         {lineHeight} = editorOptions,
-        newStartPosition = {
+        newStopPosition = {
             left: 0,
             top: 0,
             row: 0,
@@ -110,7 +110,7 @@ function doSelectAll(props) {
         },
         len = editorDataArray.length,
         lastLine = editorDataArray[len - 1],
-        newStopPosition = {
+        newStartPosition = {
             left: CharSize.calculateStringWidth(lastLine, editorEl),
             top: (len - 1) * lineHeight,
             row: len - 1,
@@ -118,6 +118,11 @@ function doSelectAll(props) {
         };
 
     return {newStartPosition, newStopPosition};
+
+}
+
+function doSelectText(rowOffset, colOffset, props) {
+
 
 }
 
@@ -131,5 +136,6 @@ export default {
     doInsert,
     doReplace,
     doInput,
-    doSelectAll
+    doSelectAll,
+    doSelectText
 };
