@@ -18,6 +18,10 @@ export default class VerticalScrollBar extends Component {
         this.isScrollBarMouseDown = false;
         this.mouseDownPosition = null;
 
+        this.state = {
+            activated: false
+        };
+
         this.initial = this::this.initial;
         this.calculateScrollBarHeight = this::this.calculateScrollBarHeight;
         this.calculateTop = this::this.calculateTop;
@@ -60,6 +64,10 @@ export default class VerticalScrollBar extends Component {
             scrollBarTop: this.scrollBarTop
         };
 
+        this.setState({
+            activated: true
+        });
+
     }
 
     mouseMoveHandle(e) {
@@ -96,6 +104,10 @@ export default class VerticalScrollBar extends Component {
         this.isScrollBarMouseDown = false;
         this.mouseDownPosition = null;
 
+        this.setState({
+            activated: false
+        });
+
     }
 
     componentDidMount() {
@@ -112,13 +124,14 @@ export default class VerticalScrollBar extends Component {
 
         this.initial();
 
-        const scrollBarStyle = {
-            height: this.scrollBarHeight,
-            transform: `translate3d(0, ${this.scrollBarTop}px, 0)`
-        };
+        const {activated} = this.state,
+            scrollBarStyle = {
+                height: this.scrollBarHeight,
+                transform: `translate3d(0, ${this.scrollBarTop}px, 0)`
+            };
 
         return (
-            <div className="react-editor-vertical-scroll-bar-wrapper"
+            <div className={`react-editor-vertical-scroll-bar-wrapper ${activated ? 'activated' : ''}`}
                  onMouseDown={(e) => {
                      this.mouseDownHandle(e, true);
                  }}>

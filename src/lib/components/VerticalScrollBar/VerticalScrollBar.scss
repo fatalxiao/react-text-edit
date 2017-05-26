@@ -27,7 +27,8 @@
         }
     }
 
-    &:hover {
+    &:hover,
+    &.activated {
         opacity: 1;
     }
 }
