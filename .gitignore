@@ -13,5 +13,5 @@ Thumbs.db
 node_modules
 
 # Distribution
-dist
-static
+/dist/
+/static
