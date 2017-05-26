@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 
-import ReactEditor from 'dist';
+import ReactTextEdit from 'dist';
 
-import MacDownHelpText from 'assets/files/MacDownHelp.md';
+import README from 'README.md';
 
 export default class FullScreenEditor extends Component {
 
@@ -11,7 +11,7 @@ export default class FullScreenEditor extends Component {
         super(props);
 
         this.state = {
-            data: MacDownHelpText
+            data: README
         };
 
         this.changeHandle = this::this.changeHandle;
@@ -26,13 +26,13 @@ export default class FullScreenEditor extends Component {
 
     render() {
         return (
-            <ReactEditor className="full-screen-editor"
-                         data={this.state.data}
-                         isFullScreen={true}
-                         options={{
-                             showLineNumber: true
-                         }}
-                         onChange={this.changeHandle}/>
+            <ReactTextEdit className="full-screen-editor"
+                           data={this.state.data}
+                           isFullScreen={true}
+                           options={{
+                               showLineNumber: true
+                           }}
+                           onChange={this.changeHandle}/>
         );
     }
 }

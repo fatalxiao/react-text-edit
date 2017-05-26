@@ -2,10 +2,11 @@ import React, {Component} from 'react';
 import markdown from 'markdown';
 import 'github-markdown-css';
 
-import ReactEditor from 'dist';
+import ReactTextEdit from 'dist';
 
 import Event from 'utils/Event';
-import MacDownHelpText from 'assets/files/MacDownHelp.md';
+
+import README from 'README.md';
 
 import 'assets/sass/MarkDownEditor.scss';
 
@@ -19,7 +20,7 @@ export default class MarkDownEditor extends Component {
 
         this.state = {
 
-            data: MacDownHelpText,
+            data: README,
 
             fullWidth: window.innerWidth,
             editorWidthPerCent: .5,
@@ -141,14 +142,14 @@ export default class MarkDownEditor extends Component {
                      dangerouslySetInnerHTML={html}
                      onScroll={this.markdownBodyScrollHandle}></div>
 
-                <ReactEditor className="mark-down-editor"
-                             style={markDownEditorStyle}
-                             data={data}
-                             width={window.innerWidth * editorWidthPerCent}
-                             height={editorHeight}
-                             scrollTopPerCent={editorScrollPerCent}
-                             onChange={this.changeHandle}
-                             onScroll={this.editorScrollHandle}/>
+                <ReactTextEdit className="mark-down-editor"
+                               style={markDownEditorStyle}
+                               data={data}
+                               width={window.innerWidth * editorWidthPerCent}
+                               height={editorHeight}
+                               scrollTopPerCent={editorScrollPerCent}
+                               onChange={this.changeHandle}
+                               onScroll={this.editorScrollHandle}/>
 
                 <div className="drag-edge"
                      style={dragEdgeStyle}

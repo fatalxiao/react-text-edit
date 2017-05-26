@@ -28,7 +28,8 @@ module.exports = {
             'dist': resolve('dist'),
             'utils': resolve('examples/utils'),
             'reduxes': resolve('examples/reduxes'),
-            'docs': resolve('docs')
+            'docs': resolve('docs'),
+            'README.md': resolve('README.md')
         }
     },
     module: {

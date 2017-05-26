@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 
-import ReactEditor from 'dist';
+import ReactTextEdit from 'dist';
 
-import MacDownHelpText from 'assets/files/MacDownHelp.md';
+import README from 'README.md';
 
 import 'assets/sass/SpecifiedSizeEditor.scss';
 
@@ -13,8 +13,8 @@ export default class SpecifiedSizeEditor extends Component {
         super(props);
 
         this.state = {
-            data1: MacDownHelpText,
-            data2: MacDownHelpText
+            data1: README,
+            data2: README
         };
 
         this.changeHandle = this::this.changeHandle;
@@ -36,7 +36,7 @@ export default class SpecifiedSizeEditor extends Component {
 
                 <div className="example">
                     <h1>Specified Size (500 × 200)</h1>
-                    <ReactEditor className="specified-size-editor"
+                    <ReactTextEdit className="specified-size-editor"
                                  data={data1}
                                  width={500}
                                  height={200}
@@ -47,7 +47,7 @@ export default class SpecifiedSizeEditor extends Component {
 
                 <div className="example">
                     <h1>Specified Size (800 × 400)</h1>
-                    <ReactEditor className="specified-size-editor"
+                    <ReactTextEdit className="specified-size-editor"
                                  data={data2}
                                  width={800}
                                  height={400}
