@@ -7,7 +7,7 @@ import EditorLoading from './components/EditorLoading';
 
 import './assets/fonts/font.css';
 
-export default class ReactEditor extends Component {
+export default class ReactTextEdit extends Component {
 
     constructor(props) {
 
@@ -119,7 +119,7 @@ export default class ReactEditor extends Component {
 
 };
 
-ReactEditor.propTypes = {
+ReactTextEdit.propTypes = {
 
     /**
      * specified editor className
@@ -183,7 +183,7 @@ ReactEditor.propTypes = {
 
 };
 
-ReactEditor.defaultProps = {
+ReactTextEdit.defaultProps = {
 
     className: '',
     style: null,

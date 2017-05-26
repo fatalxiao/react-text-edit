@@ -1,1 +1,1 @@
-export default from './lib/ReactEditor';
+export default from './lib/ReactTextEdit';
