@@ -24,7 +24,7 @@ function doDeletePosition(direction, props) {
         return;
     }
 
-    if (col === 0 || col === editorDataArray[row].length) {
+    if ((direction === 'left' && col === 0) || (direction === 'right' && col === editorDataArray[row].length)) {
         return doDeleteLine(direction, props);
     } else {
         return doDeleteChar(direction, props);
