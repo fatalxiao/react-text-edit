@@ -116,12 +116,12 @@ export default class HorizontalScrollBar extends Component {
         this.isScrollBarMouseDown = false;
         this.mouseDownPosition = null;
 
-        this.hiddenTimeout = setTimeout(() => {
+        this.isMac && (this.hiddenTimeout = setTimeout(() => {
             this.hiddenTimeout = null;
             this.setState({
                 hidden: true
             });
-        }, 2000);
+        }, 2000));
 
     }
 
