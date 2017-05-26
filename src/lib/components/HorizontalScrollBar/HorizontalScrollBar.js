@@ -13,6 +13,7 @@ export default class HorizontalScrollBar extends Component {
         super(props);
 
         this.initial();
+        this.isMac = Valid.isMac();
 
         this.isWrapperMouseDown = false;
         this.isScrollBarMouseDown = false;
@@ -20,7 +21,7 @@ export default class HorizontalScrollBar extends Component {
         this.hiddenTimeout = null;
 
         this.state = {
-            hidden: true
+            hidden: this.isMac ? true : false
         };
 
         this.initial = this::this.initial;
@@ -136,7 +137,7 @@ export default class HorizontalScrollBar extends Component {
 
     componentWillReceiveProps(nextProps) {
 
-        if (nextProps.scrollLeft !== this.props.scrollLeft) {
+        if (this.isMac && nextProps.scrollLeft !== this.props.scrollLeft) {
 
             this.hiddenTimeout && clearTimeout(this.hiddenTimeout);
 
