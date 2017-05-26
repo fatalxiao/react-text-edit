@@ -13,9 +13,14 @@ export default class TextSelection extends Component {
 
     render() {
 
-        const {editorOptions, contentWidth, selectStartPosition, selectStopPosition} = this.props,
-            {horizontalPadding, scrollBarWidth, lineHeight} = editorOptions,
-            fullWidth = contentWidth + horizontalPadding + scrollBarWidth,
+        const {
+                editorWidth, editorOptions, contentWidth, selectStartPosition, selectStopPosition, gutterWidth
+            } = this.props,
+            {horizontalPadding, scrollBarWidth, lineHeight, showLineNumber} = editorOptions,
+            fullWidth = Math.max(
+                contentWidth + horizontalPadding + scrollBarWidth,
+                editorWidth - horizontalPadding - (showLineNumber ? gutterWidth : 0)
+            ),
             isInOneLine = selectStartPosition.row === selectStopPosition.row,
             [start, stop] = Calculation.sortPosition(selectStartPosition, selectStopPosition),
             selectionLines = isInOneLine ? undefined : new Array(stop.row - start.row + 1).fill('');
@@ -39,7 +44,7 @@ export default class TextSelection extends Component {
                                         <div key={index}
                                              className="react-editor-text-selection-line"
                                              style={{
-                                                 width: fullWidth - start.left + horizontalPadding,
+                                                 width: fullWidth - start.left,
                                                  height: lineHeight,
                                                  transform: `translate3d(${start.left}px, ${start.top}px, 0)`
                                              }}></div>
