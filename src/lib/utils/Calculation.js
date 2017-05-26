@@ -279,7 +279,7 @@ function getSelectionValue({editorDataArray, selectStartPosition, selectStopPosi
 
 }
 
-function deleteLine(dataArray, pos, lineHeight, editorEl) {
+function deleteLine(direction, dataArray, pos, lineHeight, editorEl) {
 
     if (!dataArray || !pos || !(pos.row in dataArray) || !lineHeight) {
         return;
@@ -289,19 +289,30 @@ function deleteLine(dataArray, pos, lineHeight, editorEl) {
         newPosition = Object.assign({}, pos),
         lastLine = dataArray[pos.row - 1];
 
-    newPosition.left = CharSize.calculateStringWidth(lastLine, editorEl);
-    newPosition.top -= lineHeight;
-    newPosition.row -= 1;
-    newPosition.col = lastLine.length;
+    if (direction === 'left') {
 
-    newDataArray[pos.row - 1] = newDataArray[pos.row - 1] + newDataArray[pos.row];
-    newDataArray.splice(pos.row, 1);
+        newPosition.left = CharSize.calculateStringWidth(lastLine, editorEl);
+        newPosition.top -= lineHeight;
+        newPosition.row -= 1;
+        newPosition.col = lastLine.length;
+
+        newDataArray[pos.row - 1] = newDataArray[pos.row - 1] + newDataArray[pos.row];
+        newDataArray.splice(pos.row, 1);
+
+    } else if (direction === 'right') {
+
+        newDataArray[pos.row] = newDataArray[pos.row] + newDataArray[pos.row + 1];
+        newDataArray.splice(pos.row + 1, 1);
+
+    } else {
+        return;
+    }
 
     return {newDataArray, newPosition};
 
 }
 
-function deleteChar(dataArray, pos, editorEl) {
+function deleteChar(direction, dataArray, pos, editorEl) {
 
     if (!dataArray || !pos || !(pos.row in dataArray)) {
         return;
@@ -310,9 +321,19 @@ function deleteChar(dataArray, pos, editorEl) {
     let newDataArray = dataArray.slice(),
         newPosition = Object.assign({}, pos);
 
-    newDataArray[pos.row] = dataArray[pos.row].slice(0, pos.col - 1) + dataArray[pos.row].slice(pos.col);
-    newPosition.left -= CharSize.calculateStringWidth(dataArray[pos.row].at(pos.col - 1), editorEl);
-    newPosition.col -= 1;
+    if (direction === 'left') {
+
+        newDataArray[pos.row] = dataArray[pos.row].slice(0, pos.col - 1) + dataArray[pos.row].slice(pos.col);
+        newPosition.left -= CharSize.calculateStringWidth(dataArray[pos.row].at(pos.col - 1), editorEl);
+        newPosition.col -= 1;
+
+    } else if (direction === 'right') {
+
+        newDataArray[pos.row] = dataArray[pos.row].slice(0, pos.col) + dataArray[pos.row].slice(pos.col + 1);
+
+    } else {
+        return;
+    }
 
     return {newDataArray, newPosition};
 

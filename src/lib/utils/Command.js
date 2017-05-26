@@ -1,33 +1,33 @@
 import _ from 'lodash';
 import Calculation from './Calculation';
 import CharSize from './CharSize';
-import Valid from './Valid';
 
-function doDeleteLine(props) {
+function doDeleteLine(direction, props) {
     const {editorEl, editorDataArray, editorOptions, selectStopPosition} = props;
-    return Calculation.deleteLine(editorDataArray, selectStopPosition, editorOptions.lineHeight, editorEl);
+    return Calculation.deleteLine(direction, editorDataArray, selectStopPosition, editorOptions.lineHeight, editorEl);
 }
 
-function doDeleteChar(props) {
+function doDeleteChar(direction, props) {
     const {editorEl, editorDataArray, selectStopPosition} = props;
-    return Calculation.deleteChar(editorDataArray, selectStopPosition, editorEl);
+    return Calculation.deleteChar(direction, editorDataArray, selectStopPosition, editorEl);
 }
 
-function doDeletePosition(props) {
+function doDeletePosition(direction, props) {
 
-    const {editorDataArray, selectStopPosition} = props;
+    const {editorDataArray, selectStopPosition} = props,
+        {row, col} = selectStopPosition,
+        lastLineIndex = editorDataArray.length - 1,
+        lastLineLength = editorDataArray[lastLineIndex].length;
 
-    if (selectStopPosition.row === 0 && selectStopPosition.col === 0) {
-        return {
-            newDataArray: editorDataArray,
-            newPosition: selectStopPosition
-        };
+    if ((direction === 'left' && row === 0 && col === 0)
+        || (direction === 'right' && row === lastLineIndex && col === lastLineLength)) {
+        return;
     }
 
-    if (selectStopPosition.col === 0) {
-        return doDeleteLine(props);
+    if (col === 0 || col === editorDataArray[row].length) {
+        return doDeleteLine(direction, props);
     } else {
-        return doDeleteChar(props);
+        return doDeleteChar(direction, props);
     }
 
 }
@@ -37,14 +37,14 @@ function doDeleteSelection(props) {
     return Calculation.deleteSelection(editorDataArray, selectStartPosition, selectStopPosition);
 }
 
-function doDelete(props) {
+function doDelete(direction, props) {
 
     const {selectStartPosition, selectStopPosition} = props;
 
     if (Calculation.hasSelection(selectStartPosition, selectStopPosition)) {
         return doDeleteSelection(props);
     } else {
-        return doDeletePosition(props);
+        return doDeletePosition(direction, props);
     }
 
 }

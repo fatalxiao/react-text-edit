@@ -151,7 +151,7 @@ export default class TextInput extends Component {
      */
     keyDownHandle(e) {
 
-        // console.log(e.keyCode);
+        console.log(e.keyCode);
 
         if (this.state.isComposition) {
             return;
@@ -162,7 +162,7 @@ export default class TextInput extends Component {
             // back space
             case 8: {
                 e.preventDefault();
-                this.doChange(Command.doDelete(this.props));
+                this.doChange(Command.doDelete('left', this.props));
                 break;
             }
 
@@ -204,6 +204,13 @@ export default class TextInput extends Component {
                 } else {
                     this.directionKeyHandle(0, 1);
                 }
+                break;
+            }
+
+            // delete
+            case 46: {
+                e.preventDefault();
+                this.doChange(Command.doDelete('right', this.props));
                 break;
             }
 
