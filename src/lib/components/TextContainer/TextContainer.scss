@@ -1,0 +1,14 @@
+@import '../../assets/sass/common';
+
+.react-editor-text-container {
+    font: inherit;
+    position: relative;
+    overflow: hidden;
+    word-wrap: normal;
+    white-space: pre;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 1;
+}

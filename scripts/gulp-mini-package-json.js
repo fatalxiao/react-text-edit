@@ -21,7 +21,7 @@ module.exports = function () {
             var data = JSON.parse(chunk.contents.toString());
 
             var miniData = {
-                name: 'alcedo-ui',
+                name: data.name,
                 author: data.author,
                 version: data.version,
                 description: data.description,
@@ -35,7 +35,9 @@ module.exports = function () {
                     'react': data.dependencies['react'],
                     'prop-types': data.dependencies['prop-types'],
                     'react-addons-transition-group': data.dependencies['react-addons-transition-group'],
-                    'react-dom': data.dependencies['react-dom']
+                    'react-dom': data.dependencies['react-dom'],
+                    'react-transition-group': data.dependencies['react-transition-group'],
+                    'string.prototype.at': data.dependencies['string.prototype.at']
                 }
             };
 

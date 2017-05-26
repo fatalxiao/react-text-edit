@@ -13,6 +13,15 @@ function printError(e) {
 }
 
 /**
+ * move font
+ */
+gulp.task('font', function () {
+    return gulp.src('./src/lib/assets/fonts/**')
+        .on('error', printError)
+        .pipe(gulp.dest('./dist/lib/assets/fonts'));
+});
+
+/**
  * sass compile
  */
 gulp.task('sass', function () {
@@ -37,10 +46,6 @@ gulp.task('es', function () {
 /**
  * copy extra files to dist
  */
-gulp.task('copyAssets', function () {
-    return gulp.src('./assets/**')
-        .pipe(gulp.dest('./dist/assets'));
-});
 gulp.task('copyNpmFiles', function () {
     return gulp.src(['README.md', './LICENSE'])
         .pipe(gulp.dest('./dist'));
@@ -50,12 +55,12 @@ gulp.task('copyPackageJson', function () {
         .pipe(miniPackageJson())
         .pipe(gulp.dest('./dist'));
 });
-gulp.task('copyFiles', gulpSequence('copyAssets', 'copyNpmFiles', 'copyPackageJson'));
+gulp.task('copyFiles', gulpSequence('copyNpmFiles', 'copyPackageJson'));
 
 /**
  * build components for npm publish
  */
-gulp.task('build', gulpSequence('sass', 'es', 'copyFiles'));
+gulp.task('build', gulpSequence('sass', 'es', 'font', 'copyFiles'));
 
 /**
  * watch components src files

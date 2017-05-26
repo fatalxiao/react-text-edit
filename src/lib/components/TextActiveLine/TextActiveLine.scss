@@ -1,0 +1,12 @@
+@import '../../assets/sass/common';
+
+.react-editor-text-active-line {
+    position: absolute;
+    left: 0;
+    background: $theme-active-line-bg;
+    min-width: 100%;
+
+    &.react-editor-text-active-line-empty {
+        min-width: 0;
+    }
+}

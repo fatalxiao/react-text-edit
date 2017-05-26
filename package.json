@@ -1,32 +1,31 @@
 {
-    "name": "alcedo-ui",
-    "author": "Alcedo-UI Team",
-    "version": "1.0.30",
-    "description": "A set of React components.",
+    "name": "react-editor",
+    "author": "falalxiao",
+    "version": "0.1.0",
+    "description": "A text editor components written with React.",
     "main": "./src/index.js",
     "scripts": {
-        "build": "rimraf dist && node build/minify/minify.js",
-        "build:components": "rimraf dist && npm run build:index && gulp build",
-        "watch:components": "npm run build:components && npm run build:propType && gulp watch",
+        "build:components": "rimraf dist && gulp build",
+        "watch:components": "npm run build:components && gulp watch",
         "dev:example": "node build/dev/dev-server.js",
         "build:example": "rimraf docs && node build/prod/prod.js",
         "run:demo": "node build/demo/demo-server.js",
-        "demo": "npm run build:example && npm run run:demo"
+        "demo": "npm run build:components && npm run build:example && npm run run:demo"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/alcedo-ui/alcedo-ui.git"
+        "url": "git+https://github.com/fatalxiao/react-editor"
     },
     "keywords": [
         "react",
-        "react-component",
-        "ui"
+        "react-editor",
+        "editor"
     ],
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/alcedo-ui/alcedo-ui/issues"
+        "url": "https://github.com/fatalxiao/react-editor/issues"
     },
-    "homepage": "https://github.com/alcedo-ui/alcedo-ui",
+    "homepage": "https://github.com/fatalxiao/react-editor",
     "dependencies": {
         "github-markdown-css": "^2.6.0",
         "lodash": "^4.17.4",

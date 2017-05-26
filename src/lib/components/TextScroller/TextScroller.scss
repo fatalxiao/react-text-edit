@@ -1,0 +1,14 @@
+@import '../../assets/sass/common';
+
+.react-editor-text-scroller {
+    font: inherit;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    cursor: text;
+    box-sizing: border-box;
+    min-width: 100%;
+    min-height: 100%;
+}

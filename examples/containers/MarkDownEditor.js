@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import markdown from 'markdown';
 import 'github-markdown-css';
 
-import ReactEditor from 'src/ReactEditor';
+import ReactEditor from 'dist';
 
 import Event from 'utils/Event';
 import MacDownHelpText from 'assets/files/MacDownHelp.md';

@@ -1,0 +1,13 @@
+@import '../../assets/sass/common';
+
+.react-editor-gutter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background: $theme-gutter-bg;
+    pointer-events: none;
+    font: inherit;
+    border-right: 1px solid $theme-gutter-border;
+    box-sizing: border-box;
+}
