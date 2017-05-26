@@ -25,7 +25,7 @@
     "bugs": {
         "url": "https://github.com/fatalxiao/react-text-edit/issues"
     },
-    "homepage": "https://github.com/fatalxiao/react-text-edit",
+    "homepage": "https://fatalxiao.github.io/react-text-edit/",
     "dependencies": {
         "github-markdown-css": "^2.6.0",
         "lodash": "^4.17.4",
