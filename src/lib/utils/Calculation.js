@@ -634,7 +634,40 @@ function scrollOnChange(props) {
 
 function duplicateSelection(dataArray, start, stop, lineHeight, editorEl) {
 
+    let newDataArray = dataArray.slice(),
+        newStartPosition = Object.assign({}, stop),
+        newPosition = Object.assign({}, stop);
 
+    [start, stop] = sortPosition(start, stop);
+
+    if (start.row === stop.row) { // in one line
+
+        const line = dataArray[start.row],
+            selection = line.slice(start.col, stop.col);
+
+        newDataArray[start.row] = line.slice(0, stop.col) + selection + line.slice(stop.col);
+        newPosition.left += CharSize.calculateStringWidth(selection, editorEl);
+        newPosition.col += selection.length;
+
+    } else {
+
+        newDataArray[stop.row] = dataArray[stop.row].slice(0, stop.col) + dataArray[start.row].slice(start.col);
+        const rowOffset = stop.row - start.row;
+        for (let i = 1; i <= rowOffset; i++) {
+            newDataArray.splice(stop.row + i, 0, dataArray[start.row + i]);
+        }
+
+        newPosition.top += rowOffset * lineHeight;
+        newPosition.row += rowOffset;
+
+    }
+
+    return {
+        newDataArray,
+        newStartPosition,
+        newStopPosition: newPosition,
+        newCursorPosition: newPosition
+    };
 
 }
 
