@@ -279,7 +279,7 @@ function getSelectionValue({editorDataArray, selectStartPosition, selectStopPosi
 
 }
 
-function deleteLine(direction, dataArray, pos, lineHeight, editorEl) {
+function deletePositionLine(direction, dataArray, pos, lineHeight, editorEl) {
 
     if (!dataArray || !pos || !(pos.row in dataArray) || !lineHeight) {
         return;
@@ -312,7 +312,7 @@ function deleteLine(direction, dataArray, pos, lineHeight, editorEl) {
 
 }
 
-function deleteChar(direction, dataArray, pos, editorEl) {
+function deletePositionChar(direction, dataArray, pos, editorEl) {
 
     if (!dataArray || !pos || !(pos.row in dataArray)) {
         return;
@@ -334,6 +334,49 @@ function deleteChar(direction, dataArray, pos, editorEl) {
     } else {
         return;
     }
+
+    return {newDataArray, newPosition};
+
+}
+
+function deleteLine(dataArray, pos, lineHeight, editorEl) {
+
+    if (dataArray.length < 1 || (dataArray.length == 1 && dataArray[0] === '') || !editorEl) {
+        return;
+    }
+
+    const lastLen = dataArray.length - 1,
+        {row, col} = pos;
+
+    let newDataArray = dataArray.slice(),
+        newPosition = Object.assign({}, pos);
+
+    if (row === 0 && lastLen === 0) {
+
+        return {
+            newDataArray: [''],
+            newPosition: {
+                left: 0,
+                top: 0,
+                row: 0,
+                col: 0
+            }
+        };
+
+    }
+
+    newDataArray.splice(row, 1);
+
+    if (row === lastLen) {
+        newPosition.top -= lineHeight;
+        newPosition.row--;
+    }
+
+    const newLine = newDataArray[newPosition.row];
+    if (newLine.length < col) {
+        newPosition.col = newLine.length;
+    }
+    newPosition.left = CharSize.calculateStringWidth(newLine.slice(0, newPosition.col), editorEl);
 
     return {newDataArray, newPosition};
 
@@ -563,6 +606,28 @@ function scrollOnChange(props) {
 
 }
 
+function duplicateSelection(dataArray, start, stop, lineHeight, editorEl) {
+
+
+
+}
+
+function duplicateLine(dataArray, pos, lineHeight) {
+
+    const {row} = pos,
+        line = dataArray[row];
+
+    let newDataArray = dataArray.slice(),
+        newPosition = Object.assign({}, pos);
+
+    newDataArray.splice(row, 0, line);
+    newPosition.top += lineHeight;
+    newPosition.row++;
+
+    return {newDataArray, newPosition};
+
+}
+
 export default {
     horizontalDisplayWidth,
     fullScrollLeft,
@@ -575,10 +640,13 @@ export default {
     sortPosition,
     hasSelection,
     getSelectionValue,
+    deletePositionLine,
+    deletePositionChar,
     deleteLine,
-    deleteChar,
     deleteSelection,
     insertValue,
     directionChange,
-    scrollOnChange
+    scrollOnChange,
+    duplicateSelection,
+    duplicateLine
 };

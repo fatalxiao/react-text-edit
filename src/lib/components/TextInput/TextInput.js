@@ -175,6 +175,7 @@ export default class TextInput extends Component {
 
             // direction
             case 37: { // left
+                e.preventDefault();
                 if (e.shiftKey) {
                     this.doSelectText(-1, 0);
                 } else {
@@ -183,6 +184,7 @@ export default class TextInput extends Component {
                 break;
             }
             case 38: { // up
+                e.preventDefault();
                 if (e.shiftKey) {
                     this.doSelectText(0, -1);
                 } else {
@@ -191,6 +193,7 @@ export default class TextInput extends Component {
                 break;
             }
             case 39: { // right
+                e.preventDefault();
                 if (e.shiftKey) {
                     this.doSelectText(1, 0);
                 } else {
@@ -199,6 +202,7 @@ export default class TextInput extends Component {
                 break;
             }
             case 40: { // down
+                e.preventDefault();
                 if (e.shiftKey) {
                     this.doSelectText(0, 1);
                 } else {
@@ -223,6 +227,19 @@ export default class TextInput extends Component {
                 break;
             }
 
+            // d
+            case 68: {
+                if ((Valid.isMac() && e.metaKey) || (Valid.isWindows() && e.ctrlKey)) {
+                    e.preventDefault();
+                    if (e.shiftKey) {
+                        this.doChange(Command.doDeleteLine(this.props));
+                    } else {
+                        this.doChange(Command.doDuplicate(this.props));
+                    }
+                }
+                break;
+            }
+
             // z
             case 90: {
                 if ((Valid.isMac() && e.metaKey) || (Valid.isWindows() && e.ctrlKey)) {
@@ -233,6 +250,8 @@ export default class TextInput extends Component {
             }
 
         }
+
+        return false;
 
     }
 

@@ -2,14 +2,14 @@ import _ from 'lodash';
 import Calculation from './Calculation';
 import CharSize from './CharSize';
 
-function doDeleteLine(direction, props) {
+function doDeletePositionLine(direction, props) {
     const {editorEl, editorDataArray, editorOptions, selectStopPosition} = props;
-    return Calculation.deleteLine(direction, editorDataArray, selectStopPosition, editorOptions.lineHeight, editorEl);
+    return Calculation.deletePositionLine(direction, editorDataArray, selectStopPosition, editorOptions.lineHeight, editorEl);
 }
 
-function doDeleteChar(direction, props) {
+function doDeletePositionChar(direction, props) {
     const {editorEl, editorDataArray, selectStopPosition} = props;
-    return Calculation.deleteChar(direction, editorDataArray, selectStopPosition, editorEl);
+    return Calculation.deletePositionChar(direction, editorDataArray, selectStopPosition, editorEl);
 }
 
 function doDeletePosition(direction, props) {
@@ -25,9 +25,9 @@ function doDeletePosition(direction, props) {
     }
 
     if ((direction === 'left' && col === 0) || (direction === 'right' && col === editorDataArray[row].length)) {
-        return doDeleteLine(direction, props);
+        return doDeletePositionLine(direction, props);
     } else {
-        return doDeleteChar(direction, props);
+        return doDeletePositionChar(direction, props);
     }
 
 }
@@ -47,6 +47,11 @@ function doDelete(direction, props) {
         return doDeletePosition(direction, props);
     }
 
+}
+
+function doDeleteLine(props) {
+    const {editorEl, editorDataArray, selectStopPosition, editorOptions} = props;
+    return Calculation.deleteLine(editorDataArray, selectStopPosition, editorOptions.lineHeight, editorEl);
 }
 
 function doCut(props) {
@@ -122,15 +127,42 @@ function doSelectAll(props) {
 
 }
 
+function doDuplicateSelection(props) {
+    const {editorEl, editorDataArray, selectStartPosition, selectStopPosition, editorOptions} = props;
+    return Calculation.duplicateSelection(
+        editorDataArray, selectStartPosition, selectStopPosition, editorOptions.lineHeight, editorEl);
+}
+
+function doDuplicateLine(props) {
+    const {editorDataArray, selectStopPosition, editorOptions} = props;
+    return Calculation.duplicateLine(editorDataArray, selectStopPosition, editorOptions.lineHeight);
+}
+
+function doDuplicate(props) {
+
+    const {selectStartPosition, selectStopPosition} = props;
+
+    if (Calculation.hasSelection(selectStartPosition, selectStopPosition)) {
+        return doDuplicateSelection(props);
+    } else {
+        return doDuplicateLine(props);
+    }
+
+}
+
 export default {
-    doDeleteLine,
-    doDeleteChar,
+    doDeletePositionLine,
+    doDeletePositionChar,
     doDeletePosition,
     doDeleteSelection,
     doDelete,
+    doDeleteLine,
     doCut,
     doInsert,
     doReplace,
     doInput,
-    doSelectAll
+    doSelectAll,
+    doDuplicateSelection,
+    doDuplicateLine,
+    doDuplicate
 };
