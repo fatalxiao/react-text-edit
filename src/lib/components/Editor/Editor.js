@@ -217,7 +217,13 @@ export default class Editor extends Component {
                 scrollTop: 0,
                 editorOptions: props.editorOptions,
                 editorHeight
-            })
+            }),
+
+            /**
+             * editor input composition text
+             * @type {string}
+             */
+            compositionText: ''
 
         };
 
@@ -227,6 +233,7 @@ export default class Editor extends Component {
         this.calculateGutterWidth = this::this.calculateGutterWidth;
         this.scrollX = this::this.scrollX;
         this.scrollY = this::this.scrollY;
+        this.onCompositionUpdate = this::this.onCompositionUpdate;
         this.onChange = this::this.onChange;
         this.lostFocusHandle = this::this.lostFocusHandle;
         this.wheelHandle = this::this.wheelHandle;
@@ -324,6 +331,19 @@ export default class Editor extends Component {
             });
         });
 
+    }
+
+    /**
+     * update composition text
+     * @param compositionText
+     */
+    onCompositionUpdate(compositionText) {
+        this.setState({
+            compositionText
+        }, () => {
+            const {editorDataArray, selectStartPosition, selectStopPosition, cursorPosition} = this.state;
+            this.onChange(editorDataArray, selectStartPosition, selectStopPosition, cursorPosition);
+        });
     }
 
     /**

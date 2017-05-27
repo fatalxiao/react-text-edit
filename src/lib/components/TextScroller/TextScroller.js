@@ -12,21 +12,7 @@ import './TextScroller.css';
 export default class TextScroller extends Component {
 
     constructor(props) {
-
         super(props);
-
-        this.state = {
-            compositionText: ''
-        };
-
-        this.compositionUpdateHandle = this::this.compositionUpdateHandle;
-
-    }
-
-    compositionUpdateHandle(compositionText) {
-        this.setState({
-            compositionText
-        });
     }
 
     render() {
@@ -35,7 +21,6 @@ export default class TextScroller extends Component {
                 isEditorFocused, editorHeight, editorDataArray, editorOptions, contentWidth, scrollTop, scrollLeft,
                 gutterWidth, selectStartPosition, selectStopPosition, cursorPosition
             } = this.props,
-            {compositionText} = this.state,
             {horizontalPadding, lineHeight, showLineNumber} = editorOptions,
             initOffsetLeft = horizontalPadding + (showLineNumber ? gutterWidth : 0),
             scrollerStyle = {
@@ -50,9 +35,7 @@ export default class TextScroller extends Component {
 
                 {
                     cursorPosition ?
-                        <TextInput {...this.props}
-                                   compositionText={compositionText}
-                                   onCompositionUpdate={this.compositionUpdateHandle}/>
+                        <TextInput {...this.props}/>
                         :
                         null
                 }
@@ -75,8 +58,7 @@ export default class TextScroller extends Component {
 
                 {
                     cursorPosition && isEditorFocused ?
-                        <EditorCursor {...this.props}
-                                      compositionText={compositionText}/>
+                        <EditorCursor {...this.props}/>
                         :
                         null
                 }
