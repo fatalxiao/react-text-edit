@@ -259,13 +259,7 @@ export default class TextInput extends Component {
                 this.setState({
                     isComposition: false
                 }, () => {
-
-                    // chrome cannot trigger change event when composition end
-                    // so trigger change event manually here
-                    Valid.isChrome() && this.changeHandle(e, true);
-
-                    this.props.onCompositionUpdate('');
-
+                    this.props.onCompositionUpdate('', true);
                 });
 
                 break;
@@ -305,8 +299,7 @@ export default class TextInput extends Component {
 
     render() {
 
-        const {editorOptions, cursorPosition, compositionText} = this.props,
-            {isComposition} = this.state,
+        const {editorOptions, cursorPosition} = this.props,
             style = {
                 height: editorOptions.lineHeight,
                 lineHeight: `${editorOptions.lineHeight * 1.1}px`,
@@ -314,30 +307,15 @@ export default class TextInput extends Component {
             };
 
         return (
-            <div className="react-editor-text-input-wrapper">
-
-                {
-                    isComposition ?
-                        <div ref="textDisplay"
-                             className="react-editor-text-display"
-                             style={style}>
-                            {compositionText}
-                        </div>
-                        :
-                        null
-                }
-
-                <textarea ref="textInput"
-                          className="react-editor-text-input"
-                          style={style}
-                          onBlur={this.blurHandle}
-                          onChange={this.changeHandle}
-                          onKeyDown={this.keyDownHandle}
-                          onCompositionStart={this.compositionHandle}
-                          onCompositionUpdate={this.compositionHandle}
-                          onCompositionEnd={this.compositionHandle}></textarea>
-
-            </div>
+            <textarea ref="textInput"
+                      className="react-editor-text-input"
+                      style={style}
+                      onBlur={this.blurHandle}
+                      onChange={this.changeHandle}
+                      onKeyDown={this.keyDownHandle}
+                      onCompositionStart={this.compositionHandle}
+                      onCompositionUpdate={this.compositionHandle}
+                      onCompositionEnd={this.compositionHandle}></textarea>
         );
 
     }

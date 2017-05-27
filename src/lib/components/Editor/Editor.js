@@ -337,13 +337,34 @@ export default class Editor extends Component {
      * update composition text
      * @param compositionText
      */
-    onCompositionUpdate(compositionText) {
+    onCompositionUpdate(text, isCompositionEnd) {
+
+        if (isCompositionEnd) {
+            this.setState({
+                compositionText: text
+            });
+            return;
+        }
+
+        const {editorEl, editorDataArray, selectStopPosition, compositionText} = this.state;
+
+        let newDataArray = editorDataArray.slice(),
+            newPosition = Object.assign({}, selectStopPosition),
+            line = newDataArray[newPosition.row],
+            oldLen = compositionText.length,
+            newLen = text.length;
+
+        newDataArray[newPosition.row] = line.slice(0, newPosition.col - oldLen) + text + line.slice(newPosition.col);
+        newPosition.col += newLen - oldLen;
+        newPosition.left += CharSize.calculateStringWidth(text, editorEl)
+            - CharSize.calculateStringWidth(compositionText, editorEl);
+
         this.setState({
-            compositionText
+            compositionText: text
         }, () => {
-            const {editorDataArray, selectStartPosition, selectStopPosition, cursorPosition} = this.state;
-            this.onChange(editorDataArray, selectStartPosition, selectStopPosition, cursorPosition);
+            this.onChange(newDataArray, null, newPosition, newPosition);
         });
+
     }
 
     /**
