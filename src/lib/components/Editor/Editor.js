@@ -391,8 +391,8 @@ export default class Editor extends Component {
         }
         if (scrollTop !== this.state.scrollTop) {
             state.scrollTop = scrollTop;
-            state.displayIndex = Calculation.textDisplayIndex({...this.props, ...this.state, ...state});
         }
+        state.displayIndex = Calculation.textDisplayIndex({...this.props, ...this.state, ...state});
 
         this.setState(state, () => {
 

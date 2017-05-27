@@ -435,11 +435,9 @@ function insertValue(dataArray, pos, value, lineHeight, editorEl) {
     }
 
     let newDataArray = dataArray.slice(),
-        newPosition = Object.assign({}, pos),
-        temp = dataArray[pos.row].split('');
+        newPosition = Object.assign({}, pos);
 
-    temp.splice(pos.col, 0, value);
-    newDataArray[pos.row] = temp.join('');
+    newDataArray[pos.row] = dataArray[pos.row].slice(0, pos.col) + value + dataArray[pos.row].slice(pos.col);
 
     const valueArray = value.split('\n'),
         len = valueArray.length,
