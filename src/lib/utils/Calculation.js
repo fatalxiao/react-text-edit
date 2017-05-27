@@ -589,43 +589,51 @@ function directionChange(rowOffset, colOffset, props) {
 
 function scrollOnChange(props) {
 
-    const {editorEl, editorDataArray, editorHeight, editorOptions, cursorPosition} = props,
+    const {
+            editorEl, editorDataArray, editorWidth, editorHeight, contentWidth,
+            scrollLeft, scrollTop, cursorPosition, editorOptions
+        } = props,
         {left, top, row, col} = cursorPosition,
         {lineHeight} = editorOptions;
-    let {scrollLeft, scrollTop} = props;
+
+    let newScrollLeft = scrollLeft,
+        newScrollTop = scrollTop;
 
     // top
-    if (top - scrollTop < lineHeight) {
-        scrollTop = Valid.range(top - lineHeight, 0, fullScrollTop(props));
+    if (top - newScrollTop < lineHeight) {
+        newScrollTop = Valid.range(top - lineHeight, 0, fullScrollTop(props));
     }
 
     // bottom
-    if (editorHeight - (top - scrollTop + lineHeight) < lineHeight) {
-        scrollTop = lineHeight * 2 - editorHeight + top;
+    if (editorHeight - (top - newScrollTop + lineHeight) < lineHeight) {
+        newScrollTop = lineHeight * 2 - editorHeight + top;
     }
 
     // left
-    if (left < scrollLeft) {
+    if (left < newScrollLeft) {
         const line = editorDataArray[row],
             start = Valid.range(col - 4, 0),
             string = line.slice(start, col),
             width = CharSize.calculateStringWidth(string, editorEl);
-        scrollLeft = left - width;
+        newScrollLeft = left - width;
     }
 
     // right
     const fullWidth = horizontalDisplayWidth(props);
-    if (left > fullWidth + scrollLeft) {
+    if (left > fullWidth + newScrollLeft) {
         const line = editorDataArray[row],
             stop = Valid.range(col + 4, 0, line.length),
             string = line.slice(col, stop),
             width = CharSize.calculateStringWidth(string, editorEl);
-        scrollLeft = left + width - fullWidth;
+        newScrollLeft = left + width - fullWidth;
+    }
+    if (scrollLeft + fullWidth > contentWidth) {
+        newScrollLeft = contentWidth - fullWidth > 0 ? contentWidth - fullWidth : 0;
     }
 
     return {
-        scrollLeft,
-        scrollTop
+        scrollLeft: newScrollLeft,
+        scrollTop: newScrollTop
     };
 
 }
