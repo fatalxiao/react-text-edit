@@ -308,7 +308,12 @@ function deletePositionLine(direction, dataArray, pos, lineHeight, editorEl) {
         return;
     }
 
-    return {newDataArray, newPosition};
+    return {
+        newDataArray,
+        newStartPosition: null,
+        newStopPosition: newPosition,
+        newCursorPosition: newPosition
+    };
 
 }
 
@@ -335,7 +340,12 @@ function deletePositionChar(direction, dataArray, pos, editorEl) {
         return;
     }
 
-    return {newDataArray, newPosition};
+    return {
+        newDataArray,
+        newStartPosition: null,
+        newStopPosition: newPosition,
+        newCursorPosition: newPosition
+    };
 
 }
 
@@ -355,7 +365,14 @@ function deleteLine(dataArray, pos, lineHeight, editorEl) {
 
         return {
             newDataArray: [''],
-            newPosition: {
+            newStartPosition: null,
+            newStopPosition: {
+                left: 0,
+                top: 0,
+                row: 0,
+                col: 0
+            },
+            newCursorPosition: {
                 left: 0,
                 top: 0,
                 row: 0,
@@ -378,7 +395,12 @@ function deleteLine(dataArray, pos, lineHeight, editorEl) {
     }
     newPosition.left = CharSize.calculateStringWidth(newLine.slice(0, newPosition.col), editorEl);
 
-    return {newDataArray, newPosition};
+    return {
+        newDataArray,
+        newStartPosition: null,
+        newStopPosition: newPosition,
+        newCursorPosition: newPosition
+    };
 
 }
 
@@ -399,7 +421,9 @@ function deleteSelection(dataArray, start, stop) {
 
     return {
         newDataArray,
-        newPosition: start
+        newStartPosition: null,
+        newStopPosition: start,
+        newCursorPosition: start
     };
 
 }
@@ -433,7 +457,9 @@ function insertValue(dataArray, pos, value, lineHeight, editorEl) {
 
     return {
         newDataArray: newDataArray.join('\n').split('\n'),
-        newPosition
+        newStartPosition: null,
+        newStopPosition: newPosition,
+        newCursorPosition: newPosition
     };
 
 }
@@ -624,7 +650,12 @@ function duplicateLine(dataArray, pos, lineHeight) {
     newPosition.top += lineHeight;
     newPosition.row++;
 
-    return {newDataArray, newPosition};
+    return {
+        newDataArray,
+        newStartPosition: null,
+        newStopPosition: newPosition,
+        newCursorPosition: newPosition
+    };
 
 }
 

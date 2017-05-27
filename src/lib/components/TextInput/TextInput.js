@@ -63,9 +63,9 @@ export default class TextInput extends Component {
             return;
         }
 
-        const {newDataArray, newPosition} = result;
+        const {newDataArray, newStartPosition, newStopPosition, newCursorPosition} = result;
 
-        this.props.onChange(newDataArray, null, newPosition, newPosition);
+        this.props.onChange(newDataArray, newStartPosition, newStopPosition, newCursorPosition);
         this.focus();
 
     }
@@ -140,7 +140,9 @@ export default class TextInput extends Component {
 
         this.doChange({
             newDataArray: editorDataArray,
-            newPosition
+            newStartPosition: null,
+            newStopPosition: newPosition,
+            newCursorPosition: newPosition
         });
 
     }
