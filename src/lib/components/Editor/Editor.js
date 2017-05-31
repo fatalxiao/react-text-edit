@@ -677,6 +677,8 @@ export default class Editor extends Component {
                 Calculation.fullScrollTop({...nextProps, ...this.state}) * nextProps.scrollTopPerCent;
         }
 
+        state.displayIndex = Calculation.textDisplayIndex({...this.props, ...this.state, ...state});
+
         // update text content width and height
         if (state.editorDataArray) {
             state.contentWidth = this.calculateContentWidth(state.editorDataArray);

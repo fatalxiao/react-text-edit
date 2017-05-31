@@ -88,8 +88,8 @@ function doInsert(value, props) {
 }
 
 function doReplace(value, props) {
-    let {newDataArray, newPosition} = doDeleteSelection(props);
-    return doInsert(value, {...props, editorDataArray: newDataArray, selectStopPosition: newPosition});
+    let {newDataArray, newStopPosition} = doDeleteSelection(props);
+    return doInsert(value, {...props, editorDataArray: newDataArray, selectStopPosition: newStopPosition});
 }
 
 function doInput(value, props) {
