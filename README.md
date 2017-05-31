@@ -14,7 +14,7 @@ A text editor components written with React.
 **NPM**
 
 ```bash
-npm install react-text-edit --save
+$ npm install react-text-edit --save
 ```
 
 ## Usage
@@ -61,7 +61,7 @@ Examples can be found in the
 **Run Demo**
 
 ```bash
-npm run demo
+$ npm run demo
 ```
 
 ## License
