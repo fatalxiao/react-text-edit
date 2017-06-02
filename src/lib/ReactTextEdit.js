@@ -69,7 +69,19 @@ export default class ReactTextEdit extends Component {
              * whether show line number
              * @type {boolean}
              */
-            showLineNumber: false
+            showLineNumber: false,
+
+            /**
+             * whether use tab or spaces for indent
+             * @type {boolean}
+             */
+            useTabIndent: false,
+
+            /**
+             * the number of space if use space for indent
+             * @type {number}
+             */
+            tabIndentSize: 4
 
         };
 

@@ -171,7 +171,10 @@ export default class TextInput extends Component {
             // tab
             case 9: {
                 e.preventDefault();
-                this.doChange(Command.doInput('    ', this.props)); // input 4 space
+
+                const {editorOptions} = this.props,
+                    {useTabIndent, tabIndentSize} = editorOptions;
+                this.doChange(Command.doInput(useTabIndent ? '\t' : ' '.repeat(tabIndentSize), this.props));
                 break;
             }
 
