@@ -474,8 +474,14 @@ export default class Editor extends Component {
             {scrollLeft, scrollTop, isDoubleClick, isTripleClick} = this.state,
             editorOffset = DomLib.getOffset(this.refs.editor);
 
-        this.selectStartX = undefined;
-        this.selectStartY = undefined;
+        if (e.shiftKey) {
+            this.selectStartX === undefined && (this.selectStartX = this.selectStopX);
+            this.selectStartY === undefined && (this.selectStartY = this.selectStopY);
+        } else {
+            this.selectStartX = undefined;
+            this.selectStartY = undefined;
+        }
+
         this.selectStopX = e.clientX - editorOffset.left + scrollLeft;
         this.selectStopY = e.clientY - editorOffset.top + scrollTop;
 
