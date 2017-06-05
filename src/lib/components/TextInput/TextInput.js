@@ -22,6 +22,7 @@ export default class TextInput extends Component {
         this.doChange = this::this.doChange;
         this.doSelectAll = this::this.doSelectAll;
         this.doSelectText = this::this.doSelectText;
+        this.doScrollChange = this::this.doScrollChange;
         this.blurHandle = this::this.blurHandle;
         this.changeHandle = this::this.changeHandle;
         this.directionKeyHandle = this::this.directionKeyHandle;
@@ -93,6 +94,15 @@ export default class TextInput extends Component {
 
         onChange(editorDataArray, selectStartPosition || selectStopPosition, newPosition, newPosition);
         this.focus();
+
+    }
+
+    doScrollChange(offset) {
+
+        const {editorOptions, scrollTop, scrollY} = this.props,
+            {lineHeight} = editorOptions;
+
+        scrollY(Valid.range(scrollTop + offset * lineHeight, 0, Calculation.fullScrollTop(this.props)));
 
     }
 
@@ -171,7 +181,6 @@ export default class TextInput extends Component {
             // tab
             case 9: {
                 e.preventDefault();
-
                 const {editorOptions} = this.props,
                     {useTabIndent, tabIndentSize} = editorOptions;
                 this.doChange(Command.doInput(useTabIndent ? '\t' : ' '.repeat(tabIndentSize), this.props));
@@ -190,7 +199,9 @@ export default class TextInput extends Component {
             }
             case 38: { // up
                 e.preventDefault();
-                if (e.shiftKey) {
+                if ((Valid.isMac() && e.metaKey) || (Valid.isWindows() && e.ctrlKey)) {
+                    this.doScrollChange(-1);
+                } else if (e.shiftKey) {
                     this.doSelectText(0, -1);
                 } else {
                     this.directionKeyHandle(0, -1);
@@ -208,7 +219,9 @@ export default class TextInput extends Component {
             }
             case 40: { // down
                 e.preventDefault();
-                if (e.shiftKey) {
+                if ((Valid.isMac() && e.metaKey) || (Valid.isWindows() && e.ctrlKey)) {
+                    this.doScrollChange(1);
+                } else if (e.shiftKey) {
                     this.doSelectText(0, 1);
                 } else {
                     this.directionKeyHandle(0, 1);
