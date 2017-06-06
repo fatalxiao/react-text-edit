@@ -20,6 +20,7 @@ export default class TextInput extends Component {
         this.focus = this::this.focus;
         this.getTextAreaValue = this::this.getTextAreaValue;
         this.doChange = this::this.doChange;
+        this.doInputTab = this::this.doInputTab;
         this.doSelectAll = this::this.doSelectAll;
         this.doSelectText = this::this.doSelectText;
         this.doScrollChange = this::this.doScrollChange;
@@ -68,6 +69,19 @@ export default class TextInput extends Component {
 
         this.props.onChange(newDataArray, newStartPosition, newStopPosition, newCursorPosition);
         this.focus();
+
+    }
+
+    doInputTab() {
+
+        const {editorDataArray, cursorPosition, editorOptions} = this.props,
+            {useTabIndent, tabIndentSize} = editorOptions;
+
+        const str = editorDataArray[cursorPosition.row].slice(0, cursorPosition.col);
+
+        this.doChange(
+            Command.doInput(useTabIndent ? '\t' : ' '.repeat(tabIndentSize - (str.length % tabIndentSize)), this.props)
+        );
 
     }
 
@@ -181,9 +195,7 @@ export default class TextInput extends Component {
             // tab
             case 9: {
                 e.preventDefault();
-                const {editorOptions} = this.props,
-                    {useTabIndent, tabIndentSize} = editorOptions;
-                this.doChange(Command.doInput(useTabIndent ? '\t' : ' '.repeat(tabIndentSize), this.props));
+                this.doInputTab();
                 break;
             }
 
