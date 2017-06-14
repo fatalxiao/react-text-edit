@@ -292,7 +292,7 @@ export default class Editor extends Component {
      */
     scrollX(scrollLeft) {
 
-        const {onScroll} = this.props;
+        const {editorOptions, onScroll} = this.props;
         const {scrollTop} = this.state;
 
         this.setState({
@@ -302,7 +302,8 @@ export default class Editor extends Component {
                 left: scrollLeft,
                 top: scrollTop,
                 leftPerCent: Calculation.scrollLeftPerCent(scrollLeft, {...this.props, ...this.state}),
-                topPerCent: Calculation.scrollTopPerCent(scrollTop, {...this.props, ...this.state})
+                topPerCent: Calculation.scrollTopPerCent(scrollTop, {...this.props, ...this.state}),
+                line: Math.ceil(scrollTop / editorOptions.lineHeight)
             });
         });
 
@@ -314,7 +315,7 @@ export default class Editor extends Component {
      */
     scrollY(scrollTop) {
 
-        const {onScroll} = this.props,
+        const {editorOptions, onScroll} = this.props,
             {scrollLeft} = this.state;
 
         const state = {
@@ -327,7 +328,8 @@ export default class Editor extends Component {
                 left: scrollLeft,
                 top: scrollTop,
                 leftPerCent: Calculation.scrollLeftPerCent(scrollLeft, {...this.props, ...this.state}),
-                topPerCent: Calculation.scrollTopPerCent(scrollTop, {...this.props, ...this.state})
+                topPerCent: Calculation.scrollTopPerCent(scrollTop, {...this.props, ...this.state}),
+                line: Math.ceil(scrollTop / editorOptions.lineHeight)
             });
         });
 
@@ -419,7 +421,7 @@ export default class Editor extends Component {
      */
     wheelHandle(e) {
 
-        const {onScroll} = this.props,
+        const {editorOptions, onScroll} = this.props,
             {scrollTop, scrollLeft} = this.state,
             maxScrollLeft = Calculation.fullScrollLeft({...this.props, ...this.state}),
             maxScrollTop = Calculation.fullScrollTop({...this.props, ...this.state});
@@ -446,7 +448,8 @@ export default class Editor extends Component {
                 left,
                 top,
                 leftPerCent: Calculation.scrollLeftPerCent(left, {...this.props, ...this.state}),
-                topPerCent: Calculation.scrollTopPerCent(top, {...this.props, ...this.state})
+                topPerCent: Calculation.scrollTopPerCent(top, {...this.props, ...this.state}),
+                line: Math.ceil(top / editorOptions.lineHeight)
             });
         });
 

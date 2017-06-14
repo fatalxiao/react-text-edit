@@ -1,7 +1,7 @@
 {
     "name": "react-text-edit",
     "author": "falalxiao",
-    "version": "0.1.15",
+    "version": "0.1.16",
     "description": "A text editor components written with ReactJs.",
     "main": "./src/index.js",
     "scripts": {
@@ -28,6 +28,7 @@
     "homepage": "https://fatalxiao.github.io/react-text-edit/",
     "dependencies": {
         "github-markdown-css": "^2.6.0",
+        "js-markdown": "^0.1.6",
         "lodash": "^4.17.4",
         "markdown": "^0.5.0",
         "prop-types": "^15.5.8",

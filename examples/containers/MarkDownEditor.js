@@ -5,6 +5,7 @@ import 'github-markdown-css';
 import ReactTextEdit from 'dist';
 
 import Event from 'utils/Event';
+import Valid from 'utils/Valid';
 
 import README from 'README.md';
 
@@ -93,8 +94,11 @@ export default class MarkDownEditor extends Component {
             return;
         }
 
+        const min = 20,
+            editorWidth = Valid.range(window.innerWidth - e.clientX, min, window.innerWidth - min);
+
         this.setNextState({
-            editorWidthPerCent: (window.innerWidth - e.clientX) / window.innerWidth,
+            editorWidthPerCent: (editorWidth) / window.innerWidth,
             editorHeight: window.innerHeight
         });
 
@@ -130,7 +134,7 @@ export default class MarkDownEditor extends Component {
                 left: markdownBodyWidth
             },
             dragEdgeStyle = {
-                left: markdownBodyWidth - 1
+                left: markdownBodyWidth - 2
             };
 
         return (
