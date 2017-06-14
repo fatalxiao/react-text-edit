@@ -622,7 +622,9 @@ export default class Editor extends Component {
      */
     goHistory(offset) {
         this.historyPointer = Valid.range(this.historyPointer + offset, 0, this.editorHistories.length - 1);
-        this.setState(this.editorHistories[this.historyPointer]);
+        this.setState(this.editorHistories[this.historyPointer], () => {
+            this.props.onChange && this.props.onChange(this.state.editorDataArray.join('\n'));
+        });
     }
 
     componentDidMount() {
