@@ -30,7 +30,7 @@ module.exports = function () {
                 repository: data.repository,
                 license: data.license,
                 homepage: data.homepage,
-                dependencies: {
+                peerDependencies: {
                     'lodash': data.dependencies['lodash'],
                     'react': data.dependencies['react'],
                     'prop-types': data.dependencies['prop-types'],
