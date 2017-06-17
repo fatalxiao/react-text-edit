@@ -1,7 +1,7 @@
 {
     "name": "react-text-edit",
     "author": "falalxiao",
-    "version": "0.1.17",
+    "version": "0.1.18",
     "description": "A text editor components written with ReactJs.",
     "main": "./src/index.js",
     "scripts": {

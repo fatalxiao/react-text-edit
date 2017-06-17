@@ -31,12 +31,14 @@ module.exports = function () {
                 license: data.license,
                 homepage: data.homepage,
                 peerDependencies: {
-                    'lodash': data.dependencies['lodash'],
                     'react': data.dependencies['react'],
                     'prop-types': data.dependencies['prop-types'],
                     'react-addons-transition-group': data.dependencies['react-addons-transition-group'],
                     'react-dom': data.dependencies['react-dom'],
-                    'react-transition-group': data.dependencies['react-transition-group'],
+                    'react-transition-group': data.dependencies['react-transition-group']
+                },
+                dependencies: {
+                    'lodash': data.dependencies['lodash'],
                     'string.prototype.at': data.dependencies['string.prototype.at']
                 }
             };
