@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import 'string.prototype.at';
 
 import Editor from './components/Editor';
 import EditorLoading from './components/EditorLoading';

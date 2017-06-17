@@ -130,7 +130,7 @@ function cursorSelectionPosition(selectStartX, selectStartY, selectStopX, select
             if (tempCol > 0) {
                 do {
 
-                    tempchar = string.at(tempCol - 1);
+                    tempchar = string.charAt(tempCol - 1);
 
                     if (!discontinuousChars.includes(tempchar)) {
                         tempStartChars.push(tempchar);
@@ -153,7 +153,7 @@ function cursorSelectionPosition(selectStartX, selectStartY, selectStopX, select
             if (tempCol < string.length) {
                 do {
 
-                    tempchar = string.at(tempCol);
+                    tempchar = string.charAt(tempCol);
 
                     if (!discontinuousChars.includes(tempchar)) {
                         tempStopChars.push(tempchar);
@@ -177,7 +177,7 @@ function cursorSelectionPosition(selectStartX, selectStartY, selectStopX, select
 
                 if (tempCol < string.length) {
 
-                    tempchar = string.at(tempCol);
+                    tempchar = string.charAt(tempCol);
 
                     if (discontinuousChars.includes(tempchar)) {
                         selectStopPosition.left += CharSize.calculateCharWidth(tempchar, editorEl);
@@ -188,7 +188,7 @@ function cursorSelectionPosition(selectStartX, selectStartY, selectStopX, select
 
                 if (tempchar === undefined && tempCol > 0) {
 
-                    tempchar = string.at(tempCol - 1);
+                    tempchar = string.charAt(tempCol - 1);
 
                     if (discontinuousChars.includes(tempchar)) {
                         selectStartPosition.left -= CharSize.calculateCharWidth(tempchar, editorEl);
@@ -329,7 +329,7 @@ function deletePositionChar(direction, dataArray, pos, editorEl) {
     if (direction === 'left') {
 
         newDataArray[pos.row] = dataArray[pos.row].slice(0, pos.col - 1) + dataArray[pos.row].slice(pos.col);
-        newPosition.left -= CharSize.calculateStringWidth(dataArray[pos.row].at(pos.col - 1), editorEl);
+        newPosition.left -= CharSize.calculateStringWidth(dataArray[pos.row].charAt(pos.col - 1), editorEl);
         newPosition.col -= 1;
 
     } else if (direction === 'right') {

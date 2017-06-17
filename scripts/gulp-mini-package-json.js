@@ -38,8 +38,7 @@ module.exports = function () {
                     'react-transition-group': data.dependencies['react-transition-group']
                 },
                 dependencies: {
-                    'lodash': data.dependencies['lodash'],
-                    'string.prototype.at': data.dependencies['string.prototype.at']
+                    'lodash': data.dependencies['lodash']
                 }
             };
 
