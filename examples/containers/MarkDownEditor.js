@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
-import markdown from 'markdown';
+import Markdown from 'js-markdown';
 import 'github-markdown-css';
 
 import ReactTextEdit from 'dist';
 
 import Event from 'utils/Event';
-import Valid from 'utils/Valid';
 
-import README from 'README.md';
+import MarkDownData from 'README.md';
 
 import 'assets/sass/MarkDownEditor.scss';
 
@@ -21,7 +20,8 @@ export default class MarkDownEditor extends Component {
 
         this.state = {
 
-            data: README,
+            data: MarkDownData,
+            markdownHTML: Markdown.parse(MarkDownData),
 
             fullWidth: window.innerWidth,
             editorWidthPerCent: .5,
@@ -55,9 +55,12 @@ export default class MarkDownEditor extends Component {
     }
 
     changeHandle(data) {
-        this.setState({
-            data
-        });
+        if (data !== this.state.data) {
+            this.setState({
+                data,
+                markdownHTML: Markdown.parse(data)
+            });
+        }
     }
 
     markdownBodyScrollHandle() {
@@ -94,11 +97,8 @@ export default class MarkDownEditor extends Component {
             return;
         }
 
-        const min = 20,
-            editorWidth = Valid.range(window.innerWidth - e.clientX, min, window.innerWidth - min);
-
         this.setNextState({
-            editorWidthPerCent: (editorWidth) / window.innerWidth,
+            editorWidthPerCent: (window.innerWidth - e.clientX) / window.innerWidth,
             editorHeight: window.innerHeight
         });
 
@@ -124,8 +124,7 @@ export default class MarkDownEditor extends Component {
 
     render() {
 
-        const {data, editorWidthPerCent, editorHeight, isResizing, editorScrollPerCent} = this.state,
-            html = {__html: markdown.parse(data, 'Maruku')},
+        const {data, markdownHTML, editorWidthPerCent, editorHeight, isResizing, editorScrollPerCent} = this.state,
             markdownBodyWidth = window.innerWidth * (1 - editorWidthPerCent),
             markdownBodyStyle = {
                 width: markdownBodyWidth
@@ -134,7 +133,7 @@ export default class MarkDownEditor extends Component {
                 left: markdownBodyWidth
             },
             dragEdgeStyle = {
-                left: markdownBodyWidth - 2
+                left: markdownBodyWidth - 1
             };
 
         return (
@@ -143,7 +142,7 @@ export default class MarkDownEditor extends Component {
                 <div ref="markdownBody"
                      className="markdown-body"
                      style={markdownBodyStyle}
-                     dangerouslySetInnerHTML={html}
+                     dangerouslySetInnerHTML={{__html: markdownHTML}}
                      onScroll={this.markdownBodyScrollHandle}></div>
 
                 <ReactTextEdit className="mark-down-editor"
