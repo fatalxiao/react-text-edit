@@ -607,7 +607,7 @@ function directionChange(rowOffset, colOffset, props) {
 function scrollOnChange(props) {
 
     const {
-            editorEl, editorDataArray, editorWidth, editorHeight, contentWidth,
+            editorEl, editorDataArray, editorHeight, contentWidth,
             scrollLeft, scrollTop, cursorPosition, editorOptions
         } = props,
         {left, top, row, col} = cursorPosition,

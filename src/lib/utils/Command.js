@@ -4,7 +4,9 @@ import CharSize from './CharSize';
 
 function doDeletePositionLine(direction, props) {
     const {editorEl, editorDataArray, editorOptions, selectStopPosition} = props;
-    return Calculation.deletePositionLine(direction, editorDataArray, selectStopPosition, editorOptions.lineHeight, editorEl);
+    return Calculation.deletePositionLine(
+        direction, editorDataArray, selectStopPosition, editorOptions.lineHeight, editorEl
+    );
 }
 
 function doDeletePositionChar(direction, props) {
