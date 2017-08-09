@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
+import Calculation from '../../utils/Calculation';
 import Valid from '../../utils/Valid';
 import Event from '../../utils/Event';
 
@@ -44,13 +45,12 @@ export default class VerticalScrollBar extends Component {
     }
 
     calculateTop(scrollBarHeight = this.scrollBarHeight) {
-        const {editorOptions, scrollTop, contentHeight} = this.props;
-        return (this.wrapperHeight - scrollBarHeight) * scrollTop / (contentHeight - editorOptions.lineHeight);
+        const {scrollTop} = this.props;
+        return (this.wrapperHeight - scrollBarHeight) * scrollTop / Calculation.fullScrollTop(this.props);
     }
 
     calculateScrollTop(top = this.scrollBarTop, scrollBarHeight = this.scrollBarHeight) {
-        const {editorOptions, contentHeight} = this.props;
-        return (contentHeight - editorOptions.lineHeight) * top / (this.wrapperHeight - scrollBarHeight);
+        return Calculation.fullScrollTop(this.props) * top / (this.wrapperHeight - scrollBarHeight);
     }
 
     mouseDownHandle(e, isWrapper) {

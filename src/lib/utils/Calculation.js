@@ -18,9 +18,26 @@ function scrollLeftPerCent(scrollLeft, props) {
     return contentWidth > displayWidth ? scrollLeft / fullWidth : 1;
 }
 
-function fullScrollTop(props) {
+function maxScrollTop(props) {
     const {editorDataArray, editorOptions} = props;
     return (editorDataArray.length - 1) * editorOptions.lineHeight;
+}
+
+function fullScrollTop(props) {
+
+    const {editorDataArray, editorHeight, editorOptions} = props,
+        {scrollBarWidth, scrollBottomBlankHeight} = editorOptions,
+        max = maxScrollTop(props);
+
+    if (scrollBottomBlankHeight < 0) {
+        return max;
+    }
+
+    return Valid.range(
+        editorDataArray.length * editorOptions.lineHeight - editorHeight + scrollBarWidth + scrollBottomBlankHeight,
+        undefined, max
+    );
+
 }
 
 function scrollTopPerCent(scrollTop, props) {
@@ -702,6 +719,7 @@ export default {
     horizontalDisplayWidth,
     fullScrollLeft,
     scrollLeftPerCent,
+    maxScrollTop,
     fullScrollTop,
     scrollTopPerCent,
     textDisplayIndex,

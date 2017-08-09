@@ -80,7 +80,13 @@ export default class ReactTextEdit extends Component {
              * the number of space if use space for indent
              * @type {number}
              */
-            tabIndentSize: 4
+            tabIndentSize: 4,
+
+            /**
+             * the number of scroll bottom blank space height
+             * @type {number}
+             */
+            scrollBottomBlankHeight: -1
 
         };
 
