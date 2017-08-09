@@ -151,9 +151,6 @@ export default class MarkDownEditor extends Component {
                                width={window.innerWidth * editorWidthPerCent}
                                height={editorHeight}
                                scrollTopPerCent={editorScrollPerCent}
-                               options={{
-                                   scrollBottomBlankHeight: 0
-                               }}
                                onChange={this.changeHandle}
                                onScroll={this.editorScrollHandle}/>
 

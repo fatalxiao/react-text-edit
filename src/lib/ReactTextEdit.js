@@ -86,7 +86,7 @@ export default class ReactTextEdit extends Component {
              * the number of scroll bottom blank space height
              * @type {number}
              */
-            scrollBottomBlankHeight: -1
+            scrollBottomBlankHeight: 0
 
         };
 
