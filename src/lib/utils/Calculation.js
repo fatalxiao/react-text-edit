@@ -618,7 +618,7 @@ function scrollOnChange(props) {
 
     // top
     if (top - newScrollTop < lineHeight) {
-        newScrollTop = Valid.range(top - lineHeight, 0, fullScrollTop(props));
+        newScrollTop = top - lineHeight;
     }
 
     // bottom
@@ -649,8 +649,8 @@ function scrollOnChange(props) {
     }
 
     return {
-        scrollLeft: newScrollLeft,
-        scrollTop: newScrollTop
+        scrollLeft: Valid.range(newScrollLeft, 0, fullScrollLeft(props)),
+        scrollTop: Valid.range(newScrollTop, 0, fullScrollTop(props))
     };
 
 }
