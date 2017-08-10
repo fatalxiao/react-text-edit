@@ -5,6 +5,7 @@ import Editor from './components/Editor';
 import EditorLoading from './components/EditorLoading';
 
 import './assets/fonts/font.css';
+import 'highlight.js/styles/darcula.css';
 
 export default class ReactTextEdit extends Component {
 

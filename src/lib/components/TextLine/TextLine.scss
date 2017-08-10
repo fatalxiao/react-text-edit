@@ -3,4 +3,8 @@
 .react-editor-text-line {
     font: inherit;
     position: absolute;
+
+    & > * {
+        font: inherit;
+    }
 }
