@@ -13,15 +13,15 @@ export default class TextContainer extends Component {
         super(props);
 
         this.state = {
-            data: hljs.highlightAuto(props.editorDataArray.join('\n'))
+            formatedData: hljs.highlightAuto(props.data)
         };
 
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.editorDataArray.join('\n') !== this.props.editorDataArray.join('\n')) {
+        if (nextProps.data !== this.props.data) {
             this.setState({
-                data: hljs.highlightAuto(nextProps.editorDataArray.join('\n'))
+                formatedData: hljs.highlightAuto(nextProps.data)
             });
         }
     }
@@ -29,8 +29,8 @@ export default class TextContainer extends Component {
     render() {
 
         const {editorOptions, displayIndex} = this.props,
-            {data} = this.state,
-            {language, value} = data;
+            {formatedData} = this.state,
+            {language, value} = formatedData;
 
         return (
             <div className="react-editor-text-container">
