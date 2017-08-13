@@ -31,12 +31,14 @@ module.exports = function () {
                 license: data.license,
                 homepage: data.homepage,
                 peerDependencies: {
-                    'highlight.js': data.dependencies['highlight.js'],
-                    'lodash': data.dependencies['lodash'],
                     'prop-types': data.dependencies['prop-types'],
                     'react': data.dependencies['react'],
                     'react-dom': data.dependencies['react-dom'],
                     'react-transition-group': data.dependencies['react-transition-group']
+                },
+                dependencies: {
+                    'highlight.js': data.dependencies['highlight.js'],
+                    'lodash': data.dependencies['lodash']
                 }
             };
 
