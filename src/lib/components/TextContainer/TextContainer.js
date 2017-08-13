@@ -13,17 +13,20 @@ export default class TextContainer extends Component {
         super(props);
 
         this.state = {
-            formatedData: hljs.highlightAuto(props.data)
+            formatedData: hljs.highlightAuto(props.editorDataArray.join('\n'))
         };
 
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.data !== this.props.data) {
+
+        const data = nextProps.editorDataArray.join('\n');
+        if (data !== this.props.editorDataArray.join('\n')) {
             this.setState({
-                formatedData: hljs.highlightAuto(nextProps.data)
+                formatedData: hljs.highlightAuto(data)
             });
         }
+
     }
 
     render() {
