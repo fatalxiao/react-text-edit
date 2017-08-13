@@ -8,9 +8,9 @@
         "build:components": "rimraf dist && gulp build",
         "watch:components": "npm run build:components && gulp watch",
         "dev:example": "node build/dev/dev-server.js",
-        "build:example": "rimraf docs && node build/prod/prod.js",
+        "build:example": "npm run build:components && rimraf docs && node build/prod/prod.js",
         "run:demo": "node build/demo/demo-server.js",
-        "demo": "npm run build:components && npm run build:example && npm run run:demo"
+        "demo": "npm run build:example && npm run run:demo"
     },
     "repository": {
         "type": "git",
