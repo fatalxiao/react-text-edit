@@ -19,8 +19,8 @@ export default class TextLine extends Component {
 
         return (
             <div className="react-editor-text-line"
-                 style={{...style, ...lineStyle}}
-                 dangerouslySetInnerHTML={{__html: data}}>
+                 style={{...style, ...lineStyle}}>
+                {data}
             </div>
         );
 

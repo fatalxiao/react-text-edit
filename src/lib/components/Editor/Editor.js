@@ -79,7 +79,7 @@ export default class Editor extends Component {
          * highlight worker handler
          * @type {object}
          */
-        this.highlightWorker = undefined;
+            // this.highlightWorker = undefined;
 
         let editorDataArray = props.data ? props.data.split(/\r?\n/) : [''];
 
@@ -114,13 +114,13 @@ export default class Editor extends Component {
              * highlighted data array
              * @type {array of string}
              */
-            highlightedDataArray: undefined,
+            // highlightedDataArray: undefined,
 
             /**
              * code language of data
              * @type {string}
              */
-            language: undefined,
+            // language: undefined,
 
             /**
              * editor width from invoker (or '100%' if isFullScreen is true)
@@ -249,7 +249,7 @@ export default class Editor extends Component {
         this.calculateContentWidth = this::this.calculateContentWidth;
         this.calculateContentHeight = this::this.calculateContentHeight;
         this.calculateGutterWidth = this::this.calculateGutterWidth;
-        this.hightlight = this::this.hightlight;
+        // this.hightlight = this::this.hightlight;
         this.scrollX = this::this.scrollX;
         this.scrollY = this::this.scrollY;
         this.onCompositionUpdate = this::this.onCompositionUpdate;
@@ -305,23 +305,23 @@ export default class Editor extends Component {
         return CharSize.calculateStringWidth('' + editorDataArray.length, this.refs.editor) + horizontalPadding * 2 + 4;
     }
 
-    hightlight(editorDataArray = this.state.editorDataArray) {
-
-        if (this.highlightWorker) {
-            this.highlightWorker.terminate();
-            this.highlightWorker = undefined;
-        }
-
-        const self = this,
-            worker = require('worker-loader!../../workers/highlightWorker.js');
-
-        this.highlightWorker = new worker();
-        this.highlightWorker.onmessage = function (event) {
-            self.setState(event.data);
-        };
-        this.highlightWorker.postMessage(editorDataArray);
-
-    }
+    // hightlight(editorDataArray = this.state.editorDataArray) {
+    //
+    //     if (this.highlightWorker) {
+    //         this.highlightWorker.terminate();
+    //         this.highlightWorker = undefined;
+    //     }
+    //
+    //     const self = this,
+    //         worker = require('worker-loader!../../workers/highlightWorker.js');
+    //
+    //     this.highlightWorker = new worker();
+    //     this.highlightWorker.onmessage = function (event) {
+    //         self.setState(event.data);
+    //     };
+    //     this.highlightWorker.postMessage(editorDataArray);
+    //
+    // }
 
     /**
      * set text content scroll horizontal offset
@@ -415,7 +415,7 @@ export default class Editor extends Component {
 
         const state = {
             editorDataArray,
-            highlightedDataArray: undefined,
+            // highlightedDataArray: undefined,
             contentWidth: this.calculateContentWidth(editorDataArray),
             contentHeight: this.calculateContentHeight(editorDataArray),
             isDoubleClick: false,
@@ -440,7 +440,7 @@ export default class Editor extends Component {
 
             this.updateHistory();
 
-            this.hightlight();
+            // this.hightlight();
 
         });
 
@@ -689,7 +689,7 @@ export default class Editor extends Component {
             this.editorHistories.push(_.cloneDeep(this.state));
             this.historyPointer = 0;
 
-            this.hightlight();
+            // this.hightlight();
 
         });
 
@@ -747,7 +747,7 @@ export default class Editor extends Component {
 
         if (!_.isEmpty(state)) {
             this.setState(state, () => {
-                this.hightlight();
+                // this.hightlight();
             });
         }
 
