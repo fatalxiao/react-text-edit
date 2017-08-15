@@ -4,10 +4,16 @@ import PropTypes from 'prop-types';
 import Editor from './components/Editor';
 import EditorLoading from './components/EditorLoading';
 
+import Util from './utils/Util';
+
 import './assets/fonts/font.css';
-import 'highlight.js/styles/darcula.css';
 
 export default class ReactTextEdit extends Component {
+
+    static Theme = {
+        DEFAULT: 'default',
+        DARCULA: 'darcula'
+    };
 
     constructor(props) {
 
@@ -112,6 +118,8 @@ export default class ReactTextEdit extends Component {
             });
         });
 
+        require(`highlight.js/styles/${this.props.theme}.css`);
+
     }
 
     render() {
@@ -175,6 +183,8 @@ ReactTextEdit.propTypes = {
     scrollLeftPerCent: PropTypes.number,
     scrollTopPerCent: PropTypes.number,
 
+    theme: PropTypes.oneOf(Util.enumerateValue(ReactTextEdit.Theme)),
+
     /**
      * editor extra options (see "defaultOptions" for detail)
      */
@@ -217,6 +227,8 @@ ReactTextEdit.defaultProps = {
 
     scrollLeftPerCent: 0,
     scrollTopPerCent: 0,
+
+    theme: ReactTextEdit.Theme.DEFAULT,
 
     options: null
 
