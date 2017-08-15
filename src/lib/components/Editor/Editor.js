@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {findDOMNode} from 'react-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import hljs from 'highlight.js';
 
 import TextScroller from '../TextScroller';
 import ScrollBars from '../ScrollBars';
