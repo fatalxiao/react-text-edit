@@ -13,13 +13,14 @@ export default class TextContainer extends Component {
 
     render() {
 
-        const {editorDataArray, editorOptions, displayIndex} = this.props;
+        const {editorDataArray, highlightedDataArray, editorOptions, displayIndex} = this.props,
+            data = highlightedDataArray || editorDataArray;
 
         return (
             <div className="react-editor-text-container">
 
                 {
-                    editorDataArray.map((line, index) => {
+                    data && data.map((line, index) => {
                         return index >= displayIndex.start && index <= displayIndex.stop ?
                             (
                                 <TextLine {...this.props}

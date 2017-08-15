@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {findDOMNode} from 'react-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import hljs from 'highlight.js';
 
 import TextScroller from '../TextScroller';
 import ScrollBars from '../ScrollBars';
@@ -75,12 +76,6 @@ export default class Editor extends Component {
          */
         this.historyPointer = -1;
 
-        /**
-         * highlight worker handler
-         * @type {object}
-         */
-            // this.highlightWorker = undefined;
-
         let editorDataArray = props.data ? props.data.split(/\r?\n/) : [''];
 
         let editorWidth = props.width,
@@ -89,6 +84,9 @@ export default class Editor extends Component {
             editorWidth = window.innerWidth;
             editorHeight = window.innerHeight;
         }
+
+        let highlightedDataArray, language;
+        ({highlightedDataArray, language} = Calculation.getHightlightedData(editorDataArray));
 
         this.state = {
 
@@ -114,13 +112,13 @@ export default class Editor extends Component {
              * highlighted data array
              * @type {array of string}
              */
-            // highlightedDataArray: undefined,
+            highlightedDataArray: highlightedDataArray,
 
             /**
              * code language of data
              * @type {string}
              */
-            // language: undefined,
+            language: language,
 
             /**
              * editor width from invoker (or '100%' if isFullScreen is true)
@@ -249,7 +247,6 @@ export default class Editor extends Component {
         this.calculateContentWidth = this::this.calculateContentWidth;
         this.calculateContentHeight = this::this.calculateContentHeight;
         this.calculateGutterWidth = this::this.calculateGutterWidth;
-        // this.hightlight = this::this.hightlight;
         this.scrollX = this::this.scrollX;
         this.scrollY = this::this.scrollY;
         this.onCompositionUpdate = this::this.onCompositionUpdate;
@@ -304,24 +301,6 @@ export default class Editor extends Component {
                          horizontalPadding = this.props.editorOptions.horizontalPadding) {
         return CharSize.calculateStringWidth('' + editorDataArray.length, this.refs.editor) + horizontalPadding * 2 + 4;
     }
-
-    // hightlight(editorDataArray = this.state.editorDataArray) {
-    //
-    //     if (this.highlightWorker) {
-    //         this.highlightWorker.terminate();
-    //         this.highlightWorker = undefined;
-    //     }
-    //
-    //     const self = this,
-    //         worker = require('worker-loader!../../workers/highlightWorker.js');
-    //
-    //     this.highlightWorker = new worker();
-    //     this.highlightWorker.onmessage = function (event) {
-    //         self.setState(event.data);
-    //     };
-    //     this.highlightWorker.postMessage(editorDataArray);
-    //
-    // }
 
     /**
      * set text content scroll horizontal offset
@@ -415,14 +394,14 @@ export default class Editor extends Component {
 
         const state = {
             editorDataArray,
-            // highlightedDataArray: undefined,
             contentWidth: this.calculateContentWidth(editorDataArray),
             contentHeight: this.calculateContentHeight(editorDataArray),
             isDoubleClick: false,
             isTripleClick: false,
             selectStartPosition: newStartPosition,
             selectStopPosition: newStopPosition,
-            cursorPosition: newCursorPosition
+            cursorPosition: newCursorPosition,
+            ...Calculation.getHightlightedData(editorDataArray)
         };
 
         const {scrollLeft, scrollTop} = Calculation.scrollOnChange({...this.props, ...this.state, ...state});
@@ -439,8 +418,6 @@ export default class Editor extends Component {
             this.props.onChange && this.props.onChange(editorDataArray.join('\n'));
 
             this.updateHistory();
-
-            // this.hightlight();
 
         });
 
@@ -685,12 +662,8 @@ export default class Editor extends Component {
             contentWidth: this.calculateContentWidth(),
             gutterWidth: this.calculateGutterWidth()
         }, () => {
-
             this.editorHistories.push(_.cloneDeep(this.state));
             this.historyPointer = 0;
-
-            // this.hightlight();
-
         });
 
     }
@@ -736,6 +709,7 @@ export default class Editor extends Component {
 
         // update text content width and height
         if (state.editorDataArray) {
+
             state.contentWidth = this.calculateContentWidth(state.editorDataArray);
             state.contentHeight = this.calculateContentHeight(
                 state.editorDataArray, nextProps.editorOptions.lineHeight
@@ -743,12 +717,15 @@ export default class Editor extends Component {
             state.gutterWidth = this.calculateGutterWidth(
                 state.editorDataArray, nextProps.editorOptions.horizontalPadding
             );
+
+            const hightlightedData = Calculation.getHightlightedData(state.editorDataArray);
+            state.highlightedDataArray = hightlightedData.highlightedDataArray;
+            state.language = hightlightedData.language;
+
         }
 
         if (!_.isEmpty(state)) {
-            this.setState(state, () => {
-                // this.hightlight();
-            });
+            this.setState(state);
         }
 
     }

@@ -1,3 +1,5 @@
+import hljs from 'highlight.js';
+
 import CharSize from './CharSize';
 import Valid from './Valid';
 
@@ -715,6 +717,17 @@ function duplicateLine(dataArray, pos, lineHeight) {
 
 }
 
+function getHightlightedData(dataArray) {
+
+    const result = hljs.highlightAuto(dataArray.join('\n'));
+
+    return {
+        highlightedDataArray: result.value.split('\n'),
+        language: result.language
+    };
+
+}
+
 export default {
     horizontalDisplayWidth,
     fullScrollLeft,
@@ -736,5 +749,6 @@ export default {
     directionChange,
     scrollOnChange,
     duplicateSelection,
-    duplicateLine
+    duplicateLine,
+    getHightlightedData
 };
