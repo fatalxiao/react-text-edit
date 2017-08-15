@@ -360,7 +360,7 @@ export default class TextInput extends Component {
                       className="react-editor-text-input"
                       style={style}
                       onBlur={this.blurHandle}
-                      onChange={this.changeHandle}
+                      onInput={this.changeHandle}
                       onKeyDown={this.keyDownHandle}
                       onCompositionStart={this.compositionHandle}
                       onCompositionUpdate={this.compositionHandle}
