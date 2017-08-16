@@ -118,16 +118,12 @@ export default class ReactTextEdit extends Component {
             });
         });
 
-        const {theme} = this.props;
-
-        require(`highlight.js/styles/${theme}.css`);
-        require(`./assets/sass/theme/${theme}.css`);
+        require(`./assets/sass/theme/${this.props.theme}.css`);
 
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.theme !== this.props.theme) {
-            require(`highlight.js/styles/${nextProps.theme}.css`);
             require(`./assets/sass/theme/${nextProps.theme}.css`);
         }
     }
