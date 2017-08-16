@@ -29,6 +29,13 @@
         }
     }
 
+    .react-editor-scroll-bars {
+        .react-editor-horizontal-scroll-bar-inner,
+        .react-editor-vertical-scroll-bar-inner {
+            background: #6e6e6e;
+        }
+    }
+
     // code
     .hljs,
     .hljs-subst {

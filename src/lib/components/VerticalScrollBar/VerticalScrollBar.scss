@@ -8,7 +8,7 @@
     right: 0;
     cursor: pointer;
     pointer-events: all;
-    z-index: $scroll-bar-z-index;
+    z-index: 5;
     opacity: .5;
     transition: opacity $transition-duration ease-in-out;
 
@@ -23,7 +23,6 @@
             width: 8px;
             height: 100%;
             border-radius: 6px;
-            background: $theme-scroll-bar;
         }
     }
 

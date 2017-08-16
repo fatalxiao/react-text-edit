@@ -7,7 +7,7 @@
     bottom: 0;
     cursor: pointer;
     pointer-events: auto;
-    z-index: $scroll-bar-z-index;
+    z-index: 5;
     opacity: .5;
     transition: left 0s, opacity $transition-duration ease-in-out;
 
@@ -21,7 +21,6 @@
         .react-editor-horizontal-scroll-bar-inner {
             height: 8px;
             border-radius: 6px;
-            background: $theme-scroll-bar;
         }
     }
 
