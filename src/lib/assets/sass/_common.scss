@@ -1,41 +1,10 @@
 // theme
 $theme-scroll-bar: #6e6e6e;
-$theme-highlight: #6897bb;
-$theme-cursor: #bbb;
-$theme-active-line-bg: #323232;
-$theme-selection-line-bg: #214283;
-$theme-gutter-bg: #313335;
-$theme-gutter-border: #555;
-$theme-line-number: #606366;
 
 $scroll-bar-z-index: 5;
 
 $border-radius: 4px;
 $transition-duration: 250ms;
-
-// color
-$success: #67ba31;
-$warning: #f1ad09;
-$error: #d8534e;
-$red: #f44336;
-$pink: #e91e63;
-$purple: #9c27b0;
-$deep-purple: #673ab7;
-$indigo: #3f51b5;
-$blue: #2196f3;
-$light-blue: #03a9f4;
-$cyan: #00bcd4;
-$teal: #009688;
-$green: #4caf50;
-$light-green: #8bc34a;
-$lime: #cddc39;
-$yellow: #ffeb3b;
-$amber: #ffc107;
-$orange: #ff9800;
-$deep-orange: #ff5722;
-$brown: #795548;
-$grey: #9e9e9e;
-$blue-grey: #607d8b;
 
 @mixin float-fix {
     &::before, &::after {
