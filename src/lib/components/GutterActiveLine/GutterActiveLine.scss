@@ -3,7 +3,7 @@
 .react-editor-gutter-active-line {
     position: absolute;
     left: 0;
-    background: $theme-active-line-bg;
+    background: transparentize(#fff, .7);
     min-width: 100%;
 
     &.react-editor-gutter-active-line-empty {
