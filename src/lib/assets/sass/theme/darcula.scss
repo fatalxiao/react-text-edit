@@ -1,0 +1,21 @@
+.react-editor.theme-darcula {
+
+    .react-editor-text-scroller {
+        .react-editor-text-active-line {
+            background: #323232;
+        }
+
+        .react-editor-text-selection-line {
+            background: #214283;
+        }
+    }
+
+    .react-editor-gutter {
+        background: #313335;
+        border-right: 1px solid $theme-gutter-border;
+
+        .react-editor-gutter-active-line {
+            background: #323232;
+        }
+    }
+}

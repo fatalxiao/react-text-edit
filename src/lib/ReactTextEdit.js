@@ -119,6 +119,7 @@ export default class ReactTextEdit extends Component {
         });
 
         require(`highlight.js/styles/${this.props.theme}.css`);
+        require(`./assets/sass/theme/${this.props.theme}.css`);
 
     }
 
