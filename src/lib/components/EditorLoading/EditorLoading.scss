@@ -63,7 +63,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: $theme-bg;
+    padding: 0;
+    //background: $theme-bg;
 
     .react-editor-loading {
         position: absolute;

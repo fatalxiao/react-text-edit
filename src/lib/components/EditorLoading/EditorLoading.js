@@ -19,7 +19,7 @@ export default class EditorLoading extends Component {
                     this.props.editorInital ?
                         null
                         :
-                        <div className="react-editor-loading-wrapper">
+                        <div className="hljs react-editor-loading-wrapper">
                             <div className="react-editor-loading">
                                 <div className="spinner">
                                     <div className="circle left">
