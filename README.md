@@ -37,8 +37,10 @@ export default class MyComponent extends Component {
         
     }
     
-    onChange() {
-    	// ...
+    onChange(data) {
+    	this.setState({
+    	    data
+    	});
     }
 
     // ...
