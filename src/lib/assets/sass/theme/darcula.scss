@@ -12,7 +12,11 @@
 
     .react-editor-gutter {
         background: #313335;
-        border-right: 1px solid $theme-gutter-border;
+        border-right: 1px solid #555;
+
+        .react-editor-line-number-item {
+            color: #606366;
+        }
 
         .react-editor-gutter-active-line {
             background: #323232;
