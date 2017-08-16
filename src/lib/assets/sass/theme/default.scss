@@ -1,3 +1,26 @@
 .react-editor.theme-default {
+    background: #fff;
 
+    .react-editor-text-scroller {
+        .react-editor-text-active-line {
+            background: #fffae3;
+        }
+
+        .react-editor-text-selection-line {
+            background: #aab8d4;
+        }
+    }
+
+    .react-editor-gutter {
+        background: #f0f0f0;
+        border-right: 1px solid #d0d0d0;
+
+        .react-editor-line-number-item {
+            color: #999;
+        }
+
+        .react-editor-gutter-active-line {
+            background: #fffae3;
+        }
+    }
 }
