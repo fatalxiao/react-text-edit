@@ -151,6 +151,7 @@ export default class MarkDownEditor extends Component {
                                width={window.innerWidth * editorWidthPerCent}
                                height={editorHeight}
                                scrollTopPerCent={editorScrollPerCent}
+                               theme={ReactTextEdit.Theme.DARCULA}
                                onChange={this.changeHandle}
                                onScroll={this.editorScrollHandle}/>
 
