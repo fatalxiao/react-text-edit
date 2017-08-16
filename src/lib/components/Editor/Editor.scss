@@ -5,9 +5,8 @@
     font-size: 14px;
     font-weight: 400;
     cursor: text;
-    overflow-x: hidden !important;
-    overflow-y: hidden !important;
-    padding: 0 !important;
+    overflow: hidden;
+    padding: 0;
     position: relative;
     border-radius: $border-radius;
     user-select: none;
