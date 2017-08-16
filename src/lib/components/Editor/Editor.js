@@ -739,17 +739,20 @@ export default class Editor extends Component {
 
     render() {
 
-        const {className, style, isFullScreen, editorOptions} = this.props;
-        const {editorWidth, editorHeight} = this.state;
+        const {className, style, isFullScreen, editorOptions} = this.props,
+            {editorWidth, editorHeight, language} = this.state,
 
-        const editorSize = {
-            width: editorWidth,
-            height: editorHeight
-        };
+            editorClassName = (isFullScreen ? ' react-editor-full-screen' : '') + (language ? ' ' + language : '')
+                + (className ? ' ' + className : ''),
+
+            editorSize = {
+                width: editorWidth,
+                height: editorHeight
+            };
 
         return (
             <div ref="editor"
-                 className={`react-editor ${isFullScreen ? 'react-editor-full-screen' : ''} ${className}`}
+                 className={'react-editor hljs' + editorClassName}
                  style={{...editorSize, ...style}}
                  onWheel={this.wheelHandle}>
 

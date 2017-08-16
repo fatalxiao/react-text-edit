@@ -1,13 +1,9 @@
 @import '../../assets/sass/common';
 
 .react-editor {
-
     font-family: Consolas, sans-serif;
     font-size: 14px;
     font-weight: 400;
-
-    color: $theme-text;
-    background: $theme-bg;
     cursor: text;
     overflow: hidden;
     position: relative;
