@@ -5,10 +5,14 @@
     .react-editor-text-scroller {
         .react-editor-text-active-line {
             background: #fffae3;
+
+            .react-editor-text-selection {
+                color: #fff;
+            }
         }
 
         .react-editor-text-selection-line {
-            background: #aab8d4;
+            background: #5974ab;
         }
 
         .react-editor-cursor {
