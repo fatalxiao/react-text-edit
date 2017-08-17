@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import CharSize from '../../utils/CharSize';
-
 import './LineNumber.css';
 
 export default class LineNumber extends Component {
@@ -17,16 +15,15 @@ export default class LineNumber extends Component {
             len = editorDataArray.length,
             start = Math.max(displayIndex.start, 0),
             stop = Math.min(displayIndex.stop, len),
-            {lineHeight, horizontalPadding} = editorOptions,
-            width = CharSize.calculateStringWidth('' + len, editorEl);
+            {lineHeight, horizontalPadding} = editorOptions;
 
         let numbers = [], style;
         for (let i = start; i < stop; i++) {
 
             style = {
-                width,
                 lineHeight: `${lineHeight}px`,
-                left: horizontalPadding,
+                paddingLeft: horizontalPadding,
+                paddingRight: horizontalPadding + 2,
                 top: lineHeight * i
             };
 
@@ -42,9 +39,7 @@ export default class LineNumber extends Component {
 
         return (
             <div className="react-editor-line-number">
-
                 {numbers}
-
             </div>
         );
 

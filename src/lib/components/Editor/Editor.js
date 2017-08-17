@@ -298,7 +298,7 @@ export default class Editor extends Component {
 
     calculateGutterWidth(editorDataArray = this.state.editorDataArray,
                          horizontalPadding = this.props.editorOptions.horizontalPadding) {
-        return CharSize.calculateStringWidth('' + editorDataArray.length, this.refs.editor) + horizontalPadding * 2 + 4;
+        return CharSize.calculateStringWidth('' + editorDataArray.length, this.refs.editor) + horizontalPadding * 2 + 2;
     }
 
     /**
@@ -395,6 +395,7 @@ export default class Editor extends Component {
             editorDataArray,
             contentWidth: this.calculateContentWidth(editorDataArray),
             contentHeight: this.calculateContentHeight(editorDataArray),
+            gutterWidth: this.calculateGutterWidth(editorDataArray),
             isDoubleClick: false,
             isTripleClick: false,
             selectStartPosition: newStartPosition,
