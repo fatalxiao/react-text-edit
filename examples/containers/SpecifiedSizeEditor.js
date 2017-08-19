@@ -31,7 +31,8 @@ export default class SpecifiedSizeEditor extends Component {
                     <ReactTextEdit className="specified-size-editor"
                                    data={data1}
                                    width={500}
-                                   height={200}/>
+                                   height={200}
+                                   theme={ReactTextEdit.Theme.DARCULA}/>
                 </div>
 
                 <div className="example">
@@ -39,7 +40,8 @@ export default class SpecifiedSizeEditor extends Component {
                     <ReactTextEdit className="specified-size-editor"
                                    data={data2}
                                    width={800}
-                                   height={400}/>
+                                   height={400}
+                                   theme={ReactTextEdit.Theme.DARCULA}/>
                 </div>
 
             </div>
