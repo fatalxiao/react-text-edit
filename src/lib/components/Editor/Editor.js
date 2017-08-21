@@ -10,7 +10,7 @@ import EditorGutter from '../EditorGutter';
 import Valid from '../../utils/Valid';
 import CharSize from '../../utils/CharSize';
 import Event from '../../utils/Event';
-import DomLib from '../../utils/DomLib';
+import DomLib from '../../utils/Dom';
 import Calculation from '../../utils/Calculation';
 
 import './Editor.css';
