@@ -438,6 +438,8 @@ export default class Editor extends Component {
      */
     wheelHandle(e) {
 
+        e.preventDefault();
+
         const {editorOptions, onScroll} = this.props,
             {scrollTop, scrollLeft} = this.state,
             maxScrollLeft = Calculation.fullScrollLeft({...this.props, ...this.state}),
