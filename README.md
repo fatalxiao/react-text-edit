@@ -26,21 +26,21 @@ import ReactTextEdit from 'react-text-edit';
 export default class MyComponent extends Component {
 
     constructor(props) {
-    
+
         super(props);
-        
+
         this.state = {
             data: ''
         };
-        
+
         this.onChange = this::this.onChange;
-        
+
     }
-    
+
     onChange(data) {
-    	this.setState({
-    	    data
-    	});
+        this.setState({
+            data
+        });
     }
 
     // ...
