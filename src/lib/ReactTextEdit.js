@@ -93,12 +93,7 @@ export default class ReactTextEdit extends Component {
              * the number of scroll bottom blank space height
              * @type {number}
              */
-            scrollBottomBlankHeight: 0,
-
-            /**
-             *
-             */
-            maxColumns: 0
+            scrollBottomBlankHeight: 0
 
         };
 
@@ -188,6 +183,8 @@ ReactTextEdit.propTypes = {
      */
     height: PropTypes.number,
 
+    maxColumns: PropTypes.number,
+
     scrollLeft: PropTypes.number,
     scrollTop: PropTypes.number,
 
@@ -210,8 +207,7 @@ ReactTextEdit.propTypes = {
         showLineNumber: PropTypes.bool,
         useTabIndent: PropTypes.bool,
         tabIndentSize: PropTypes.number,
-        scrollBottomBlankHeight: PropTypes.number,
-        maxColumns: PropTypes.number
+        scrollBottomBlankHeight: PropTypes.number
     }),
 
     /**
