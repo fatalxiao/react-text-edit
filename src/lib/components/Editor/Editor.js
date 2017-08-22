@@ -75,7 +75,7 @@ export default class Editor extends Component {
          */
         this.historyPointer = -1;
 
-        let editorDataArray = props.data ? props.data.split(/\r?\n/) : [''];
+        let editorDataArray = props.data ? props.data.split(/\r\n|\n|\r/) : [''];
 
         let editorWidth = props.width,
             editorHeight = props.height;
@@ -676,7 +676,7 @@ export default class Editor extends Component {
 
         // update data array
         if (nextProps.data !== this.state.editorDataArray.join('\n')) {
-            state.editorDataArray = nextProps.data.split(/\r?\n/);
+            state.editorDataArray = nextProps.data.split(/\r\n|\n|\r/);
         }
 
         // update width
