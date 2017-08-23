@@ -75,6 +75,12 @@ export default class Editor extends Component {
          */
         this.historyPointer = -1;
 
+        /**
+         * editor timeout id
+         * @type {null}
+         */
+        this.errorTimeout = null;
+
         let editorDataArray = props.data ? props.data.split(/\r\n|\n|\r/) : [''];
 
         let editorWidth = props.width,
@@ -353,10 +359,14 @@ export default class Editor extends Component {
 
     showError() {
 
+        if (this.errorTimeout) {
+            clearTimeout(this.errorTimeout);
+        }
+
         const {editorEl} = this.state;
 
         Dom.addClass(editorEl, 'error');
-        setTimeout(() => {
+        this.errorTimeout = setTimeout(() => {
             Dom.removeClass(editorEl, 'error');
         }, 150);
 

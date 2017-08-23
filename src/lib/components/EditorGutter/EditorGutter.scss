@@ -8,4 +8,5 @@
     pointer-events: none;
     font: inherit;
     box-sizing: border-box;
+    transition: background $transition-duration ease-in-out;
 }

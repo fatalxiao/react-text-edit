@@ -4,6 +4,7 @@
     position: absolute;
     left: 0;
     min-width: 100%;
+    transition: background $transition-duration ease-in-out;
 
     &.react-editor-gutter-active-line-empty {
         min-width: 0;
