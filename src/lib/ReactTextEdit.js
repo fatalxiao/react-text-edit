@@ -234,6 +234,9 @@ ReactTextEdit.defaultProps = {
     width: 500,
     height: 200,
 
+    maxColumns: 0,
+    maxLines: 0,
+
     scrollLeft: 0,
     scrollTop: 0,
 
