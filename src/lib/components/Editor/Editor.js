@@ -248,6 +248,7 @@ export default class Editor extends Component {
         this.calculateGutterWidth = this::this.calculateGutterWidth;
         this.scrollX = this::this.scrollX;
         this.scrollY = this::this.scrollY;
+        this.showError = this::this.showError;
         this.onCompositionUpdate = this::this.onCompositionUpdate;
         this.onChange = this::this.onChange;
         this.lostFocusHandle = this::this.lostFocusHandle;
@@ -350,6 +351,17 @@ export default class Editor extends Component {
 
     }
 
+    showError() {
+
+        const {editorEl} = this.state;
+
+        Dom.addClass(editorEl, 'error');
+        setTimeout(() => {
+            Dom.removeClass(editorEl, 'error');
+        }, 150);
+
+    }
+
     /**
      * update composition text
      * @param compositionText
@@ -391,19 +403,11 @@ export default class Editor extends Component {
      */
     onChange(editorDataArray, newStartPosition, newStopPosition, newCursorPosition) {
 
-        const {editorOptions} = this.props,
-            {editorEl} = this.state;
-
+        const {editorOptions} = this.props;
         if (editorOptions.maxLines && !isNaN(editorOptions.maxLines) && editorOptions.maxLines > 0
             && editorDataArray.length > editorOptions.maxLines) {
-
-            Dom.addClass(editorEl, 'error');
-            setTimeout(() => {
-                Dom.removeClass(editorEl, 'error');
-            }, 100);
-
+            this.showError();
             return;
-
         }
 
         const state = {
