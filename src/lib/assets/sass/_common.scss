@@ -1,5 +1,9 @@
 $transition-duration: 250ms;
 
+$success: #67ba31;
+$warning: #f1ad09;
+$error: #d8534e;
+
 @mixin float-fix {
     &::before, &::after {
         display: table;

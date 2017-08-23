@@ -10,6 +10,7 @@
     position: relative;
     border-radius: 4px;
     user-select: none;
+    transition: background $transition-duration ease-in-out;
 
     .react-editor-test-container {
         position: absolute;
@@ -33,7 +34,4 @@
         border-radius: 0;
     }
 
-    &.line-overflow {
-        outline: 1px solid $error;
-    }
 }

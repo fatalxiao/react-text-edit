@@ -37,8 +37,59 @@ function getOffset(el) {
 
 }
 
+function addClass(el, className) {
+
+    if (!el || !className) {
+        return;
+    }
+
+    const elClassName = el.className;
+
+    if (!elClassName) {
+        el.className = className;
+        return;
+    }
+
+    const elClass = elClassName.split(/\s+/),
+        index = elClass.findIndex(item => item === className);
+
+    if (index !== -1) { // already has this className
+        return;
+    }
+
+    elClass.push(className);
+    el.className = elClass.join(' ');
+
+}
+
+function removeClass(el, className) {
+
+    if (!el || !className) {
+        return;
+    }
+
+    const elClassName = el.className;
+
+    if (!elClassName) {
+        return;
+    }
+
+    const elClass = elClassName.split(/\s+/),
+        index = elClass.findIndex(item => item === className);
+
+    if (index === -1) { // no this className
+        return;
+    }
+
+    elClass.splice(index, 1);
+    el.className = elClass.join(' ');
+
+}
+
 export default {
     getScrollLeft,
     getScrollTop,
-    getOffset
+    getOffset,
+    addClass,
+    removeClass
 };

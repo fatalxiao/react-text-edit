@@ -16,7 +16,6 @@
             background: #bbb;
         }
     }
-
     .react-editor-gutter {
         background: #313335;
         border-right: 1px solid #555;
@@ -29,11 +28,20 @@
             background: #323232;
         }
     }
-
     .react-editor-scroll-bars {
         .react-editor-horizontal-scroll-bar-inner,
         .react-editor-vertical-scroll-bar-inner {
             background: #6e6e6e;
+        }
+    }
+
+    &.error {
+        background: #992b2b;
+
+        .react-editor-text-scroller {
+            .react-editor-text-active-line {
+                background: #993232;
+            }
         }
     }
 

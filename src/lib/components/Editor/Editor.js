@@ -10,7 +10,7 @@ import EditorGutter from '../EditorGutter';
 import Valid from '../../utils/Valid';
 import CharSize from '../../utils/CharSize';
 import Event from '../../utils/Event';
-import DomLib from '../../utils/Dom';
+import Dom from '../../utils/Dom';
 import Calculation from '../../utils/Calculation';
 
 import './Editor.css';
@@ -391,11 +391,19 @@ export default class Editor extends Component {
      */
     onChange(editorDataArray, newStartPosition, newStopPosition, newCursorPosition) {
 
-        const {editorOptions} = this.props;
+        const {editorOptions} = this.props,
+            {editorEl} = this.state;
 
         if (editorOptions.maxLines && !isNaN(editorOptions.maxLines) && editorOptions.maxLines > 0
             && editorDataArray.length > editorOptions.maxLines) {
+
+            Dom.addClass(editorEl, 'error');
+            setTimeout(() => {
+                Dom.removeClass(editorEl, 'error');
+            }, 100);
+
             return;
+
         }
 
         const state = {
@@ -501,7 +509,7 @@ export default class Editor extends Component {
 
         const {editorOptions} = this.props,
             {scrollLeft, scrollTop, isDoubleClick, isTripleClick} = this.state,
-            editorOffset = DomLib.getOffset(this.refs.editor);
+            editorOffset = Dom.getOffset(this.refs.editor);
 
         if (e.shiftKey) {
             this.selectStartX === undefined && (this.selectStartX = this.selectStopX);
@@ -589,7 +597,7 @@ export default class Editor extends Component {
         }
 
         const {scrollLeft, scrollTop} = this.state,
-            editorOffset = DomLib.getOffset(this.refs.editor);
+            editorOffset = Dom.getOffset(this.refs.editor);
 
         this.selectStopX = e.clientX - editorOffset.left + scrollLeft;
         this.selectStopY = e.clientY - editorOffset.top + scrollTop;
@@ -750,9 +758,11 @@ export default class Editor extends Component {
     render() {
 
         const {className, style, isFullScreen, theme, editorOptions} = this.props,
-            {editorWidth, editorHeight, language} = this.state,
+            {editorDataArray, editorWidth, editorHeight, language} = this.state,
+            {showLineNumber, maxLines} = editorOptions,
 
             editorClassName = (isFullScreen ? ' react-editor-full-screen' : '') + (language ? ' ' + language : '')
+                + (editorDataArray.length > maxLines ? ' line-overflow' : '')
                 + (theme ? ` theme-${theme}` : '') + (className ? ' ' + className : ''),
 
             editorSize = {
@@ -772,7 +782,7 @@ export default class Editor extends Component {
                               {...this}/>
 
                 {
-                    editorOptions.showLineNumber ?
+                    showLineNumber ?
                         <EditorGutter {...this.props}
                                       {...this.state}
                                       {...this}/>
