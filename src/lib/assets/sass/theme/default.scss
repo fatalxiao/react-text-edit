@@ -19,7 +19,6 @@
             background: #000;
         }
     }
-
     .react-editor-gutter {
         background: #f0f0f0;
         border-right: 1px solid #d0d0d0;
@@ -32,11 +31,28 @@
             background: #fffae3;
         }
     }
-
     .react-editor-scroll-bars {
         .react-editor-horizontal-scroll-bar-inner,
         .react-editor-vertical-scroll-bar-inner {
             background: #6e6e6e;
+        }
+    }
+
+    &.error {
+        background: #faa;
+
+        .react-editor-text-scroller {
+            .react-editor-text-active-line {
+                background: #faa;
+            }
+        }
+
+        .react-editor-gutter {
+            background: #faa;
+
+            .react-editor-gutter-active-line {
+                background: #faa;
+            }
         }
     }
 
