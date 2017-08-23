@@ -29,9 +29,9 @@ export default class FullScreenEditor extends Component {
             <ReactTextEdit className="full-screen-editor"
                            data={this.state.data}
                            isFullScreen={true}
-                           // theme={ReactTextEdit.Theme.DARCULA}
+                           theme={ReactTextEdit.Theme.DARCULA}
                            options={{
-                               maxLines: 70,
+                               maxColumns: 70,
                                showLineNumber: true
                            }}
                            onChange={this.changeHandle}/>
