@@ -184,7 +184,6 @@ ReactTextEdit.propTypes = {
     height: PropTypes.number,
 
     maxColumns: PropTypes.number,
-
     maxLines: PropTypes.number,
 
     scrollLeft: PropTypes.number,
