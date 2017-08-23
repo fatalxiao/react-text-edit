@@ -391,6 +391,13 @@ export default class Editor extends Component {
      */
     onChange(editorDataArray, newStartPosition, newStopPosition, newCursorPosition) {
 
+        const {editorOptions} = this.props;
+
+        if (editorOptions.maxLines && !isNaN(editorOptions.maxLines) && editorOptions.maxLines > 0
+            && editorDataArray.length > editorOptions.maxLines) {
+            return;
+        }
+
         const state = {
             editorDataArray,
             contentWidth: this.calculateContentWidth(editorDataArray),
