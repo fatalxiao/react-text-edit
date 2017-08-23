@@ -185,6 +185,8 @@ ReactTextEdit.propTypes = {
 
     maxColumns: PropTypes.number,
 
+    maxLines: PropTypes.number,
+
     scrollLeft: PropTypes.number,
     scrollTop: PropTypes.number,
 
