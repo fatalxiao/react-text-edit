@@ -95,7 +95,7 @@ export default class ReactTextEdit extends Component {
              */
             scrollBottomBlankHeight: 0,
 
-            maxColumns: 0,
+            // maxColumns: 0,
             maxLines: 0,
             showOverflowError: true
 
@@ -210,7 +210,7 @@ ReactTextEdit.propTypes = {
         useTabIndent: PropTypes.bool,
         tabIndentSize: PropTypes.number,
         scrollBottomBlankHeight: PropTypes.number,
-        maxColumns: PropTypes.number,
+        // maxColumns: PropTypes.number,
         maxLines: PropTypes.number
     }),
 

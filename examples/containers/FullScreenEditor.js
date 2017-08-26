@@ -31,7 +31,7 @@ export default class FullScreenEditor extends Component {
                            isFullScreen={true}
                            theme={ReactTextEdit.Theme.DARCULA}
                            options={{
-                               maxColumns: 70,
+                               // maxColumns: 70,
                                showLineNumber: true
                            }}
                            onChange={this.changeHandle}/>
