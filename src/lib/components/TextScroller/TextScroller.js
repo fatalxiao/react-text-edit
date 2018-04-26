@@ -9,7 +9,7 @@ import EditorCursor from '../EditorCursor';
 
 import './TextScroller.scss';
 
-export default class TextScroller extends Component {
+class TextScroller extends Component {
 
     constructor(props) {
         super(props);
@@ -85,12 +85,10 @@ TextScroller.propTypes = {
 TextScroller.defaultProps = {
     isEditorFocused: false,
     editorDataArray: [],
-    editorOptions: null,
     contentWidth: 0,
     scrollTop: 0,
     scrollLeft: 0,
     gutterWidth: 0,
-    selectStartPosition: null,
     selectStopPosition: {
         left: 0,
         top: 0,
@@ -104,3 +102,5 @@ TextScroller.defaultProps = {
         col: 0
     }
 };
+
+export default TextScroller;
