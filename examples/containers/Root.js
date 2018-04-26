@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {Redirect} from 'react-router-dom';
+import {renderRoutes} from 'react-router-config';
 
 import 'assets/font-awesome/css/font-awesome.min.css';
 import 'sass/global.scss';
@@ -16,9 +18,21 @@ class Root extends Component {
     }
 
     render() {
+
+        const {route, location} = this.props;
+
         return (
             <div className="root">
-                {this.props.children}
+
+                {renderRoutes(route.routes)}
+
+                {
+                    location.pathname === '/' ?
+                        <Redirect from="/" to="/catalog"/>
+                        :
+                        null
+                }
+
             </div>
         );
     }
