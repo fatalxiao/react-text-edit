@@ -7,7 +7,7 @@ import Valid from '../../utils/Valid';
 
 import './TextInput.scss';
 
-export default class TextInput extends Component {
+class TextInput extends Component {
 
     constructor(props) {
 
@@ -17,18 +17,18 @@ export default class TextInput extends Component {
             isComposition: false
         };
 
-        this.focus = this::this.focus;
-        this.getTextAreaValue = this::this.getTextAreaValue;
-        this.doChange = this::this.doChange;
-        this.doInputTab = this::this.doInputTab;
-        this.doSelectAll = this::this.doSelectAll;
-        this.doSelectText = this::this.doSelectText;
-        this.doScrollChange = this::this.doScrollChange;
-        this.blurHandle = this::this.blurHandle;
-        this.changeHandle = this::this.changeHandle;
-        this.directionKeyHandle = this::this.directionKeyHandle;
-        this.keyDownHandle = this::this.keyDownHandle;
-        this.compositionHandle = this::this.compositionHandle;
+        this.focus = ::this.focus;
+        this.getTextAreaValue = ::this.getTextAreaValue;
+        this.doChange = ::this.doChange;
+        this.doInputTab = ::this.doInputTab;
+        this.doSelectAll = ::this.doSelectAll;
+        this.doSelectText = ::this.doSelectText;
+        this.doScrollChange = ::this.doScrollChange;
+        this.blurHandler = ::this.blurHandler;
+        this.changeHandler = ::this.changeHandler;
+        this.directionKeyHandler = ::this.directionKeyHandler;
+        this.keyDownHandler = ::this.keyDownHandler;
+        this.compositionHandler = ::this.compositionHandler;
 
     }
 
@@ -120,7 +120,7 @@ export default class TextInput extends Component {
 
     }
 
-    blurHandle() {
+    blurHandler() {
         this.props.lostFocusHandle();
     }
 
@@ -128,7 +128,7 @@ export default class TextInput extends Component {
      * textarea change event handle
      * @param e
      */
-    changeHandle(e, isCompositionEnd) {
+    changeHandler(e, isCompositionEnd) {
 
         const value = e.target.value;
 
@@ -152,7 +152,7 @@ export default class TextInput extends Component {
      * @param colOffset
      * @param rowOffset
      */
-    directionKeyHandle(colOffset, rowOffset) {
+    directionKeyHandler(colOffset, rowOffset) {
 
         const {editorDataArray} = this.props;
 
@@ -175,7 +175,7 @@ export default class TextInput extends Component {
      * textarea keydown event handle
      * @param e
      */
-    keyDownHandle(e) {
+    keyDownHandler(e) {
 
         // console.log(e.keyCode);
 
@@ -205,7 +205,7 @@ export default class TextInput extends Component {
                 if (e.shiftKey) {
                     this.doSelectText(-1, 0);
                 } else {
-                    this.directionKeyHandle(-1, 0);
+                    this.directionKeyHandler(-1, 0);
                 }
                 break;
             }
@@ -216,7 +216,7 @@ export default class TextInput extends Component {
                 } else if (e.shiftKey) {
                     this.doSelectText(0, -1);
                 } else {
-                    this.directionKeyHandle(0, -1);
+                    this.directionKeyHandler(0, -1);
                 }
                 break;
             }
@@ -225,7 +225,7 @@ export default class TextInput extends Component {
                 if (e.shiftKey) {
                     this.doSelectText(1, 0);
                 } else {
-                    this.directionKeyHandle(1, 0);
+                    this.directionKeyHandler(1, 0);
                 }
                 break;
             }
@@ -236,7 +236,7 @@ export default class TextInput extends Component {
                 } else if (e.shiftKey) {
                     this.doSelectText(0, 1);
                 } else {
-                    this.directionKeyHandle(0, 1);
+                    this.directionKeyHandler(0, 1);
                 }
                 break;
             }
@@ -289,7 +289,7 @@ export default class TextInput extends Component {
      * textarea composition event handle
      * @param e
      */
-    compositionHandle(e) {
+    compositionHandler(e) {
 
         e.persist();
 
@@ -359,12 +359,12 @@ export default class TextInput extends Component {
             <textarea ref="textInput"
                       className="react-editor-text-input"
                       style={style}
-                      onBlur={this.blurHandle}
-                      onInput={this.changeHandle}
-                      onKeyDown={this.keyDownHandle}
-                      onCompositionStart={this.compositionHandle}
-                      onCompositionUpdate={this.compositionHandle}
-                      onCompositionEnd={this.compositionHandle}></textarea>
+                      onBlur={this.blurHandler}
+                      onInput={this.changeHandler}
+                      onKeyDown={this.keyDownHandler}
+                      onCompositionStart={this.compositionHandler}
+                      onCompositionUpdate={this.compositionHandler}
+                      onCompositionEnd={this.compositionHandler}></textarea>
         );
 
     }
@@ -388,14 +388,8 @@ TextInput.propTypes = {
 };
 
 TextInput.defaultProps = {
-
-    editorEl: null,
-    editorOptions: null,
     editorDataArray: [],
-    cursorPosition: null,
-    selectStartPosition: null,
-    selectStopPosition: null,
-
     compositionText: ''
-
 };
+
+export default TextInput;
