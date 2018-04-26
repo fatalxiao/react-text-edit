@@ -6,7 +6,7 @@ import GutterActiveLine from '../GutterActiveLine';
 
 import './EditorGutter.scss';
 
-export default class EditorGutter extends Component {
+class EditorGutter extends Component {
 
     constructor(props) {
         super(props);
@@ -52,7 +52,6 @@ EditorGutter.propTypes = {
     editorHeight: PropTypes.number,
     contentHeight: PropTypes.number,
     editorOptions: PropTypes.object,
-    scrollLeft: PropTypes.number,
     scrollTop: PropTypes.number,
     gutterWidth: PropTypes.number,
     cursorPosition: PropTypes.object,
@@ -62,10 +61,8 @@ EditorGutter.propTypes = {
 EditorGutter.defaultProps = {
     editorHeight: 0,
     contentHeight: 0,
-    editorOptions: null,
-    scrollLeft: 0,
     scrollTop: 0,
-    gutterWidth: 0,
-    cursorPosition: null,
-    displayIndex: null
+    gutterWidth: 0
 };
+
+export default EditorGutter;
