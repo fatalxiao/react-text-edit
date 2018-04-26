@@ -5,7 +5,7 @@ import Calculation from '../../utils/Calculation';
 
 import './TextSelection.scss';
 
-export default class TextSelection extends Component {
+class TextSelection extends Component {
 
     constructor(props) {
         super(props);
@@ -38,7 +38,7 @@ export default class TextSelection extends Component {
                              }}></div>
                         :
                         (
-                            selectionLines.map((item, index) => {
+                            selectionLines && selectionLines.map((item, index) => {
                                 if (index === 0) {
                                     return (
                                         <div key={index}
@@ -88,8 +88,7 @@ TextSelection.propTypes = {
 };
 
 TextSelection.defaultProps = {
-    editorOptions: null,
-    contentWidth: 0,
-    selectStartPosition: null,
-    selectStopPosition: null
+    contentWidth: 0
 };
+
+export default TextSelection;
