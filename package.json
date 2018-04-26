@@ -30,6 +30,7 @@
     "homepage": "https://fatalxiao.github.io/react-text-edit/",
     "dependencies": {
         "babel-polyfill": "^6.26.0",
+        "classnames": "^2.2.5",
         "github-markdown-css": "^2.10.0",
         "highlight.js": "^9.12.0",
         "js-markdown": "^1.0.1",
@@ -56,7 +57,7 @@
         "babel-runtime": "^6.26.0",
         "browserify": "^16.2.0",
         "chai": "^4.1.2",
-        "chalk": "^2.4.0",
+        "chalk": "^2.4.1",
         "compression": "^1.7.2",
         "compression-webpack-plugin": "^1.1.11",
         "connect-history-api-fallback": "^1.5.0",
