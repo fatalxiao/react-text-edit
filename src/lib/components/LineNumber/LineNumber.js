@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import './LineNumber.scss';
 
-export default class LineNumber extends Component {
+class LineNumber extends Component {
 
     constructor(props) {
         super(props);
@@ -11,7 +11,7 @@ export default class LineNumber extends Component {
 
     render() {
 
-        const {editorEl, editorDataArray, editorOptions, displayIndex} = this.props,
+        const {editorDataArray, editorOptions, displayIndex} = this.props,
             len = editorDataArray.length,
             start = Math.max(displayIndex.start, 0),
             stop = Math.min(displayIndex.stop, len),
@@ -47,15 +47,13 @@ export default class LineNumber extends Component {
 };
 
 LineNumber.propTypes = {
-    editorEl: PropTypes.object,
     editorDataArray: PropTypes.array,
     editorOptions: PropTypes.object,
     displayIndex: PropTypes.object
 };
 
 LineNumber.defaultProps = {
-    editorEl: null,
-    editorDataArray: [],
-    editorOptions: null,
-    displayIndex: null
+    editorDataArray: []
 };
+
+export default LineNumber;
