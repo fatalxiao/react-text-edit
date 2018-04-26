@@ -8,7 +8,7 @@ import Util from './utils/Util';
 
 import './assets/fonts/font.css';
 
-export default class ReactTextEdit extends Component {
+class ReactTextEdit extends Component {
 
     static Theme = {
         DEFAULT: 'default',
@@ -167,6 +167,8 @@ ReactTextEdit.propTypes = {
      */
     style: PropTypes.object,
 
+    theme: PropTypes.oneOf(Util.enumerateValue(ReactTextEdit.Theme)),
+
     /**
      * editor text data
      */
@@ -192,8 +194,6 @@ ReactTextEdit.propTypes = {
 
     scrollLeftPerCent: PropTypes.number,
     scrollTopPerCent: PropTypes.number,
-
-    theme: PropTypes.oneOf(Util.enumerateValue(ReactTextEdit.Theme)),
 
     /**
      * editor extra options (see "defaultOptions" for detail)
@@ -230,6 +230,7 @@ ReactTextEdit.defaultProps = {
 
     className: '',
     style: null,
+    theme: ReactTextEdit.Theme.DEFAULT,
 
     data: '',
 
@@ -243,8 +244,8 @@ ReactTextEdit.defaultProps = {
     scrollLeftPerCent: 0,
     scrollTopPerCent: 0,
 
-    theme: ReactTextEdit.Theme.DEFAULT,
-
     options: null
 
 };
+
+export default ReactTextEdit;
