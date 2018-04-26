@@ -1,6 +1,18 @@
 {
     "presets": [
-        "es2015",
+        [
+            "env",
+            {
+                "modules": false,
+                "targets": {
+                    "browsers": [
+                        "> 1%",
+                        "last 2 versions",
+                        "not ie <= 8"
+                    ]
+                }
+            }
+        ],
         "stage-0",
         "react"
     ],
@@ -9,9 +21,20 @@
             "presets": [
                 "react-hmre"
             ]
+        },
+        "production": {
+            "plugins": [
+                [
+                    "transform-react-remove-prop-types",
+                    {
+                        "removeImport": true
+                    }
+                ]
+            ]
         }
     },
     "plugins": [
+        "transform-runtime",
         "transform-decorators-legacy"
     ]
 }
