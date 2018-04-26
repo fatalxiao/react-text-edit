@@ -6,7 +6,7 @@ import Event from '../../utils/Event';
 
 import './HorizontalScrollBar.scss';
 
-export default class HorizontalScrollBar extends Component {
+class HorizontalScrollBar extends Component {
 
     constructor(props) {
 
@@ -25,15 +25,15 @@ export default class HorizontalScrollBar extends Component {
             hidden: this.isMac ? true : false
         };
 
-        this.initial = this::this.initial;
-        this.calculateWrapperWidth = this::this.calculateWrapperWidth;
-        this.calculateScrollBarWidth = this::this.calculateScrollBarWidth;
-        this.calculateLeft = this::this.calculateLeft;
-        this.calculateScrollLeft = this::this.calculateScrollLeft;
-        this.mouseDownHandle = this::this.mouseDownHandle;
-        this.mouseMoveHandle = this::this.mouseMoveHandle;
-        this.mouseUpHandle = this::this.mouseUpHandle;
-        this.mouseEnterHandle = this::this.mouseEnterHandle;
+        this.initial = ::this.initial;
+        this.calculateWrapperWidth = ::this.calculateWrapperWidth;
+        this.calculateScrollBarWidth = ::this.calculateScrollBarWidth;
+        this.calculateLeft = ::this.calculateLeft;
+        this.calculateScrollLeft = ::this.calculateScrollLeft;
+        this.mouseDownHandle = ::this.mouseDownHandle;
+        this.mouseMoveHandle = ::this.mouseMoveHandle;
+        this.mouseUpHandle = ::this.mouseUpHandle;
+        this.mouseEnterHandle = ::this.mouseEnterHandle;
 
     }
 
@@ -227,7 +227,8 @@ HorizontalScrollBar.propTypes = {
 
 HorizontalScrollBar.defaultProps = {
     editorWidth: 500,
-    editorOptions: null,
     scrollLeft: 0,
     contentWidth: 0
 };
+
+export default HorizontalScrollBar;
