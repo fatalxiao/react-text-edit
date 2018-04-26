@@ -16,8 +16,6 @@ export default class MarkDownEditor extends Component {
 
         super(props);
 
-        this.nextStateAnimationFrameId = null;
-
         this.state = {
 
             data: MarkDownData,
@@ -33,28 +31,17 @@ export default class MarkDownEditor extends Component {
 
         };
 
-        this.setNextState = this::this.setNextState;
-        this.changeHandle = this::this.changeHandle;
-        this.markdownBodyScrollHandle = this::this.markdownBodyScrollHandle;
-        this.editorScrollHandle = this::this.editorScrollHandle;
-        this.resizeHandle = this::this.resizeHandle;
-        this.mouseDownHandle = this::this.mouseDownHandle;
-        this.mouseMoveHandle = this::this.mouseMoveHandle;
-        this.mouseUpHandle = this::this.mouseUpHandle;
+        this.changeHandler = ::this.changeHandler;
+        this.markdownBodyScrollHandler = ::this.markdownBodyScrollHandler;
+        this.editorScrollHandler = ::this.editorScrollHandler;
+        this.resizeHandler = ::this.resizeHandler;
+        this.mouseDownHandler = ::this.mouseDownHandler;
+        this.mouseMoveHandler = ::this.mouseMoveHandler;
+        this.mouseUpHandler = ::this.mouseUpHandler;
 
     }
 
-    setNextState(state) {
-        if (this.nextStateAnimationFrameId) {
-            cancelAnimationFrame(this.nextStateAnimationFrameId);
-        }
-        this.nextStateAnimationFrameId = requestAnimationFrame(() => {
-            this.nextStateAnimationFrameId = null;
-            this.setState(state);
-        });
-    }
-
-    changeHandle(data) {
+    changeHandler(data) {
         if (data !== this.state.data) {
             this.setState({
                 data,
@@ -63,7 +50,7 @@ export default class MarkDownEditor extends Component {
         }
     }
 
-    markdownBodyScrollHandle() {
+    markdownBodyScrollHandler() {
 
         const el = this.refs.markdownBody,
             scrollTop = el.scrollTop;
@@ -74,52 +61,52 @@ export default class MarkDownEditor extends Component {
 
     }
 
-    editorScrollHandle({topPerCent}) {
+    editorScrollHandler({topPerCent}) {
         const el = this.refs.markdownBody;
         el.scrollTop = (el.scrollHeight - window.innerHeight) * topPerCent;
     }
 
-    resizeHandle() {
-        this.setNextState({
+    resizeHandler() {
+        this.setState({
             fullWidth: window.innerWidth
         });
     }
 
-    mouseDownHandle() {
+    mouseDownHandler() {
         this.setState({
             isResizing: true
         });
     }
 
-    mouseMoveHandle(e) {
+    mouseMoveHandler(e) {
 
         if (!this.state.isResizing) {
             return;
         }
 
-        this.setNextState({
+        this.setState({
             editorWidthPerCent: (window.innerWidth - e.clientX) / window.innerWidth,
             editorHeight: window.innerHeight
         });
 
     }
 
-    mouseUpHandle() {
+    mouseUpHandler() {
         this.setState({
             isResizing: false
         });
     }
 
     componentDidMount() {
-        Event.addEvent(window, 'resize', this.resizeHandle);
-        Event.addEvent(document, 'mousemove', this.mouseMoveHandle);
-        Event.addEvent(document, 'mouseup', this.mouseUpHandle);
+        Event.addEvent(window, 'resize', this.resizeHandler);
+        Event.addEvent(document, 'mousemove', this.mouseMoveHandler);
+        Event.addEvent(document, 'mouseup', this.mouseUpHandler);
     }
 
     componentWillUnmount() {
-        Event.removeEvent(window, 'resize', this.resizeHandle);
-        Event.removeEvent(document, 'mousemove', this.mouseMoveHandle);
-        Event.removeEvent(document, 'mouseup', this.mouseUpHandle);
+        Event.removeEvent(window, 'resize', this.resizeHandler);
+        Event.removeEvent(document, 'mousemove', this.mouseMoveHandler);
+        Event.removeEvent(document, 'mouseup', this.mouseUpHandler);
     }
 
     render() {
@@ -143,7 +130,7 @@ export default class MarkDownEditor extends Component {
                      className="markdown-body"
                      style={markdownBodyStyle}
                      dangerouslySetInnerHTML={{__html: markdownHTML}}
-                     onScroll={this.markdownBodyScrollHandle}></div>
+                     onScroll={this.markdownBodyScrollHandler}></div>
 
                 <ReactTextEdit className="mark-down-editor"
                                style={markDownEditorStyle}
@@ -152,12 +139,12 @@ export default class MarkDownEditor extends Component {
                                height={editorHeight}
                                scrollTopPerCent={editorScrollPerCent}
                                theme={ReactTextEdit.Theme.DARCULA}
-                               onChange={this.changeHandle}
-                               onScroll={this.editorScrollHandle}/>
+                               onChange={this.changeHandler}
+                               onScroll={this.editorScrollHandler}/>
 
                 <div className="drag-edge"
                      style={dragEdgeStyle}
-                     onMouseDown={this.mouseDownHandle}></div>
+                     onMouseDown={this.mouseDownHandler}></div>
 
             </div>
         );
