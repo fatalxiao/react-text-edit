@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {findDOMNode} from 'react-dom';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import isEmpty from 'lodash/isEmpty';
 
 import TextScroller from '../TextScroller';
 import ScrollBars from '../ScrollBars';
@@ -15,7 +16,7 @@ import Calculation from '../../utils/Calculation';
 
 import './Editor.scss';
 
-export default class Editor extends Component {
+class Editor extends Component {
 
     constructor(props) {
 
@@ -248,39 +249,24 @@ export default class Editor extends Component {
 
         };
 
-        this.setNextState = this::this.setNextState;
-        this.calculateContentWidth = this::this.calculateContentWidth;
-        this.calculateContentHeight = this::this.calculateContentHeight;
-        this.calculateGutterWidth = this::this.calculateGutterWidth;
-        this.scrollX = this::this.scrollX;
-        this.scrollY = this::this.scrollY;
-        this.showError = this::this.showError;
-        this.onCompositionUpdate = this::this.onCompositionUpdate;
-        this.onChange = this::this.onChange;
-        this.lostFocusHandle = this::this.lostFocusHandle;
-        this.wheelHandle = this::this.wheelHandle;
-        this.resizeHandle = this::this.resizeHandle;
-        this.editorMouseDownHandle = this::this.editorMouseDownHandle;
-        this.mouseDownHandle = this::this.mouseDownHandle;
-        this.mouseMoveHandle = this::this.mouseMoveHandle;
-        this.mouseUpHandle = this::this.mouseUpHandle;
-        this.goHistory = this::this.goHistory;
-        this.updateHistory = this::this.updateHistory;
+        this.calculateContentWidth = ::this.calculateContentWidth;
+        this.calculateContentHeight = ::this.calculateContentHeight;
+        this.calculateGutterWidth = ::this.calculateGutterWidth;
+        this.scrollX = ::this.scrollX;
+        this.scrollY = ::this.scrollY;
+        this.showError = ::this.showError;
+        this.onCompositionUpdate = ::this.onCompositionUpdate;
+        this.onChange = ::this.onChange;
+        this.lostFocusHandle = ::this.lostFocusHandle;
+        this.wheelHandle = ::this.wheelHandle;
+        this.resizeHandle = ::this.resizeHandle;
+        this.editorMouseDownHandle = ::this.editorMouseDownHandle;
+        this.mouseDownHandle = ::this.mouseDownHandle;
+        this.mouseMoveHandle = ::this.mouseMoveHandle;
+        this.mouseUpHandle = ::this.mouseUpHandle;
+        this.goHistory = ::this.goHistory;
+        this.updateHistory = ::this.updateHistory;
 
-    }
-
-    /**
-     * resize event for optimization
-     * @param state
-     */
-    setNextState(state) {
-        if (this.nextStateAnimationFrameId) {
-            cancelAnimationFrame(this.nextStateAnimationFrameId);
-        }
-        this.nextStateAnimationFrameId = requestAnimationFrame(() => {
-            this.nextStateAnimationFrameId = null;
-            this.setState(state);
-        });
     }
 
     /**
@@ -507,7 +493,7 @@ export default class Editor extends Component {
      * handle editor resize, reset editor size
      */
     resizeHandle() {
-        this.setNextState({
+        this.setState({
             editorWidth: window.innerWidth,
             editorHeight: window.innerHeight
         });
@@ -660,7 +646,7 @@ export default class Editor extends Component {
         this.editorHistories.splice(
             this.historyPointer + 1,
             this.editorHistories.length - 1 - this.historyPointer,
-            _.cloneDeep(this.state)
+            cloneDeep(this.state)
         );
 
         this.historyPointer++;
@@ -693,7 +679,7 @@ export default class Editor extends Component {
             contentWidth: this.calculateContentWidth(),
             gutterWidth: this.calculateGutterWidth()
         }, () => {
-            this.editorHistories.push(_.cloneDeep(this.state));
+            this.editorHistories.push(cloneDeep(this.state));
             this.historyPointer = 0;
         });
 
@@ -755,7 +741,7 @@ export default class Editor extends Component {
 
         }
 
-        if (!_.isEmpty(state)) {
+        if (!isEmpty(state)) {
             this.setState(state);
         }
 
@@ -842,11 +828,6 @@ Editor.propTypes = {
 
 Editor.defaultProps = {
 
-    className: '',
-    style: null,
-
-    data: '',
-
     isFullScreen: false,
     width: 500,
     height: 200,
@@ -855,8 +836,8 @@ Editor.defaultProps = {
     scrollTop: 0,
 
     scrollLeftPerCent: 0,
-    scrollTopPerCent: 0,
-
-    editorOptions: null
+    scrollTopPerCent: 0
 
 };
+
+export default Editor;
