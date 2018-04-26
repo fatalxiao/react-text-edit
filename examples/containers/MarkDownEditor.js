@@ -4,9 +4,9 @@ import 'github-markdown-css';
 
 import ReactTextEdit from 'dist';
 
-import Event from 'utils/Event';
+import Event from 'vendors/Event';
 
-import MarkDownData from 'README.md';
+import MarkDownData from '/README.md';
 
 import 'assets/sass/MarkDownEditor.scss';
 

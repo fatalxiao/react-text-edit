@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import ReactTextEdit from 'dist';
 
-import README from 'README.md';
+import README from '/README.md';
 
 export default class FullScreenEditor extends Component {
 
