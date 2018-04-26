@@ -5,7 +5,7 @@ import TextLine from '../TextLine';
 
 import './TextContainer.scss';
 
-export default class TextContainer extends Component {
+class TextContainer extends Component {
 
     constructor(props) {
         super(props);
@@ -47,9 +47,10 @@ TextContainer.propTypes = {
 
 TextContainer.defaultProps = {
     editorDataArray: [],
-    editorOptions: null,
     displayIndex: {
         start: 0,
         stop: 0
     }
 };
+
+export default TextContainer;
