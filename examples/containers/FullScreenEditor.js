@@ -4,7 +4,7 @@ import ReactTextEdit from 'src';
 
 import README from '../../README.md';
 
-export default class FullScreenEditor extends Component {
+class FullScreenEditor extends Component {
 
     constructor(props) {
 
@@ -14,7 +14,7 @@ export default class FullScreenEditor extends Component {
             data: README
         };
 
-        this.changeHandle = this::this.changeHandle;
+        this.changeHandle = ::this.changeHandle;
 
     }
 
@@ -38,3 +38,5 @@ export default class FullScreenEditor extends Component {
         );
     }
 }
+
+export default FullScreenEditor;
