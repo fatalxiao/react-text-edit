@@ -5,7 +5,7 @@ import 'sass/global.scss';
 import 'sass/Root.scss';
 import 'sass/example.scss';
 
-export default class Root extends Component {
+class Root extends Component {
 
     constructor(props) {
         super(props);
@@ -23,3 +23,5 @@ export default class Root extends Component {
         );
     }
 }
+
+export default Root;
