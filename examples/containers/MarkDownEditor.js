@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Markdown from 'js-markdown';
 import 'github-markdown-css';
+import classnames from 'classnames';
 
 import ReactTextEdit from 'src';
 
@@ -10,7 +11,7 @@ import MarkDownData from '../../README.md';
 
 import 'assets/sass/MarkDownEditor.scss';
 
-export default class MarkDownEditor extends Component {
+class MarkDownEditor extends Component {
 
     constructor(props) {
 
@@ -112,7 +113,12 @@ export default class MarkDownEditor extends Component {
     render() {
 
         const {data, markdownHTML, editorWidthPerCent, editorHeight, isResizing, editorScrollPerCent} = this.state,
+
             markdownBodyWidth = window.innerWidth * (1 - editorWidthPerCent),
+
+            wrapperClassName = classnames('mark-down-editor-wrapper', {
+                resizing: isResizing
+            }),
             markdownBodyStyle = {
                 width: markdownBodyWidth
             },
@@ -124,7 +130,7 @@ export default class MarkDownEditor extends Component {
             };
 
         return (
-            <div className={`mark-down-editor-wrapper ${isResizing ? 'resizing' : ''}`}>
+            <div className={wrapperClassName}>
 
                 <div ref="markdownBody"
                      className="markdown-body"
@@ -150,3 +156,5 @@ export default class MarkDownEditor extends Component {
         );
     }
 }
+
+export default MarkDownEditor;
