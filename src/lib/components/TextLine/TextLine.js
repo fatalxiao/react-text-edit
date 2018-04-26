@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import './TextLine.scss';
 
-export default class TextLine extends Component {
+class TextLine extends Component {
 
     constructor(props) {
         super(props);
@@ -21,7 +21,6 @@ export default class TextLine extends Component {
             <div className="react-editor-text-line"
                  style={{...style, ...lineStyle}}
                  dangerouslySetInnerHTML={{__html: data}}>
-                {/*{data}*/}
             </div>
         );
 
@@ -35,7 +34,7 @@ TextLine.propTypes = {
 };
 
 TextLine.defaultProps = {
-    style: null,
-    data: '',
-    editorOptions: null
+    data: ''
 };
+
+export default TextLine;
