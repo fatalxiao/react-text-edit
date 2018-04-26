@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import './EditorCursor.scss';
 
-export default class EditorCursor extends Component {
+class EditorCursor extends Component {
 
     constructor(props) {
 
@@ -11,8 +11,8 @@ export default class EditorCursor extends Component {
 
         this.delayAnimation = null;
 
-        this.calculateCursorPosition = this::this.calculateCursorPosition;
-        this.delayAnimate = this::this.delayAnimate;
+        this.calculateCursorPosition = ::this.calculateCursorPosition;
+        this.delayAnimate = ::this.delayAnimate;
 
     }
 
@@ -78,29 +78,7 @@ export default class EditorCursor extends Component {
 };
 
 EditorCursor.propTypes = {
-
-    editorEl: PropTypes.object,
-    editorDataArray: PropTypes.array,
-    editorOptions: PropTypes.object,
-    scrollLeft: PropTypes.number,
-    scrollTop: PropTypes.number,
-    mouseDownPosition: PropTypes.object,
-
-    compositionText: PropTypes.string,
     cursorPosition: PropTypes.object
-
 };
 
-EditorCursor.defaultProps = {
-
-    editorEl: null,
-    editorDataArray: [],
-    editorOptions: null,
-    scrollLeft: 0,
-    scrollTop: 0,
-    mouseDownPosition: null,
-
-    compositionText: '',
-    cursorPosition: null
-
-};
+export default EditorCursor;
