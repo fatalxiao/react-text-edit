@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import './GutterActiveLine.scss';
 
-export default class GutterActiveLine extends Component {
+class GutterActiveLine extends Component {
 
     constructor(props) {
         super(props);
@@ -34,7 +34,7 @@ GutterActiveLine.propTypes = {
 };
 
 GutterActiveLine.defaultProps = {
-    editorOptions: null,
-    gutterWidth: 0,
-    cursorPosition: null
+    gutterWidth: 0
 };
+
+export default GutterActiveLine;
