@@ -5,7 +5,7 @@ import Valid from '../../utils/Valid';
 
 import './TextActiveLine.scss';
 
-export default class TextActiveLine extends Component {
+class TextActiveLine extends Component {
 
     constructor(props) {
         super(props);
@@ -38,7 +38,7 @@ TextActiveLine.propTypes = {
 };
 
 TextActiveLine.defaultProps = {
-    editorOptions: null,
-    contentWidth: 0,
-    cursorPosition: null
+    contentWidth: 0
 };
+
+export default TextActiveLine;
