@@ -38,6 +38,9 @@ import ac from 'components/AsyncComponent';
 export default [{
     component: ac(() => import('containers/Root')),
     routes: [{
+        path: '/catalog',
+        component: ac(() => import('containers/Catalog'))
+    }, {
         path: '/full-screen',
         component: ac(() => import('containers/FullScreenEditor'))
     }, {
