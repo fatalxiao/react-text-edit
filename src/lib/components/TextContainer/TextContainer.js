@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import TextLine from '../TextLine';
 
-import './TextContainer.css';
+import './TextContainer.scss';
 
 export default class TextContainer extends Component {
 

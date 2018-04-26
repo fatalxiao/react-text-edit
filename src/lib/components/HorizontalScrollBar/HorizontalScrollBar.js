@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Valid from '../../utils/Valid';
 import Event from '../../utils/Event';
 
-import './HorizontalScrollBar.css';
+import './HorizontalScrollBar.scss';
 
 export default class HorizontalScrollBar extends Component {
 

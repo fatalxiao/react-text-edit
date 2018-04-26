@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import './GutterActiveLine.css';
+import './GutterActiveLine.scss';
 
 export default class GutterActiveLine extends Component {
 

@@ -13,7 +13,7 @@ import Event from '../../utils/Event';
 import Dom from '../../utils/Dom';
 import Calculation from '../../utils/Calculation';
 
-import './Editor.css';
+import './Editor.scss';
 
 export default class Editor extends Component {
 

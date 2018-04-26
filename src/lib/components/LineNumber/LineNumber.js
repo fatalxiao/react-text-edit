@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import './LineNumber.css';
+import './LineNumber.scss';
 
 export default class LineNumber extends Component {
 

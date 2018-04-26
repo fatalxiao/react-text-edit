@@ -7,7 +7,7 @@ import TextSelection from '../TextSelection';
 import TextContainer from '../TextContainer';
 import EditorCursor from '../EditorCursor';
 
-import './TextScroller.css';
+import './TextScroller.scss';
 
 export default class TextScroller extends Component {
 

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Valid from '../../utils/Valid';
 
-import './TextActiveLine.css';
+import './TextActiveLine.scss';
 
 export default class TextActiveLine extends Component {
 

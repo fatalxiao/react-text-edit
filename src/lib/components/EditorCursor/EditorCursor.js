@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import './EditorCursor.css';
+import './EditorCursor.scss';
 
 export default class EditorCursor extends Component {
 

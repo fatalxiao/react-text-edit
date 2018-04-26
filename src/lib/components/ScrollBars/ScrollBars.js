@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import VerticalScrollBar from '../VerticalScrollBar';
 import HorizontalScrollBar from '../HorizontalScrollBar';
 
-import './ScrollBars.css';
+import './ScrollBars.scss';
 
 export default class ScrollBars extends Component {
 

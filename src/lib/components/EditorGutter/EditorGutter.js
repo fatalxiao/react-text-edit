@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import LineNumber from '../LineNumber';
 import GutterActiveLine from '../GutterActiveLine';
 
-import './EditorGutter.css';
+import './EditorGutter.scss';
 
 export default class EditorGutter extends Component {
 

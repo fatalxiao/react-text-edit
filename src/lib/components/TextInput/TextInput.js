@@ -5,7 +5,7 @@ import Command from '../../utils/Command';
 import Calculation from '../../utils/Calculation';
 import Valid from '../../utils/Valid';
 
-import './TextInput.css';
+import './TextInput.scss';
 
 export default class TextInput extends Component {
 

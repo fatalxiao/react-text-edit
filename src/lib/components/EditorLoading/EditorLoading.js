@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-import './EditorLoading.css';
+import './EditorLoading.scss';
 
 export default class EditorLoading extends Component {
 
