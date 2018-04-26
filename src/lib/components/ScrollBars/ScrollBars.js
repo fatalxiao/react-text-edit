@@ -6,7 +6,7 @@ import HorizontalScrollBar from '../HorizontalScrollBar';
 
 import './ScrollBars.scss';
 
-export default class ScrollBars extends Component {
+class ScrollBars extends Component {
 
     constructor(props) {
         super(props);
@@ -57,3 +57,5 @@ ScrollBars.defaultProps = {
     contentWidth: 0,
     contentHeight: 0
 };
+
+export default ScrollBars;
