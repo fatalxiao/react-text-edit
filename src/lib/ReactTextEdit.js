@@ -122,35 +122,22 @@ class ReactTextEdit extends Component {
             });
         });
 
-        require(`./assets/sass/theme/${this.props.theme}.css`);
+        require(`./assets/sass/theme/${this.props.theme}.scss`);
 
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.theme !== this.props.theme) {
-            require(`./assets/sass/theme/${nextProps.theme}.css`);
+            require(`./assets/sass/theme/${nextProps.theme}.scss`);
         }
     }
 
     render() {
-
-        const {editorInital} = this.state;
-
-        return (
-            <div>
-
-                {
-                    editorInital ?
-                        <Editor {...this.props}
-                                editorOptions={Object.assign(this.defaultOptions, this.props.options)}/>
-                        :
-                        null
-                }
-
-                <EditorLoading editorInital={editorInital}/>
-
-            </div>
-        );
+        return this.state.editorInital ?
+            <Editor {...this.props}
+                    editorOptions={Object.assign(this.defaultOptions, this.props.options)}/>
+            :
+            <EditorLoading/>;
     }
 
 };
@@ -228,8 +215,6 @@ ReactTextEdit.propTypes = {
 
 ReactTextEdit.defaultProps = {
 
-    className: '',
-    style: null,
     theme: ReactTextEdit.Theme.DEFAULT,
 
     data: '',
@@ -242,9 +227,7 @@ ReactTextEdit.defaultProps = {
     scrollTop: 0,
 
     scrollLeftPerCent: 0,
-    scrollTopPerCent: 0,
-
-    options: null
+    scrollTopPerCent: 0
 
 };
 
