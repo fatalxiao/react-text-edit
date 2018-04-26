@@ -3,7 +3,7 @@ import {Link} from 'react-router';
 
 import 'assets/sass/Catalog.scss';
 
-export default class Catalog extends Component {
+class Catalog extends Component {
 
     constructor(props) {
 
@@ -29,18 +29,18 @@ export default class Catalog extends Component {
                 <h1>Examples</h1>
 
                 {
-                    this.catalogs.map(item => {
-                        return (
-                            <Link key={item.name}
-                                  className="catalog-link"
-                                  to={item.route}>
-                                {item.name}
-                            </Link>
-                        );
-                    })
+                    this.catalogs.map(item =>
+                        <Link key={item.name}
+                              className="catalog-link"
+                              to={item.route}>
+                            {item.name}
+                        </Link>
+                    )
                 }
 
             </div>
         );
     }
 }
+
+export default Catalog;
