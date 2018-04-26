@@ -18,21 +18,16 @@ class TextContainer extends Component {
 
         return (
             <div className="react-editor-text-container">
-
                 {
-                    data && data.map((line, index) => {
-                        return index >= displayIndex.start && index <= displayIndex.stop ?
-                            (
-                                <TextLine {...this.props}
-                                          key={index}
-                                          data={line}
-                                          style={{top: editorOptions.lineHeight * index}}/>
-                            )
-                            :
-                            null;
-                    })
+                    data && data.map((line, index) => index >= displayIndex.start && index <= displayIndex.stop ?
+                        <TextLine {...this.props}
+                                  key={index}
+                                  style={{top: editorOptions.lineHeight * index}}
+                                  data={line}/>
+                        :
+                        null
+                    )
                 }
-
             </div>
         );
 
