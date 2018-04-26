@@ -1,29 +1,29 @@
-var utils = require('./../utils');
-var webpack = require('webpack');
-var config = require('../../config/index');
-var merge = require('webpack-merge');
-var baseWebpackConfig = require('./../webpack.config.base.js');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
+const webpack = require('webpack'),
+    merge = require('webpack-merge'),
+    HtmlWebpackPlugin = require('html-webpack-plugin'),
+    FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin'),
 
-Object.keys(baseWebpackConfig.entry).forEach(function (name) {
+    config = require('../config.js'),
+    baseWebpackConfig = require('../webpack.config.base.js'),
+
+    env = process.env.NODE_ENV;
+
+Object.keys(baseWebpackConfig.entry).forEach(name => {
     baseWebpackConfig.entry[name] = ['./build/dev/dev-client'].concat(baseWebpackConfig.entry[name]);
 });
 
 module.exports = merge(baseWebpackConfig, {
 
-    module: {
-        rules: utils.styleLoaders({
-            sourceMap: config.dev.cssSourceMap
-        })
-    },
+    mode: 'development',
 
     devtool: '#cheap-module-eval-source-map',
 
     plugins: [
 
         new webpack.DefinePlugin({
-            'process.env': config.dev.env
+            'process.env': {
+                NODE_ENV: `'${env}'`
+            }
         }),
 
         new webpack.HotModuleReplacementPlugin(),
@@ -33,6 +33,7 @@ module.exports = merge(baseWebpackConfig, {
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: './examples/index.html',
+            // favicon: './examples/assets/images/favicon.ico',
             inject: true
         }),
 

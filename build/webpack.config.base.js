@@ -1,6 +1,26 @@
-var path = require('path');
-var utils = require('./utils');
-var config = require('../config');
+const path = require('path'),
+    autoprefixer = require('autoprefixer'),
+
+    config = require('./config.js'),
+    utils = require('./utils.js'),
+
+    cssLoaderConfig = ['style-loader', {
+        loader: 'css-loader',
+        options: {
+            minimize: true,
+            importLoaders: 1
+        }
+    }, {
+        loader: 'postcss-loader',
+        options: {
+            ident: 'postcss',
+            plugins: [
+                autoprefixer({
+                    broswer: 'last 5 versions'
+                })
+            ]
+        }
+    }];
 
 function resolve(dir) {
     return path.join(__dirname, '..', dir);
@@ -13,23 +33,23 @@ module.exports = {
     output: {
         path: config.build.assetsRoot,
         filename: '[name].js',
-        publicPath: process.env.NODE_ENV === 'production'
-            ? config.build.assetsPublicPath
-            : config.dev.assetsPublicPath
+        publicPath: config.assetsPublicPath
     },
     resolve: {
         extensions: ['.js', '.json'],
         alias: {
+            'src': resolve('src'),
             'examples': resolve('examples'),
             'assets': resolve('examples/assets'),
             'sass': resolve('examples/assets/sass'),
+            'stylesheets': resolve('examples/assets/stylesheets'),
+            'components': resolve('examples/components'),
             'containers': resolve('examples/containers'),
-            'src': resolve('src'),
+            'modules': resolve('examples/containers/app/modules'),
             'dist': resolve('dist'),
-            'utils': resolve('examples/utils'),
+            'vendors': resolve('examples/vendors'),
             'reduxes': resolve('examples/reduxes'),
-            'docs': resolve('docs'),
-            'README.md': resolve('README.md')
+            'docs': resolve('docs')
         }
     },
     module: {
@@ -40,26 +60,29 @@ module.exports = {
         }, {
             test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
             loader: 'url-loader',
-            query: {
+            options: {
                 limit: 1000,
-                name: utils.assetsPath('img/[name].[hash:7].[ext]')
+                name: utils.assetsSubPath('img/[name].[hash:7].[ext]')
             }
         }, {
             test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
             loader: 'url-loader',
-            query: {
+            options: {
                 limit: 1000,
-                name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+                name: utils.assetsSubPath('fonts/[name].[hash:7].[ext]')
             }
         }, {
-            test: /\.(txt|md)/,
-            loader: 'raw-loader'
+            test: /\.scss$/,
+            use: [...cssLoaderConfig, 'sass-loader']
         }, {
-            test: /\.json$/,
-            loader: 'json-loader'
+            test: /\.css$/,
+            use: cssLoaderConfig
         }, {
             test: /\.ht?ml/,
             loader: 'html-loader'
+        }, {
+            test: /\.md/,
+            loader: 'raw-loader'
         }]
     }
 };

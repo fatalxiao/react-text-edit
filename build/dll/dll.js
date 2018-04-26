@@ -2,9 +2,9 @@ const ora = require('ora'),
     chalk = require('chalk'),
     webpack = require('webpack'),
 
-    webpackConfig = require('./webpack.config.prod.js'),
+    webpackConfig = require('./webpack.config.dll.js'),
 
-    spinner = ora('building for production...');
+    spinner = ora('Building DLL...');
 
 spinner.start();
 
@@ -24,6 +24,6 @@ webpack(webpackConfig, (err, stats) => {
         chunkModules: false
     }) + '\n\n');
 
-    console.log(chalk.cyan('Build complete.'));
+    console.log(chalk.cyan('Build DLL Complete.'));
 
 });

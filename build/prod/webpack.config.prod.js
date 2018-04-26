@@ -1,52 +1,81 @@
-var path = require('path');
-var utils = require('./../utils');
-var webpack = require('webpack');
-var config = require('../../config/index');
-var merge = require('webpack-merge');
-var baseWebpackConfig = require('./../webpack.config.base.js');
-var CopyWebpackPlugin = require('copy-webpack-plugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+const path = require('path'),
+    webpack = require('webpack'),
+    merge = require('webpack-merge'),
+    CopyPlugin = require('copy-webpack-plugin'),
+    HtmlPlugin = require('html-webpack-plugin'),
+    HtmlIncludeAssetsPlugin = require('html-webpack-include-assets-plugin'),
+    CompressionPlugin = require('compression-webpack-plugin'),
 
-var env = config.build.env;
+    config = require('../config.js'),
+    baseWebpackConfig = require('../webpack.config.base.js'),
+    utils = require('../utils.js'),
+    vendorsAssets = require(utils.assetsVendorsAbsolutePath('vendors-assets.json')),
 
-var webpackConfig = merge(baseWebpackConfig, {
-    module: {
-        rules: utils.styleLoaders({
-            sourceMap: config.build.productionSourceMap,
-            extract: true
-        })
-    },
+    env = process.env.NODE_ENV;
+
+module.exports = merge(baseWebpackConfig, {
+
+    mode: 'production',
+
     devtool: config.build.productionSourceMap ? '#source-map' : false,
+
     output: {
         publicPath: './',
         path: config.build.assetsRoot,
-        filename: utils.assetsPath('js/[name].[chunkhash].js'),
-        chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+        filename: utils.assetsSubPath('js/[name].[chunkhash].js'),
+        chunkFilename: utils.assetsSubPath('js/[id].[chunkhash].js')
     },
+
+    optimization: {
+        runtimeChunk: {
+            name: 'manifest'
+        },
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendor',
+                    chunks: 'all'
+                }
+            }
+        }
+    },
+
     plugins: [
 
         new webpack.DefinePlugin({
-            'process.env': env
+            'process.env': {
+                NODE_ENV: `'${env}'`
+            }
         }),
 
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            },
-            sourceMap: true
+        new CopyPlugin([{
+            from: path.resolve(__dirname, '../../static'),
+            to: config.assetsSubDirectory,
+            ignore: ['.*']
+        }]),
+
+        new webpack.DllReferencePlugin({
+            context: __dirname,
+            manifest: require(utils.assetsVendorsAbsolutePath('polyfill-manifest.json'))
+        }),
+        new webpack.DllReferencePlugin({
+            context: __dirname,
+            manifest: require(utils.assetsVendorsAbsolutePath('react-manifest.json'))
+        }),
+        new webpack.DllReferencePlugin({
+            context: __dirname,
+            manifest: require(utils.assetsVendorsAbsolutePath('brace-manifest.json'))
+        }),
+        new webpack.DllReferencePlugin({
+            context: __dirname,
+            manifest: require(utils.assetsVendorsAbsolutePath('editor-manifest.json'))
         }),
 
-        new ExtractTextPlugin({
-            filename: utils.assetsPath('css/[name].[contenthash].css')
-        }),
-
-        new OptimizeCSSPlugin(),
-
-        new HtmlWebpackPlugin({
+        new HtmlPlugin({
             filename: config.build.index,
             template: './examples/index.html',
+            // favicon: './examples/assets/images/favicon.ico',
             inject: true,
             minify: {
                 removeComments: true,
@@ -55,52 +84,24 @@ var webpackConfig = merge(baseWebpackConfig, {
             chunksSortMode: 'dependency'
         }),
 
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor',
-            minChunks: function (module, count) {
-                return (
-                    module.resource && /\.js$/.test(module.resource) && module.resource.indexOf(
-                        path.join(__dirname, '../node_modules')
-                    ) === 0
-                );
-            }
+        new HtmlIncludeAssetsPlugin({
+            assets: [
+                vendorsAssets['polyfill'].js,
+                vendorsAssets['react'].js,
+                vendorsAssets['brace'].js,
+                vendorsAssets['editor'].js
+            ],
+            append: false
         }),
 
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'manifest',
-            chunks: ['vendor']
-        }),
-
-        new CopyWebpackPlugin([{
-            from: path.resolve(__dirname, '../../static'),
-            to: config.build.assetsSubDirectory,
-            ignore: ['.*']
-        }])
+        new CompressionPlugin({
+            asset: '[path].gz[query]',
+            algorithm: 'gzip',
+            test: new RegExp('\\.(' + config.productionGzipExtensions.join('|') + ')$'),
+            threshold: 1,
+            minRatio: 0.8
+        })
 
     ]
+
 });
-
-if (config.build.productionGzip) {
-
-    var CompressionWebpackPlugin = require('compression-webpack-plugin');
-
-    webpackConfig.plugins.push(new CompressionWebpackPlugin({
-        asset: '[path].gz[query]',
-        algorithm: 'gzip',
-        test: new RegExp(
-            '\\.(' +
-            config.build.productionGzipExtensions.join('|') +
-            ')$'
-        ),
-        threshold: 10240,
-        minRatio: 0.8
-    }));
-
-}
-
-if (config.build.bundleAnalyzerReport) {
-    var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-    webpackConfig.plugins.push(new BundleAnalyzerPlugin());
-}
-
-module.exports = webpackConfig;
