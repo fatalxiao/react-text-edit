@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router';
+import {NavLink} from 'react-router-dom';
 
 import 'assets/sass/Catalog.scss';
 
@@ -30,11 +30,11 @@ class Catalog extends Component {
 
                 {
                     this.catalogs.map(item =>
-                        <Link key={item.name}
-                              className="catalog-link"
-                              to={item.route}>
+                        <NavLink key={item.name}
+                                 className="catalog-link"
+                                 to={item.route}>
                             {item.name}
-                        </Link>
+                        </NavLink>
                     )
                 }
 
