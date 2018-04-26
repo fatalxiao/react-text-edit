@@ -7,7 +7,7 @@ import Event from '../../utils/Event';
 
 import './VerticalScrollBar.scss';
 
-export default class VerticalScrollBar extends Component {
+class VerticalScrollBar extends Component {
 
     constructor(props) {
 
@@ -23,13 +23,13 @@ export default class VerticalScrollBar extends Component {
             activated: false
         };
 
-        this.initial = this::this.initial;
-        this.calculateScrollBarHeight = this::this.calculateScrollBarHeight;
-        this.calculateTop = this::this.calculateTop;
-        this.calculateScrollTop = this::this.calculateScrollTop;
-        this.mouseDownHandle = this::this.mouseDownHandle;
-        this.mouseMoveHandle = this::this.mouseMoveHandle;
-        this.mouseUpHandle = this::this.mouseUpHandle;
+        this.initial = ::this.initial;
+        this.calculateScrollBarHeight = ::this.calculateScrollBarHeight;
+        this.calculateTop = ::this.calculateTop;
+        this.calculateScrollTop = ::this.calculateScrollTop;
+        this.mouseDownHandler = ::this.mouseDownHandler;
+        this.mouseMoveHandler = ::this.mouseMoveHandler;
+        this.mouseUpHandler = ::this.mouseUpHandler;
 
     }
 
@@ -53,7 +53,7 @@ export default class VerticalScrollBar extends Component {
         return Calculation.fullScrollTop(this.props) * top / (this.wrapperHeight - scrollBarHeight);
     }
 
-    mouseDownHandle(e, isWrapper) {
+    mouseDownHandler(e, isWrapper) {
 
         e.stopPropagation();
         isWrapper ? this.isWrapperMouseDown = true : this.isScrollBarMouseDown = true;
@@ -70,7 +70,7 @@ export default class VerticalScrollBar extends Component {
 
     }
 
-    mouseMoveHandle(e) {
+    mouseMoveHandler(e) {
 
         e.stopPropagation();
 
@@ -85,7 +85,7 @@ export default class VerticalScrollBar extends Component {
 
     }
 
-    mouseUpHandle(e) {
+    mouseUpHandler(e) {
 
         e.stopPropagation();
 
@@ -111,13 +111,13 @@ export default class VerticalScrollBar extends Component {
     }
 
     componentDidMount() {
-        Event.addEvent(document, 'mousemove', this.mouseMoveHandle);
-        Event.addEvent(document, 'mouseup', this.mouseUpHandle);
+        Event.addEvent(document, 'mousemove', this.mouseMoveHandler);
+        Event.addEvent(document, 'mouseup', this.mouseUpHandler);
     }
 
     componentWillUnmount() {
-        Event.removeEvent(document, 'mousemove', this.mouseMoveHandle);
-        Event.removeEvent(document, 'mouseup', this.mouseUpHandle);
+        Event.removeEvent(document, 'mousemove', this.mouseMoveHandler);
+        Event.removeEvent(document, 'mouseup', this.mouseUpHandler);
     }
 
     render() {
@@ -133,13 +133,13 @@ export default class VerticalScrollBar extends Component {
         return (
             <div className={`react-editor-vertical-scroll-bar-wrapper ${activated ? 'activated' : ''}`}
                  onMouseDown={(e) => {
-                     this.mouseDownHandle(e, true);
+                     this.mouseDownHandler(e, true);
                  }}>
 
                 <div className="react-editor-vertical-scroll-bar"
                      style={scrollBarStyle}
                      onMouseDown={(e) => {
-                         this.mouseDownHandle(e, false);
+                         this.mouseDownHandler(e, false);
                      }}>
                     <div className="react-editor-vertical-scroll-bar-inner"></div>
                 </div>
@@ -166,6 +166,7 @@ VerticalScrollBar.propTypes = {
 VerticalScrollBar.defaultProps = {
     editorDataArray: [],
     editorHeight: 200,
-    editorOptions: null,
     scrollTop: 0
 };
+
+export default VerticalScrollBar;
