@@ -4,7 +4,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 import './EditorLoading.scss';
 
-export default class EditorLoading extends Component {
+class EditorLoading extends Component {
 
     constructor(props) {
         super(props);
@@ -46,3 +46,5 @@ EditorLoading.propTypes = {
 EditorLoading.defaultProps = {
     editorInital: false
 };
+
+export default EditorLoading;
