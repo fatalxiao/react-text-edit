@@ -6,7 +6,7 @@ import README from '../../README.md';
 
 import 'assets/sass/SpecifiedSizeEditor.scss';
 
-export default class SpecifiedSizeEditor extends Component {
+class SpecifiedSizeEditor extends Component {
 
     constructor(props) {
 
@@ -48,3 +48,5 @@ export default class SpecifiedSizeEditor extends Component {
         );
     }
 }
+
+export default SpecifiedSizeEditor;
