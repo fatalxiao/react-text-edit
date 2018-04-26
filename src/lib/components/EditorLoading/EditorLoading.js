@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import CSSTransition from 'react-transition-group/CSSTransition';
 
 import './EditorLoading.css';
 
@@ -12,9 +12,8 @@ export default class EditorLoading extends Component {
 
     render() {
         return (
-            <CSSTransitionGroup transitionName="react-editor-loading"
-                                transitionEnterTimeout={0}
-                                transitionLeaveTimeout={250}>
+            <CSSTransition classNames="react-editor-loading"
+                           timeout={{enter: 0, exit: 250}}>
                 {
                     this.props.editorInital ?
                         null
@@ -35,7 +34,7 @@ export default class EditorLoading extends Component {
                             </div>
                         </div>
                 }
-            </CSSTransitionGroup>
+            </CSSTransition>
         );
     }
 };

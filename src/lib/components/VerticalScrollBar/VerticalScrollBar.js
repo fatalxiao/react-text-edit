@@ -5,7 +5,7 @@ import Calculation from '../../utils/Calculation';
 import Valid from '../../utils/Valid';
 import Event from '../../utils/Event';
 
-import './VerticalScrollBar.css';
+import './VerticalScrollBar.scss';
 
 export default class VerticalScrollBar extends Component {
 

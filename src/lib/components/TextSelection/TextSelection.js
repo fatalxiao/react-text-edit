@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Calculation from '../../utils/Calculation';
 
-import './TextSelection.css';
+import './TextSelection.scss';
 
 export default class TextSelection extends Component {
 

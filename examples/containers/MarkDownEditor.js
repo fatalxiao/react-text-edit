@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import Markdown from 'js-markdown';
 import 'github-markdown-css';
 
-import ReactTextEdit from 'dist';
+import ReactTextEdit from 'src';
 
 import Event from 'vendors/Event';
 
-import MarkDownData from '/README.md';
+import MarkDownData from '../../README.md';
 
 import 'assets/sass/MarkDownEditor.scss';
 
